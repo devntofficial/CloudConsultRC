@@ -1,0 +1,26 @@
+﻿using System.Threading.Tasks;
+using CloudConsult.Common.Controllers;
+using CloudConsult.Consultation.Domain.Commands;
+using CloudConsult.Consultation.Domain.Queries;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CloudConsult.Consultation.Api.Controllers
+{
+    [ApiVersion("1.0")]
+    public class AvailabilityController : JsonController<AvailabilityController>
+    {
+        [HttpPost(Routes.Availability.AddAvailability)]
+        public async Task<IActionResult> Add(AddAvailabilityCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return JsonResponse(response);
+        }
+        
+        [HttpGet(Routes.Availability.GetByDoctorId)]
+        public async Task<IActionResult> GetByDoctorId([FromRoute]GetAvailabilityQuery query)
+        {
+            var response = await Mediator.Send(query);
+            return JsonResponse(response);
+        }
+    }
+}

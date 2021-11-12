@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <PackageId>CloudConsult.Common</PackageId>
+        <Version>1.0.9</Version>
+        <Authors>Nikhil Thakral</Authors>
+        <Company>DevNT</Company>
+        <Description>
+            NOT FOR PUBLIC USE:
+            This library is specific to CloudConsult applications and has shared helper classes and interfaces.
+            The author is not responsible for any unexpected behaviour if the package is used anywhere execept CloudConsult applications. 
+        </Description>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MailKit" Version="2.15.0" />
+        <PackageReference Include="MediatR" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+        <PackageReference Include="Isopoh.Cryptography.Argon2" Version="1.1.10" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,48 @@
+﻿@inherits MainLayoutComponent
+<RadzenDialog />
+<RadzenNotification />
+<RadzenContextMenu />
+<RadzenTooltip />
+
+<RadzenHeader>
+    <ChildContent>
+        <div class="row justify-content-start align-items-center">
+            <div class="col-6 d-flex align-items-center">
+                <RadzenSidebarToggle Click="@SidebarToggleClick">
+                </RadzenSidebarToggle>
+                <RadzenLabel Text="Cloud Consult">
+                </RadzenLabel>
+            </div>
+            <div class="col-6 text-right">
+                <RadzenProfileMenu>
+                    <Template>
+                        <RadzenGravatar Email="user@example.com">
+                        </RadzenGravatar>
+                    </Template>
+                    <ChildContent>
+                        <RadzenProfileMenuItem Text="Settings" Path="dialog" Icon="settings"></RadzenProfileMenuItem>
+                        <RadzenProfileMenuItem Text="Logout" Path="notification" Icon="logout"></RadzenProfileMenuItem>
+                    </ChildContent>
+                </RadzenProfileMenu>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenHeader>
+<RadzenBody @ref="body">
+    <ChildContent>
+        <RadzenContentContainer Name="main">
+            @Body
+        </RadzenContentContainer>
+    </ChildContent>
+</RadzenBody>
+<RadzenSidebar @ref="sidebar">
+    <ChildContent>
+        <DoctorNavMenu></DoctorNavMenu>
+    </ChildContent>
+</RadzenSidebar>
+<RadzenFooter>
+    <ChildContent>
+        <RadzenLabel Text="Cloud Consult, Copyright Ⓒ 2021">
+        </RadzenLabel>
+    </ChildContent>
+</RadzenFooter>

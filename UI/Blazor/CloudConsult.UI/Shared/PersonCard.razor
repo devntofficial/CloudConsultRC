@@ -1,0 +1,21 @@
+﻿@using System.Security.Claims
+<AuthorizeView>
+    <Authorized>
+        <MudCard Elevation="0" Square="true" Class="@Class" Style="@Style">
+            <MudCardHeader>
+                <CardHeaderAvatar>
+                    <MudAvatar Image="images/avatar.jpg" />
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.body2">@context.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value</MudText>
+                    <MudText Typo="Typo.caption">Chandigarh, India</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+        </MudCard>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    [Parameter] public string Class { get; set; }
+    [Parameter] public string Style { get; set; }
+}

@@ -1,0 +1,33 @@
+﻿@page "/"
+@page "/login"
+@layout LoginLayout
+@inherits LoginComponent
+
+
+<MudText Typo="Typo.h4" GutterBottom="true">CloudConsult&trade;</MudText>
+
+<MudText>Don't have an account? <MudLink Href="/register">Sign Up</MudLink></MudText>
+
+<MudTextField @bind-Value="@LoginModel.EmailId" Label="E-mail" Variant="Variant.Outlined" Class="my-6"></MudTextField>
+
+<MudTextField @bind-Value="@LoginModel.Password" Label="Password" Variant="Variant.Outlined"
+              InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon"
+              OnAdornmentClick="TogglePasswordVisibility" />
+
+<div Class="d-flex justify-space-between align-center">
+    <MudCheckBox T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
+    <MudLink Href="/forgot-password">Forgot password?</MudLink>
+</div>
+
+
+<MudButton Disabled="@ShowLoadingSpinner" OnClick="LoginButtonClick" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true">
+    @if (ShowLoadingSpinner)
+    {
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        <MudText Class="ms-2">Signing In...</MudText>
+    }
+    else
+    {
+        <MudText>Sign In</MudText>
+    }
+</MudButton>
