@@ -24,13 +24,13 @@ namespace CloudConsult.Identity.Api
         {
             services
                 .ConfigureExtensionsFromAssemblyContaining<ApiExtension>(Configuration)
-                .AddCloudConsultApiVersioning()
-                .AddCloudConsultHashingService()
-                .AddCloudConsultSwaggerDocs(Configuration)
-                .AddCloudConsultJwtAuthentication(Configuration)
-                .AddCloudConsultMediatorConfiguration("CloudConsult.Identity.Domain", "CloudConsult.Identity.Infrastructure")
-                .AddCloudConsultValidationsFrom("CloudConsult.Identity.Domain")
-                .AddCloudConsultKafkaProducer(Configuration);
+                .AddCommonApiVersioning()
+                .AddCommonHashingService()
+                .AddCommonSwaggerDocs(Configuration)
+                .AddCommonJwtAuthentication(Configuration)
+                .AddCommonMediatorConfiguration("CloudConsult.Identity.Domain", "CloudConsult.Identity.Infrastructure")
+                .AddCommonValidationsFrom("CloudConsult.Identity.Domain")
+                .AddCommonKafkaProducer(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

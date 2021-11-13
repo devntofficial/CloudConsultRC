@@ -13,6 +13,13 @@ namespace CloudConsult.Common.DependencyInjection
     
     public static class ApiStartupExtension
     {
+        public static IServiceCollection AddCommonExtensionsFromCurrentAssembly(this IServiceCollection services, IConfiguration configuration)
+        {
+            var assembly = Assembly.GetCallingAssembly();
+            ConfigureExtensionsFromAssemblies(services, configuration, assembly);
+            return services;
+        }
+
         public static IServiceCollection ConfigureExtensionsFromAssemblyContaining<TMarker>(this IServiceCollection services,
             IConfiguration configuration) where TMarker : IApiStartupExtension
         {

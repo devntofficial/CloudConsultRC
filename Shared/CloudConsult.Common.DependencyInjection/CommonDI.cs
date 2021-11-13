@@ -19,7 +19,7 @@ namespace CloudConsult.Common.DependencyInjection
 {
     public static class CommonDI
     {
-        public static IServiceCollection AddCloudConsultApiVersioning(this IServiceCollection services)
+        public static IServiceCollection AddCommonApiVersioning(this IServiceCollection services)
         {
             services.AddApiVersioning(options =>
             {
@@ -36,7 +36,7 @@ namespace CloudConsult.Common.DependencyInjection
             return services;
         }
         
-        public static IServiceCollection AddCloudConsultMediatorConfiguration(this IServiceCollection services, params string[] projectNames)
+        public static IServiceCollection AddCommonMediatorConfiguration(this IServiceCollection services, params string[] projectNames)
         {
             var assemblies = projectNames.Select(Assembly.Load).ToArray();
             services.AddMediatR(assemblies);
@@ -44,7 +44,7 @@ namespace CloudConsult.Common.DependencyInjection
             return services;
         }
         
-        public static IServiceCollection AddCloudConsultKafkaProducer(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCommonKafkaProducer(this IServiceCollection services, IConfiguration configuration)
         {
             var config = new KafkaConfiguration();
             configuration.Bind(nameof(KafkaConfiguration), config);
@@ -65,7 +65,7 @@ namespace CloudConsult.Common.DependencyInjection
             return services;
         }
         
-        public static IServiceCollection AddCloudConsultJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCommonJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtConfiguration = new JwtConfiguration();
             configuration.Bind(nameof(jwtConfiguration), jwtConfiguration);
@@ -92,14 +92,14 @@ namespace CloudConsult.Common.DependencyInjection
             return services;
         }
         
-        public static IServiceCollection AddCloudConsultValidationsFrom(this IServiceCollection services, params string[] projectNames)
+        public static IServiceCollection AddCommonValidationsFrom(this IServiceCollection services, params string[] projectNames)
         {
             var assemblies = projectNames.Select(Assembly.Load).ToArray();
             services.AddValidatorsFromAssemblies(assemblies);
             return services;
         }
 
-        public static void AddCloudConsultEmailService(this IServiceCollection services, IConfiguration configuration)
+        public static void AddCommonEmailService(this IServiceCollection services, IConfiguration configuration)
         {
             var emailServiceConfiguration = new EmailServiceConfiguration();
             configuration.Bind(nameof(emailServiceConfiguration), emailServiceConfiguration);
@@ -108,7 +108,7 @@ namespace CloudConsult.Common.DependencyInjection
             services.AddScoped<IEmailService, EmailService>();
         }
 
-        public static IServiceCollection AddCloudConsultHashingService(this IServiceCollection services)
+        public static IServiceCollection AddCommonHashingService(this IServiceCollection services)
         {
             services.AddScoped<IHashingService, HashingService>();
             return services;

@@ -25,12 +25,12 @@ namespace CloudConsult.Doctor.Api
         {
             services
                 .ConfigureExtensionsFromAssemblyContaining<ApiExtension>(Configuration)
-                .AddCloudConsultSwaggerDocs(Configuration)
-                .AddCloudConsultApiVersioning()
-                .AddCloudConsultJwtAuthentication(Configuration)
-                .AddCloudConsultMediatorConfiguration("CloudConsult.Doctor.Domain", "CloudConsult.Doctor.Infrastructure")
-                .AddCloudConsultValidationsFrom("CloudConsult.Doctor.Domain")
-                .AddCloudConsultKafkaProducer(Configuration);
+                .AddCommonSwaggerDocs(Configuration)
+                .AddCommonApiVersioning()
+                .AddCommonJwtAuthentication(Configuration)
+                .AddCommonMediatorConfiguration("CloudConsult.Doctor.Domain", "CloudConsult.Doctor.Infrastructure")
+                .AddCommonValidationsFrom("CloudConsult.Doctor.Domain")
+                .AddCommonKafkaProducer(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

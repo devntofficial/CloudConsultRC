@@ -15,7 +15,7 @@ namespace CloudConsult.Common.DependencyInjection
 {
     public static class SwaggerDI
     {
-        public static IServiceCollection AddCloudConsultSwaggerDocs(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCommonSwaggerDocs(this IServiceCollection services, IConfiguration configuration)
         {
             var config = new SwaggerConfiguration();
             configuration.Bind(nameof(SwaggerConfiguration), config);
