@@ -13,18 +13,18 @@ using Microsoft.AspNetCore.Http;
 
 namespace CloudConsult.Consultation.Infrastructure.Handlers
 {
-    public class BookConsultationHandler : ICommandHandler<BookConsultationCommand, String>
+    public class BookConsultationHandler : ICommandHandler<BookConsultation, String>
     {
         private readonly IApiResponseBuilder<String> _builder;
         private readonly IConsultationService _consultationService;
         private readonly IMapper _mapper;
-        private readonly IValidator<BookConsultationCommand> _validator;
+        private readonly IValidator<BookConsultation> _validator;
 
         public BookConsultationHandler(
             IApiResponseBuilder<String> builder,
             IConsultationService consultationService,
             IMapper mapper,
-            IValidator<BookConsultationCommand> validator)
+            IValidator<BookConsultation> validator)
         {
             _builder = builder;
             _consultationService = consultationService;
@@ -32,7 +32,7 @@ namespace CloudConsult.Consultation.Infrastructure.Handlers
             _validator = validator;
         }
         
-        public async Task<IApiResponse<String>> Handle(BookConsultationCommand request, CancellationToken cancellationToken)
+        public async Task<IApiResponse<String>> Handle(BookConsultation request, CancellationToken cancellationToken)
         {
             var validation = await _validator.ValidateAsync(request, cancellationToken);
 
@@ -45,7 +45,7 @@ namespace CloudConsult.Consultation.Infrastructure.Handlers
                 });
             }
 
-            var mappedBooking = _mapper.Map<ConsultationBookingEntity>(request);
+            var mappedBooking = _mapper.Map<ConsultationBooking>(request);
 
             var response = await _consultationService.BookConsultation(mappedBooking, cancellationToken);
 

@@ -19,7 +19,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             this._db = db;
         }
         
-        public async Task<string> BookConsultation(ConsultationBookingEntity booking, CancellationToken cancellationToken = default)
+        public async Task<string> BookConsultation(ConsultationBooking booking, CancellationToken cancellationToken = default)
         {
             var timeSlot = await _db.DoctorAvailabilities
                 .Where(x => x.DoctorId == booking.DoctorId &&

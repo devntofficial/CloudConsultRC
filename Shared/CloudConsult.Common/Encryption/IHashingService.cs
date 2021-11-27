@@ -7,5 +7,6 @@
         string GenerateHashWithSalt(string value, string salt);
         bool VerifyHash(string value, string hash);
         bool VerifyHashWithSalt(string value, string hash, string salt);
+        int GenerateRandomOtp(int length);
     }
 }

@@ -12,5 +12,9 @@
   <ItemGroup>
     <ProjectReference Include="..\CloudConsult.Consultation.Domain\CloudConsult.Consultation.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
   
 </Project>

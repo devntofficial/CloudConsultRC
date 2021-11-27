@@ -29,8 +29,8 @@ namespace CloudConsult.Doctor.Api.Extensions
                 });
                 
                 quartz.UseMicrosoftDependencyInjectionJobFactory();
-                quartz.AddJobAndTrigger<DoctorCreatedProducer>(configuration);
-                quartz.AddJobAndTrigger<DoctorUpdatedProducer>(configuration);
+                quartz.AddJobAndTrigger<ProfileCreatedProducer>(configuration);
+                quartz.AddJobAndTrigger<ProfileUpdatedProducer>(configuration);
             });
             
             services.AddQuartzHostedService(options =>

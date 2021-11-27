@@ -8,7 +8,7 @@ namespace CloudConsult.Consultation.Domain.Services
 {
     public interface IConsultationEventService
     {
-        Task<IEnumerable<ConsultationBookingEntity>> GetUnpublishedBookingEvents(CancellationToken cancellationToken = default);
+        Task<IEnumerable<ConsultationBooking>> GetUnpublishedBookingEvents(CancellationToken cancellationToken = default);
         Task UpdateBookingEventPublished(Guid id, CancellationToken cancellationToken = default);
     }
 }

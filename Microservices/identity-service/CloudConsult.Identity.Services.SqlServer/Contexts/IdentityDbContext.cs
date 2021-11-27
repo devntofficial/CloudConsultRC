@@ -9,8 +9,9 @@ namespace CloudConsult.Identity.Services.SqlServer.Contexts
         {
         }
 
-        public DbSet<UserEntity> Users { get; set; }
-        public DbSet<RoleEntity> Roles { get; set; }
-        public DbSet<UserRoleEntity> UserRoles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<UserOtp> UserOtps { get; set; }
     }
 }

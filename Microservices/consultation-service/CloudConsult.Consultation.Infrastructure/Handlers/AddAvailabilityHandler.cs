@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CloudConsult.Consultation.Infrastructure.Handlers
 {
-    public class AddAvailabilityHandler : ICommandHandler<AddAvailabilityCommand, object>
+    public class AddAvailabilityHandler : ICommandHandler<AddAvailability, object>
     {
         private readonly IApiResponseBuilder<object> _builder;
         private readonly IMapper _mapper;
@@ -24,9 +24,9 @@ namespace CloudConsult.Consultation.Infrastructure.Handlers
             _availabilityService = availabilityService;
         }
         
-        public async Task<IApiResponse<object>> Handle(AddAvailabilityCommand request, CancellationToken cancellationToken)
+        public async Task<IApiResponse<object>> Handle(AddAvailability request, CancellationToken cancellationToken)
         {
-            var availabilities = _mapper.Map<List<DoctorAvailabilityEntity>>(request);
+            var availabilities = _mapper.Map<List<DoctorAvailability>>(request);
             await _availabilityService.AddDoctorAvailabilities(availabilities, cancellationToken);
 
             return _builder.CreateSuccessResponse(null, x =>

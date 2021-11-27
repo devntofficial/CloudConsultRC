@@ -86,5 +86,12 @@ namespace CloudConsult.Common.Encryption
                 hashB?.Dispose();
             }
         }
+
+        public int GenerateRandomOtp(int length)
+        {
+            var startValue = 10 ^ length;
+            var endValue = (10 * length) - 1;
+            return RandomNumberGenerator.GetInt32(startValue, endValue);
+        }
     }
 }

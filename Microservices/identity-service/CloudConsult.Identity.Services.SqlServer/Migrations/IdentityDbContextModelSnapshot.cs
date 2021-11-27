@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace CloudConsult.Identity.Services.SqlServer.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
@@ -15,16 +17,18 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.RoleEntity", b =>
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("RoleName")
                         .IsRequired()
@@ -38,7 +42,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserEntity", b =>
+            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,12 +74,38 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserRoleEntity", b =>
+            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserOtp", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("ExpiryTimestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Otp")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserOtp");
+                });
+
+            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -95,15 +125,15 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserRoleEntity", b =>
+            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserRole", b =>
                 {
-                    b.HasOne("CloudConsult.Identity.Domain.Entities.RoleEntity", "Role")
+                    b.HasOne("CloudConsult.Identity.Domain.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CloudConsult.Identity.Domain.Entities.UserEntity", "User")
+                    b.HasOne("CloudConsult.Identity.Domain.Entities.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -114,7 +144,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserEntity", b =>
+            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.User", b =>
                 {
                     b.Navigation("UserRoles");
                 });

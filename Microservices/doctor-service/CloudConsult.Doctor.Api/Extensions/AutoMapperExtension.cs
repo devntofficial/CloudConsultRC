@@ -1,7 +1,5 @@
-﻿using CloudConsult.Doctor.Infrastructure.Mappers;
-using CloudConsult.Common.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using CloudConsult.Common.DependencyInjection;
+using CloudConsult.Doctor.Infrastructure.Mappers;
 
 namespace CloudConsult.Doctor.Api.Extensions
 {
@@ -9,7 +7,7 @@ namespace CloudConsult.Doctor.Api.Extensions
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(x => { x.AddProfile<DoctorMapper>(); });
+            services.AddAutoMapper(x => { x.AddProfile<ProfileMapper>(); });
         }
     }
 }

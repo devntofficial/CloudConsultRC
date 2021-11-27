@@ -18,7 +18,7 @@ namespace CloudConsult.Doctor.Api.Extensions
             
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(mongoDbConfiguration.Database);
-            var doctorCollection = database.GetCollection<DoctorEntity>("Doctors");
+            var doctorCollection = database.GetCollection<DoctorProfile>("DoctorProfiles");
 
             services.AddSingleton(client);
             services.AddScoped(x => doctorCollection);

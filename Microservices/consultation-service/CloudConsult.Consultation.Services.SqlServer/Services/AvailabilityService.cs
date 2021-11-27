@@ -18,7 +18,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             _db = db;
         }
 
-        public async Task AddDoctorAvailabilities(IEnumerable<DoctorAvailabilityEntity> availabilities,
+        public async Task AddDoctorAvailabilities(IEnumerable<DoctorAvailability> availabilities,
             CancellationToken cancellationToken = default)
         {
             var listAvailabilities = availabilities.ToList();
@@ -41,7 +41,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             await _db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<DoctorAvailabilityEntity>> GetDoctorAvailability(string doctorId,
+        public async Task<IEnumerable<DoctorAvailability>> GetDoctorAvailability(string doctorId,
             CancellationToken cancellationToken = default)
         {
             return await _db.DoctorAvailabilities

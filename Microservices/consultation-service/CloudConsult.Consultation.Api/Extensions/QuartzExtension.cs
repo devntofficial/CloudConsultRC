@@ -29,7 +29,7 @@ namespace CloudConsult.Consultation.Api.Extensions
                 });
                 
                 quartz.UseMicrosoftDependencyInjectionJobFactory();
-                quartz.AddJobAndTrigger<ConsultationBookedEventProducer>(configuration);
+                quartz.AddJobAndTrigger<ConsultationBookedProducer>(configuration);
             });
             
             services.AddQuartzHostedService(options =>

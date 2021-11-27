@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace CloudConsult.Consultation.Infrastructure.Processors
 {
-    public class GetConsultationByIdProcessor : IQueryProcessor<GetConsultationByIdQuery, GetConsultationByIdResponse>
+    public class GetConsultationByIdProcessor : IQueryProcessor<GetConsultationById, GetConsultationByIdResponse>
     {
         private readonly IApiResponseBuilder<GetConsultationByIdResponse> _builder;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace CloudConsult.Consultation.Infrastructure.Processors
             _consultationService = consultationService;
         }
         
-        public async Task<IApiResponse<GetConsultationByIdResponse>> Handle(GetConsultationByIdQuery request,
+        public async Task<IApiResponse<GetConsultationByIdResponse>> Handle(GetConsultationById request,
             CancellationToken cancellationToken)
         {
             var output = await _consultationService.GetById(request.ConsultationId, cancellationToken);

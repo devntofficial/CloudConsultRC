@@ -7,10 +7,10 @@ namespace CloudConsult.Consultation.Domain.Services
 {
     public interface IAvailabilityService
     {
-        Task AddDoctorAvailabilities(IEnumerable<DoctorAvailabilityEntity> availabilities,
+        Task AddDoctorAvailabilities(IEnumerable<DoctorAvailability> availabilities,
             CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<DoctorAvailabilityEntity>> GetDoctorAvailability(string doctorId,
+        Task<IEnumerable<DoctorAvailability>> GetDoctorAvailability(string doctorId,
             CancellationToken cancellationToken = default);
     }
 }
