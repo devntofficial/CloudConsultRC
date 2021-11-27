@@ -13,18 +13,18 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
     {
         public AvailabilityMapper()
         {
-            CreateMap<AddAvailabilityCommand, List<DoctorAvailabilityEntity>>()
+            CreateMap<AddAvailability, List<DoctorAvailability>>()
                 .ConvertUsing(new AvailabilityMapConverter());
             
-            CreateMap<IEnumerable<DoctorAvailabilityEntity>, DoctorAvailabilityResponse>()
+            CreateMap<IEnumerable<DoctorAvailability>, DoctorAvailabilityResponse>()
                 .ConvertUsing(new AvailabilityReverseMapConverter());
         }
     }
 
     public class
-        AvailabilityReverseMapConverter : ITypeConverter<IEnumerable<DoctorAvailabilityEntity>, DoctorAvailabilityResponse>
+        AvailabilityReverseMapConverter : ITypeConverter<IEnumerable<DoctorAvailability>, DoctorAvailabilityResponse>
     {
-        public DoctorAvailabilityResponse Convert(IEnumerable<DoctorAvailabilityEntity> source,
+        public DoctorAvailabilityResponse Convert(IEnumerable<DoctorAvailability> source,
             DoctorAvailabilityResponse destination,
             ResolutionContext context)
         {
@@ -38,16 +38,16 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
         }
     }
 
-    public class AvailabilityMapConverter : ITypeConverter<AddAvailabilityCommand, List<DoctorAvailabilityEntity>>
+    public class AvailabilityMapConverter : ITypeConverter<AddAvailability, List<DoctorAvailability>>
     {
-        public List<DoctorAvailabilityEntity> Convert(AddAvailabilityCommand source, List<DoctorAvailabilityEntity> destination,
+        public List<DoctorAvailability> Convert(AddAvailability source, List<DoctorAvailability> destination,
             ResolutionContext context)
         {
-            destination ??= new List<DoctorAvailabilityEntity>();
+            destination ??= new List<DoctorAvailability>();
 
             foreach (var map in source.AvailabilityMap)
             {
-                destination.AddRange(map.Value.Select(x => new DoctorAvailabilityEntity
+                destination.AddRange(map.Value.Select(x => new DoctorAvailability
                 {
                     DoctorId = source.DoctorId,
                     Date = map.Key,

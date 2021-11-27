@@ -19,7 +19,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             _db = db;
         }
         
-        public async Task<IEnumerable<ConsultationBookingEntity>> GetUnpublishedBookingEvents(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ConsultationBooking>> GetUnpublishedBookingEvents(CancellationToken cancellationToken = default)
         {
             return await _db.ConsultationBookings.Where(x => !x.IsBookingEventPublished).ToListAsync(cancellationToken);
         }

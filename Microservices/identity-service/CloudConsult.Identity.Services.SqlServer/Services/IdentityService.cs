@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CloudConsult.Common.Encryption;
+﻿using CloudConsult.Common.Encryption;
 using CloudConsult.Identity.Domain.Commands;
 using CloudConsult.Identity.Domain.Entities;
 using CloudConsult.Identity.Domain.Queries;
@@ -26,8 +22,8 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
             _hashingService = hashingService;
             _logger = logger;
         }
-        
-        public async Task<UserEntity> AuthenticateUser(GetTokenQuery query, CancellationToken cancellationToken)
+
+        public async Task<User> Authenticate(GetToken query, CancellationToken cancellationToken)
         {
             var user = await _db.Users.AsNoTracking()
                 .Where(x => x.EmailId == query.EmailId)
@@ -44,12 +40,12 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
             return hashedPassword == user.PasswordHash ? user : null;
         }
 
-        public async Task<UserEntity> CreateUser(CreateUserCommand command, CancellationToken cancellationToken)
+        public async Task<User> Create(CreateUser command, CancellationToken cancellationToken)
         {
             await using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
             try
             {
-                var user = new UserEntity
+                var user = new User
                 {
                     FullName = command.FullName,
                     EmailId = command.EmailId,
@@ -60,7 +56,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
 
                 await _db.Users.AddAsync(user, cancellationToken);
 
-                var userRole = new UserRoleEntity
+                var userRole = new UserRole
                 {
                     UserId = user.Id,
                     RoleId = command.RoleId,

@@ -9,7 +9,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Contexts
         {
         }
         
-        public DbSet<DoctorAvailabilityEntity> DoctorAvailabilities { get; set; }
-        public DbSet<ConsultationBookingEntity> ConsultationBookings { get; set; }
+        public DbSet<DoctorAvailability> DoctorAvailabilities { get; set; }
+        public DbSet<ConsultationBooking> ConsultationBookings { get; set; }
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 {
     [DbContext(typeof(ConsultationDbContext))]
@@ -15,9 +17,10 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.ConsultationBookingEntity", b =>
                 {
@@ -38,6 +41,12 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAcceptedByDoctor")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBookingEventPublished")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsConsultationComplete")
                         .HasColumnType("bit");
 
@@ -56,7 +65,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConsultationBookings");
+                    b.ToTable("ConsultationBookings", (string)null);
                 });
 
             modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.DoctorAvailabilityEntity", b =>
@@ -90,7 +99,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DoctorAvailabilities");
+                    b.ToTable("DoctorAvailabilities", (string)null);
                 });
 #pragma warning restore 612, 618
         }

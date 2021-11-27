@@ -7,20 +7,30 @@ using CloudConsult.Common.Configurations;
 using CloudConsult.Identity.Domain.Entities;
 using CloudConsult.Identity.Domain.Responses;
 using CloudConsult.Identity.Domain.Services;
+using CloudConsult.Identity.Services.SqlServer.Contexts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CloudConsult.Identity.Services.SqlServer.Services
 {
     public class TokenService : ITokenService
     {
+        private readonly IdentityDbContext _db;
         private readonly JwtConfiguration _jwtConfiguration;
         
-        public TokenService(JwtConfiguration jwtConfiguration)
+        public TokenService(IdentityDbContext db, JwtConfiguration jwtConfiguration)
         {
-            this._jwtConfiguration = jwtConfiguration;
+            _db = db;
+            _jwtConfiguration = jwtConfiguration;
         }
-        
-        public GetTokenResponse GenerateJwtTokenFor(UserEntity user)
+
+        public bool GenerateEmailOtpFor(User user)
+        {
+            //generate otp and send email to user from here
+            return true;
+        }
+
+        public GetTokenResponse GenerateJwtTokenFor(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var secret = Encoding.ASCII.GetBytes(_jwtConfiguration.SecretKey);
@@ -44,6 +54,14 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                 AccessToken = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor)),
                 ExpiryTimestamp = tokenDescriptor.Expires.Value
             };
+        }
+
+        public async Task<bool> ValidateEmailOtp(UserOtp userOtp)
+        {
+            var storedOtp = await _db.UserOtps
+                .FirstOrDefaultAsync(x => x.UserId == userOtp.UserId && x.IsActive && x.ExpiryTimestamp > DateTime.UtcNow);
+
+            return storedOtp.Otp == userOtp.Otp;
         }
     }
 }

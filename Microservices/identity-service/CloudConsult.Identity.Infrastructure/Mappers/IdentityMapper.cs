@@ -9,7 +9,7 @@ namespace CloudConsult.Identity.Infrastructure.Mappers
     {
         public IdentityMapper()
         {
-            CreateMap<UserEntity, CreateUserResponse>()
+            CreateMap<User, CreateUserResponse>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id.ToString()))
                 .ForMember(x => x.Roles,
                     y => y.MapFrom(z => string.Join(',', z.UserRoles.Select(r => r.Role.RoleName))));

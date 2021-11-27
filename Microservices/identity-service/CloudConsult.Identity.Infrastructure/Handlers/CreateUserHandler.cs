@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CloudConsult.Common.Builders;
 using CloudConsult.Common.CQRS;
 using CloudConsult.Identity.Domain.Commands;
@@ -12,15 +9,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace CloudConsult.Identity.Infrastructure.Handlers
 {
-    public class CreateUserHandler : ICommandHandler<CreateUserCommand, CreateUserResponse>
+    public class CreateUserHandler : ICommandHandler<CreateUser, CreateUserResponse>
     {
         private readonly IApiResponseBuilder<CreateUserResponse> _builder;
-        private readonly IValidator<CreateUserCommand> _validator;
+        private readonly IValidator<CreateUser> _validator;
         private readonly IMapper _mapper;
         private readonly IIdentityService _identityService;
 
         public CreateUserHandler(IApiResponseBuilder<CreateUserResponse> builder,
-            IValidator<CreateUserCommand> validator, IMapper mapper,
+            IValidator<CreateUser> validator, IMapper mapper,
             IIdentityService identityService)
         {
             _builder = builder;
@@ -28,7 +25,7 @@ namespace CloudConsult.Identity.Infrastructure.Handlers
             _mapper = mapper;
             _identityService = identityService;
         }
-        public async Task<IApiResponse<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<IApiResponse<CreateUserResponse>> Handle(CreateUser request, CancellationToken cancellationToken)
         {
             var validation = await _validator.ValidateAsync(request, cancellationToken);
             if (validation.Errors.Any())
@@ -40,7 +37,7 @@ namespace CloudConsult.Identity.Infrastructure.Handlers
                 });
             }
 
-            var createdUser = await _identityService.CreateUser(request, cancellationToken);
+            var createdUser = await _identityService.Create(request, cancellationToken);
             if (createdUser == null)
             {
                 return _builder.CreateErrorResponse(null, x =>

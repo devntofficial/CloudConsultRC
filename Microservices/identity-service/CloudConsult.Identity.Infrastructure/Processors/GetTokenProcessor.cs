@@ -12,15 +12,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace CloudConsult.Identity.Infrastructure.Processors
 {
-    public class GetTokenProcessor : IQueryProcessor<GetTokenQuery, GetTokenResponse>
+    public class GetTokenProcessor : IQueryProcessor<GetToken, GetTokenResponse>
     {
         private readonly IApiResponseBuilder<GetTokenResponse> _builder;
-        private readonly IValidator<GetTokenQuery> _validator;
+        private readonly IValidator<GetToken> _validator;
         private readonly IIdentityService _identityService;
         private readonly ITokenService _tokenService;
 
         public GetTokenProcessor(IApiResponseBuilder<GetTokenResponse> builder,
-            IValidator<GetTokenQuery> validator, IIdentityService identityService,
+            IValidator<GetToken> validator, IIdentityService identityService,
             ITokenService tokenService)
         {
             _builder = builder;
@@ -29,7 +29,7 @@ namespace CloudConsult.Identity.Infrastructure.Processors
             _tokenService = tokenService;
         }
         
-        public async Task<IApiResponse<GetTokenResponse>> Handle(GetTokenQuery request, CancellationToken cancellationToken)
+        public async Task<IApiResponse<GetTokenResponse>> Handle(GetToken request, CancellationToken cancellationToken)
         {
             var validation = await _validator.ValidateAsync(request, cancellationToken);
             if (validation.Errors.Any())
@@ -41,7 +41,7 @@ namespace CloudConsult.Identity.Infrastructure.Processors
                 });
             }
 
-            var authenticatedUser = await _identityService.AuthenticateUser(request, cancellationToken);
+            var authenticatedUser = await _identityService.Authenticate(request, cancellationToken);
             if (authenticatedUser == null)
             {
                 return _builder.CreateErrorResponse(null, x =>

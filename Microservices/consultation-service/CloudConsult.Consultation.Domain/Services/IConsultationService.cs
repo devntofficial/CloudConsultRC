@@ -8,7 +8,7 @@ namespace CloudConsult.Consultation.Domain.Services
 {
     public interface IConsultationService
     {
-        Task<String> BookConsultation(ConsultationBookingEntity booking, CancellationToken cancellationToken = default);
+        Task<String> BookConsultation(ConsultationBooking booking, CancellationToken cancellationToken = default);
         Task<GetConsultationByIdResponse> GetById(string id, CancellationToken cancellationToken = default);
     }
 }

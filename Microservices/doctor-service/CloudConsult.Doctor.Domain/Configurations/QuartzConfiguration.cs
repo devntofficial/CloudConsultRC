@@ -12,8 +12,8 @@
 
     public class QuartzJobs
     {
-        public QuartzJobConfiguration DoctorCreatedProducer { get; set; }
-        public QuartzJobConfiguration DoctorUpdatedProducer { get; set; }
+        public QuartzJobConfiguration ProfileCreatedProducer { get; set; }
+        public QuartzJobConfiguration ProfileUpdatedProducer { get; set; }
     }
 
     public class QuartzJobConfiguration

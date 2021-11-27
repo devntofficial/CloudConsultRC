@@ -1,10 +1,8 @@
-﻿using System.Text;
-using CloudConsult.Common.DependencyInjection;
+﻿using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Consultation.Domain.Configurations;
 using CloudConsult.Consultation.Services.SqlServer.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 
 namespace CloudConsult.Consultation.Api.Extensions
 {

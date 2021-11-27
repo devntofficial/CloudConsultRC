@@ -12,7 +12,7 @@ namespace CloudConsult.Consultation.Api.Controllers
     public class ConsultationController : JsonController<ConsultationController>
     {
         [HttpPost(Routes.Consultation.BookConsultation)]
-        public async Task<IActionResult> BookConsultation(BookConsultationCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> BookConsultation(BookConsultation command, CancellationToken cancellationToken)
         {
             var response = await Mediator.Send(command, cancellationToken);
             return response.IsSuccess ? 
@@ -21,7 +21,7 @@ namespace CloudConsult.Consultation.Api.Controllers
         }
         
         [HttpPost(Routes.Consultation.GetConsultationById)]
-        public async Task<IActionResult> GetConsultationById([FromRoute]GetConsultationByIdQuery query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetConsultationById([FromRoute]GetConsultationById query, CancellationToken cancellationToken)
         {
             var response = await Mediator.Send(query, cancellationToken);
             return JsonResponse(response);
