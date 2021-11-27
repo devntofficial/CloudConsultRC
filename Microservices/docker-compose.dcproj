@@ -3,11 +3,8 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>95df96f9-e74b-4ce3-a18f-43afd94c65b8</ProjectGuid>
+    <ProjectGuid>598247e6-5552-429f-9b63-94481b118676</ProjectGuid>
     <DockerComposeProjectName>CloudConsult-Microservices</DockerComposeProjectName>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api-docs</DockerServiceUrl>
-    <DockerServiceName>cloudconsult.member.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

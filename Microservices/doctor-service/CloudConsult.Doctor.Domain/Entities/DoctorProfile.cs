@@ -13,6 +13,10 @@ namespace CloudConsult.Doctor.Domain.Entities
         public string Address { get; set; }
         public string AadhaarNo { get; set; }
         public bool IsActive { get; set; }
+        public string ApprovalIdentityId { get; set; }
+        public string ApprovalComments { get; set; }
+        public string RejectionIdentityId { get; set; }
+        public string RejectionComments { get; set; }
         public bool ProfileCreatedEventPublished { get; set; }
         public bool ProfileUpdatedEventPublished { get; set; }
 

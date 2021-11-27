@@ -40,7 +40,8 @@ namespace CloudConsult.Common.DependencyInjection
         {
             var assemblies = projectNames.Select(Assembly.Load).ToArray();
             services.AddMediatR(assemblies);
-            services.AddScoped(typeof(IApiResponseBuilder<>), typeof(ApiResponseBuilder<>));
+            services.AddTransient(typeof(IApiResponseBuilder<>), typeof(ApiResponseBuilder<>));
+            services.AddTransient<IApiResponseBuilder, ApiResponseBuilder>();
             return services;
         }
         

@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "cloudconsult.consultation.api": "StartDebugging",
+        "cloudconsult.doctor.api": "StartDebugging",
+        "cloudconsult.identity.api": "StartDebugging",
+        "cloudconsult.member.api": "StartDebugging"
+      }
+    }
+  }
+}

@@ -1,24 +1,24 @@
 version: '3.4'
 
 services:
+  cloudconsult.consultation.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultconsultationapi
+    build:
+      context: .
+      dockerfile: consultation-service/CloudConsult.Consultation.Api/Dockerfile
+
   cloudconsult.doctor.api:
     image: ${DOCKER_REGISTRY-}cloudconsultdoctorapi
     build:
       context: .
       dockerfile: doctor-service/CloudConsult.Doctor.Api/Dockerfile
 
+
   cloudconsult.identity.api:
     image: ${DOCKER_REGISTRY-}cloudconsultidentityapi
     build:
       context: .
       dockerfile: identity-service/CloudConsult.Identity.Api/Dockerfile
-
-
-  cloudconsult.consultation.api:
-    image: ${DOCKER_REGISTRY-}cloudconsultconsultationapi
-    build:
-      context: .
-      dockerfile: consultation-service/CloudConsult.Consultation.Api/Dockerfile
 
 
   cloudconsult.member.api:
