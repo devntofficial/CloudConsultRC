@@ -19,16 +19,16 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
             output.WithErrorCode(StatusCodes.Status500InternalServerError);
             output.WithErrors(ex.Message);
 
-            var response = context.Response;
-            response.StatusCode = StatusCodes.Status500InternalServerError;
-
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.ContentType = "application/json";
             var json = JsonSerializer.Serialize(output, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = null,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             });
 
-            await response.WriteAsync(json);
+
+            await context.Response.WriteAsync(json);
         }
     }
 }

@@ -27,3 +27,10 @@ services:
       context: .
       dockerfile: member-service/CloudConsult.Member.Api/Dockerfile
 
+
+  cloudconsult.diagnosis.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultdiagnosisapi
+    build:
+      context: .
+      dockerfile: diagnosis-service/CloudConsult.Diagnosis.Api/Dockerfile
+

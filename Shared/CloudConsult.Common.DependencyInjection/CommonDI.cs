@@ -2,6 +2,7 @@ using CloudConsult.Common.Builders;
 using CloudConsult.Common.Configurations;
 using CloudConsult.Common.Email;
 using CloudConsult.Common.Encryption;
+using CloudConsult.Common.Middlewares;
 using Confluent.Kafka;
 using FluentValidation;
 using MediatR;
@@ -110,6 +111,12 @@ public static class CommonDI
     public static IServiceCollection AddCommonHashingService(this IServiceCollection services)
     {
         services.AddScoped<IHashingService, HashingService>();
+        return services;
+    }
+
+    public static IServiceCollection AddCommonMiddlewares(this IServiceCollection services)
+    {
+        services.AddTransient<GlobalExceptionHandlingMiddleware>();
         return services;
     }
 }

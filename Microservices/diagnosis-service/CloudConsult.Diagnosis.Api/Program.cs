@@ -13,7 +13,9 @@ try
     var builder = WebApplication.CreateBuilder(args);
     var config = builder.Configuration as IConfiguration;
 
-    builder.Host.UseSerilog((context, services, configuration) => configuration
+    // Serilog setup
+    builder.Host
+        .UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
@@ -24,8 +26,8 @@ try
     builder.Services.AddCommonSwaggerDocs(config);
     builder.Services.AddCommonApiVersioning();
     builder.Services.AddCommonJwtAuthentication(config);
-    builder.Services.AddCommonMediatorConfiguration("CloudConsult.Member.Domain", "CloudConsult.Member.Infrastructure");
-    builder.Services.AddCommonValidationsFrom("CloudConsult.Member.Domain");
+    builder.Services.AddCommonMediatorConfiguration("CloudConsult.Diagnosis.Domain", "CloudConsult.Diagnosis.Infrastructure");
+    builder.Services.AddCommonValidationsFrom("CloudConsult.Diagnosis.Domain");
     builder.Services.AddCommonKafkaProducer(config);
     builder.Services.AddCommonMiddlewares();
 
@@ -41,14 +43,14 @@ try
             options.RoutePrefix = "api-docs";
             foreach (var description in versionProvider.ApiVersionDescriptions)
                 options.SwaggerEndpoint($"/api-docs/{description.GroupName}/docs.json",
-                    $"Cloud Consult - Member API Reference {description.GroupName}");
+                    $"Cloud Consult - Diagnosis API Reference {description.GroupName}");
         });
     }
 
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
     app.UseRouting();
-    app.UseCors("MemberServicePolicy");
+    app.UseCors("DiagnosisServicePolicy");
     app.UseAuthentication();
     app.UseAuthorization();
 
@@ -63,6 +65,6 @@ catch (Exception ex)
 }
 finally
 {
-    Log.Information("Member Service - Shut down complete");
+    Log.Information("Diagnosis Service - Shut down complete");
     Log.CloseAndFlush();
 }
