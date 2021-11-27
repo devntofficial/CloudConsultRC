@@ -1,4 +1,5 @@
 ﻿using CloudConsult.Common.CQRS;
+using CloudConsult.Common.Validators;
 using CloudConsult.Doctor.Domain.Responses;
 using FluentValidation;
 
@@ -14,7 +15,7 @@ public record CreateProfile : ICommand<ProfileResponse>
     public string AadhaarNo { get; set; }
 }
 
-public class CreateProfileValidator : AbstractValidator<CreateProfile>
+public class CreateProfileValidator : ApiValidator<CreateProfile>
 {
     public CreateProfileValidator()
     {

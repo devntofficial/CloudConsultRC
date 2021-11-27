@@ -1,4 +1,5 @@
 ﻿namespace CloudConsult.Common.Builders;
+
 public class ApiResponseBuilder : IApiResponseBuilder, IApiResponse, IApiSuccessResponse, IApiErrorResponse
 {
     public bool IsSuccess { get; set; }
@@ -15,7 +16,7 @@ public class ApiResponseBuilder : IApiResponseBuilder, IApiResponse, IApiSuccess
 
     public IApiResponse CreateSuccessResponse(Action<IApiSuccessResponse> action)
     {
-        IsSuccess = false;
+        IsSuccess = true;
         action.Invoke(this);
         return this;
     }

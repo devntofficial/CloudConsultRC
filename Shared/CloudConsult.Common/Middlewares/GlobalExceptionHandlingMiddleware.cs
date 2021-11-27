@@ -3,33 +3,32 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace CloudConsult.Common.Middlewares
+namespace CloudConsult.Common.Middlewares;
+
+public class GlobalExceptionHandlingMiddleware : IMiddleware
 {
-    public class GlobalExceptionHandlingMiddleware : IMiddleware
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        try
         {
-            try
+            await next(context);
+        }
+        catch (Exception ex)
+        {
+            var output = new ApiResponseBuilder<object>();
+            output.WithErrorCode(StatusCodes.Status500InternalServerError);
+            output.WithErrors(ex.Message);
+
+            var response = context.Response;
+            response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            var json = JsonSerializer.Serialize(output, new JsonSerializerOptions
             {
-                await next(context);
-            }
-            catch (Exception ex)
-            {
-                var output = new ApiResponseBuilder<object>();
-                output.WithErrorCode(StatusCodes.Status500InternalServerError);
-                output.WithErrors(ex.Message);
+                PropertyNamingPolicy = null,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
 
-                var response = context.Response;
-                response.StatusCode = StatusCodes.Status500InternalServerError;
-
-                var json = JsonSerializer.Serialize(output, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = null,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                });
-
-                await response.WriteAsync(json);
-            }
+            await response.WriteAsync(json);
         }
     }
 }

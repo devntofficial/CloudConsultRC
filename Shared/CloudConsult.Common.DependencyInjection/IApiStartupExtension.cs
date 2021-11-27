@@ -1,53 +1,49 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+namespace CloudConsult.Common.DependencyInjection;
 
-namespace CloudConsult.Common.DependencyInjection
+public interface IApiStartupExtension
 {
-    public interface IApiStartupExtension
+    void ConfigureServices(IServiceCollection services, IConfiguration configuration);
+}
+
+public static class ApiStartupExtension
+{
+    public static IServiceCollection AddCommonExtensionsFromCurrentAssembly(this IServiceCollection services, IConfiguration configuration)
     {
-        void ConfigureServices(IServiceCollection services, IConfiguration configuration);
+        var assembly = Assembly.GetCallingAssembly();
+        ConfigureExtensionsFromAssemblies(services, configuration, assembly);
+        return services;
     }
-    
-    public static class ApiStartupExtension
+
+    public static IServiceCollection ConfigureExtensionsFromAssemblyContaining<TMarker>(this IServiceCollection services,
+        IConfiguration configuration) where TMarker : IApiStartupExtension
     {
-        public static IServiceCollection AddCommonExtensionsFromCurrentAssembly(this IServiceCollection services, IConfiguration configuration)
-        {
-            var assembly = Assembly.GetCallingAssembly();
-            ConfigureExtensionsFromAssemblies(services, configuration, assembly);
-            return services;
-        }
+        ConfigureExtensionsFromAssembliesContaining(services, configuration, typeof(TMarker));
+        return services;
+    }
 
-        public static IServiceCollection ConfigureExtensionsFromAssemblyContaining<TMarker>(this IServiceCollection services,
-            IConfiguration configuration) where TMarker : IApiStartupExtension
-        {
-            ConfigureExtensionsFromAssembliesContaining(services, configuration, typeof(TMarker));
-            return services;
-        }
+    public static void ConfigureExtensionsFromAssembliesContaining(this IServiceCollection services,
+        IConfiguration configuration, params Type[] assemblyMarkers)
+    {
+        var assemblies = assemblyMarkers.Select(x => x.Assembly).ToArray();
+        ConfigureExtensionsFromAssemblies(services, configuration, assemblies);
+    }
 
-        public static void ConfigureExtensionsFromAssembliesContaining(this IServiceCollection services,
-            IConfiguration configuration, params Type[] assemblyMarkers)
+    private static void ConfigureExtensionsFromAssemblies(this IServiceCollection services,
+        IConfiguration configuration, params Assembly[] assemblies)
+    {
+        foreach (var assembly in assemblies)
         {
-            var assemblies = assemblyMarkers.Select(x => x.Assembly).ToArray();
-            ConfigureExtensionsFromAssemblies(services, configuration, assemblies);
-        }
+            var installerTypes = assembly.DefinedTypes
+                .Where(x => typeof(IApiStartupExtension).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract);
 
-        private static void ConfigureExtensionsFromAssemblies(this IServiceCollection services,
-            IConfiguration configuration, params Assembly[] assemblies)
-        {
-            foreach (var assembly in assemblies)
+            var installers = installerTypes.Select(Activator.CreateInstance).Cast<IApiStartupExtension>();
+
+            foreach (var apiInstaller in installers)
             {
-                var installerTypes = assembly.DefinedTypes
-                    .Where(x => typeof(IApiStartupExtension).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract);
-
-                var installers = installerTypes.Select(Activator.CreateInstance).Cast<IApiStartupExtension>();
-
-                foreach (var apiInstaller in installers)
-                {
-                    apiInstaller.ConfigureServices(services, configuration);
-                }
+                apiInstaller.ConfigureServices(services, configuration);
             }
         }
     }

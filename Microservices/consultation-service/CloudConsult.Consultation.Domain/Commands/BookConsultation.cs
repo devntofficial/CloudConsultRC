@@ -1,7 +1,7 @@
-using System;
-using System.Globalization;
 using CloudConsult.Common.CQRS;
+using CloudConsult.Common.Validators;
 using FluentValidation;
+using System.Globalization;
 
 namespace CloudConsult.Consultation.Domain.Commands
 {
@@ -12,29 +12,25 @@ namespace CloudConsult.Consultation.Domain.Commands
         public string BookingDate { get; set; }
         public string BookingTimeSlot { get; set; }
     }
-    
-    public class BookConsultationCommandValidator : AbstractValidator<BookConsultation>
+
+    public class BookConsultationCommandValidator : ApiValidator<BookConsultation>
     {
         public BookConsultationCommandValidator()
         {
             RuleFor(x => x.DoctorId).NotEmpty();
-            
+
             RuleFor(x => x.PatentId).NotEmpty();
-            
-            RuleFor(x => x.BookingDate).NotEmpty()
-                .Must(HaveValidDateFormat)
-                .WithMessage("Invalid BookingDate entered");
-            
-            RuleFor(x => x.BookingTimeSlot).NotEmpty()
-                .Must(HaveValidTimeslotFormat)
-                .WithMessage("Invalid BookingTimeSlot format");
+
+            RuleFor(x => x.BookingDate).NotEmpty();
+
+            RuleFor(x => x.BookingDate).Must(HaveValidDateFormat).WithMessage("Invalid BookingDate entered");
+
+            RuleFor(x => x.BookingTimeSlot).NotEmpty();
+
+            RuleFor(x => x.BookingTimeSlot).Must(HaveValidTimeslotFormat).WithMessage("Invalid BookingTimeSlot format");
         }
 
-        private bool HaveValidDateFormat(string date)
-        {
-            return DateTime.TryParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture,
-                DateTimeStyles.None, out var outDate);
-        }
+
 
         private bool HaveValidTimeslotFormat(BookConsultation parent, string timeSlot)
         {
@@ -43,13 +39,13 @@ namespace CloudConsult.Consultation.Domain.Commands
             {
                 return false;
             }
-            
+
             if (!DateTime.TryParseExact($"{parent.BookingDate} {slot[0]}", "dd-MM-yyyy HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var startTime))
             {
                 return false;
             }
-            
+
             return DateTime.TryParseExact($"{parent.BookingDate} {slot[1]}", "dd-MM-yyyy HH:mm",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var endTime);
         }

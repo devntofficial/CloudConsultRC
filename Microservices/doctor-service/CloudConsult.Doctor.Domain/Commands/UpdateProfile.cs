@@ -1,6 +1,6 @@
 ﻿using CloudConsult.Common.CQRS;
+using CloudConsult.Common.Validators;
 using CloudConsult.Doctor.Domain.Responses;
-using FluentValidation;
 using System.Text.Json.Serialization;
 
 namespace CloudConsult.Doctor.Domain.Commands
@@ -17,7 +17,7 @@ namespace CloudConsult.Doctor.Domain.Commands
         public string AadhaarNo { get; set; }
     }
 
-    public class UpdateProfileValidator : AbstractValidator<UpdateProfile>
+    public class UpdateProfileValidator : ApiValidator<UpdateProfile>
     {
         public UpdateProfileValidator()
         {

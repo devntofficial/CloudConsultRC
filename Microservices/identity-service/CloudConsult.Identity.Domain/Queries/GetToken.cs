@@ -1,4 +1,5 @@
 ﻿using CloudConsult.Common.CQRS;
+using CloudConsult.Common.Validators;
 using CloudConsult.Identity.Domain.Responses;
 using FluentValidation;
 
@@ -10,7 +11,7 @@ namespace CloudConsult.Identity.Domain.Queries
         public string Password { get; set; } = Password;
     }
 
-    public class GetTokenQueryValidator : AbstractValidator<GetToken>
+    public class GetTokenQueryValidator : ApiValidator<GetToken>
     {
         public GetTokenQueryValidator()
         {
