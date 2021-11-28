@@ -1,5 +1,6 @@
 ﻿using CloudConsult.Common.Controllers;
 using CloudConsult.Diagnosis.Domain.Commands;
+using CloudConsult.Diagnosis.Domain.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudConsult.Diagnosis.Api.Controllers
@@ -23,6 +24,22 @@ namespace CloudConsult.Diagnosis.Api.Controllers
                 return JsonResponse(response, resourceUrl);
             }
 
+            return JsonResponse(response);
+        }
+
+        [HttpGet(Routes.Report.GetById)]
+        public async Task<IActionResult> GetById([FromRoute] string ReportId, CancellationToken cancellationToken = default)
+        {
+            var query = new GetReportById(ReportId);
+            var response = await Mediator.Send(query, cancellationToken);
+            return JsonResponse(response);
+        }
+
+        [HttpGet(Routes.Report.GetByConsultationId)]
+        public async Task<IActionResult> GetByConsultationId([FromRoute] string ConsultationId, CancellationToken cancellationToken = default)
+        {
+            var query = new GetReportByConsultationId(ConsultationId);
+            var response = await Mediator.Send(query, cancellationToken);
             return JsonResponse(response);
         }
     }

@@ -12,7 +12,7 @@ namespace CloudConsult.Diagnosis.Api.Extensions
             var mongoDbConfiguration = new MongoDbConfiguration();
             configuration.Bind(nameof(mongoDbConfiguration), mongoDbConfiguration);
 
-            var connectionString = $"mongodb://{mongoDbConfiguration.HostName}:{mongoDbConfiguration.Port}";
+            var connectionString = $"mongodb://{mongoDbConfiguration.Username}:{mongoDbConfiguration.Password}@{mongoDbConfiguration.HostName}:{mongoDbConfiguration.Port}/admin";
 
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(mongoDbConfiguration.Database);

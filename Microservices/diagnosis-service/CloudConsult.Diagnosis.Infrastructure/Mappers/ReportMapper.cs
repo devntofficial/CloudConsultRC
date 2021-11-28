@@ -12,6 +12,8 @@ namespace CloudConsult.Diagnosis.Infrastructure.Mappers
             CreateMap<UploadReport, DiagnosisReport>();
             CreateMap<DiagnosisReport, UploadReportResponse>()
                 .ForMember(x => x.ReportId, y => y.MapFrom(z => z.Id.ToString()));
+            CreateMap<DiagnosisReport, ReportResponse>()
+                .ForMember(x => x.ReportId, y => y.MapFrom(z => z.Id.ToString()));
         }
     }
 }

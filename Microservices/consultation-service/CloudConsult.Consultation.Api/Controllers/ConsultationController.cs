@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CloudConsult.Consultation.Api.Controllers
 {
     [ApiVersion("1.0")]
+    [ApiController]
     public class ConsultationController : JsonController<ConsultationController>
     {
         [HttpPost(Routes.Consultation.BookConsultation)]

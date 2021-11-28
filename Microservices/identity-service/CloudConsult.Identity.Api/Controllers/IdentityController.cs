@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CloudConsult.Identity.Api.Controllers
 {
     [ApiVersion("1.0")]
+    [ApiController]
     public class IdentityController : JsonController<IdentityController>
     {
         [HttpGet(Routes.Identity.GetToken)]
