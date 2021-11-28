@@ -1,6 +1,8 @@
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
+using CloudConsult.Consultation.Services.SqlServer.Contexts;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
@@ -32,6 +34,14 @@ try
     builder.Services.AddCommonMiddlewares();
 
     var app = builder.Build();
+
+    //migrate database
+    using (var scope = app.Services.CreateScope())
+    {
+        var dataContext = scope.ServiceProvider.GetRequiredService<ConsultationDbContext>();
+        dataContext.Database.Migrate();
+    }
+
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
     // Configure the HTTP request pipeline.

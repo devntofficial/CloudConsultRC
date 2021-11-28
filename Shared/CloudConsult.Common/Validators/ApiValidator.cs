@@ -35,5 +35,15 @@ namespace CloudConsult.Common.Validators
         {
             return value.All(x => char.IsLetter(x));
         }
+
+        public bool BeNumericOnly(string value)
+        {
+            return value.All(x => char.IsDigit(x));
+        }
+
+        public bool BeAlphabetsOrWhitespaceOnly(string value)
+        {
+            return value.All(x => char.IsLetter(x) || char.IsWhiteSpace(x));
+        }
     }
 }

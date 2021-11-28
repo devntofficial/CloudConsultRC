@@ -18,7 +18,7 @@ namespace CloudConsult.Identity.Domain.Commands
         public CreateUserValidator()
         {
             RuleFor(x => x.FullName).NotEmpty();
-            RuleFor(x => x.FullName).Must(BeAlphabetsOnly).WithMessage("FullName cannot have numbers or symbols");
+            RuleFor(x => x.FullName).Must(BeAlphabetsOrWhitespaceOnly).WithMessage("FullName cannot have numbers or symbols");
             RuleFor(x => x.EmailId).NotEmpty().EmailAddress();
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
             RuleFor(x => x.RoleId).NotEqual(0);

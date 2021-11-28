@@ -1,10 +1,8 @@
-﻿using System;
-using CloudConsult.UI.Models;
+﻿using CloudConsult.UI.Models.Identity;
 using CloudConsult.UI.Services.Interfaces;
+using CloudConsult.UI.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System.Threading.Tasks;
-using CloudConsult.UI.Shared;
 
 namespace CloudConsult.UI.Pages.Authentication
 {
@@ -17,14 +15,14 @@ namespace CloudConsult.UI.Pages.Authentication
         private bool _passwordVisibility;
 
         [Inject]
-        private IAuthenticationService AuthService { get; set; }
+        private IIdentityService AuthService { get; set; }
 
         [Inject]
         private NavigationManager Navigation { get; set; }
-        
+
         [Inject]
         private ISnackbar Snackbar { get; set; }
-        
+
         [CascadingParameter]
         private Error Error { get; set; }
 
@@ -50,7 +48,7 @@ namespace CloudConsult.UI.Pages.Authentication
             try
             {
                 var result = await AuthService.Login(LoginModel);
-                if (result is not null)
+                if (result is true)
                 {
                     Navigation.NavigateTo("/dashboard");
                 }
