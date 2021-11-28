@@ -2,20 +2,27 @@ version: '3.4'
 networks:
   cloud-consult:
     external: true
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+  mongodb_data_container:
+    driver: local
 services:
-  cloudconsult.identity.api:
+  cloudconsult.consultation.api:
     networks:
       - cloud-consult
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "6002:80"
-      - "6003:443"
+      - "6008:80"
+      - "6009:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-
+  
   cloudconsult.doctor.api:
     networks:
       - cloud-consult
@@ -29,7 +36,22 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+  cloudconsult.identity.api:
+    networks:
+      - cloud-consult
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "6002:80"
+      - "6003:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   cloudconsult.member.api:
+    networks:
+      - cloud-consult
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
@@ -37,17 +59,71 @@ services:
       - "6006:80"
       - "6007:443"
     volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-  cloudconsult.consultation.api:
+  cloudconsult.diagnosis.api:
     networks:
       - cloud-consult
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
-      - "6008:80"
-      - "6009:443"
+      - "6010:80"
+      - "6011:443"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.7
+    networks:
+      - cloud-consult
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafkaserver:
+    image: docker.io/bitnami/kafka:3
+    networks:
+      - cloud-consult
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafkaserver:9092,PLAINTEXT_HOST://localhost:29092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+
+  mssqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - cloud-consult
+    ports:
+      - 1433:1433
+    volumes:
+      - ~/apps/mssql/data:/var/lib/mssqlql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Itachi@123
+
+  mongodbserver:
+    image: mongo:latest
+    networks:
+      - cloud-consult
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db

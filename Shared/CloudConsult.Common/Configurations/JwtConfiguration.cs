@@ -1,8 +1,7 @@
-﻿namespace CloudConsult.Common.Configurations
+﻿namespace CloudConsult.Common.Configurations;
+
+public class JwtConfiguration
 {
-    public class JwtConfiguration
-    {
-        public string SecretKey { get; set; }
-        public int ExpiryTimeInMinutes { get; set; }
-    }
+    public string SecretKey { get; set; }
+    public int ExpiryTimeInMinutes { get; set; }
 }

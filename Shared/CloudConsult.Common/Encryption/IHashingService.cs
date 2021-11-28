@@ -1,12 +1,11 @@
-﻿namespace CloudConsult.Common.Encryption
+﻿namespace CloudConsult.Common.Encryption;
+
+public interface IHashingService
 {
-    public interface IHashingService
-    {
-        string GenerateRandomSalt();
-        string GenerateHash(string value);
-        string GenerateHashWithSalt(string value, string salt);
-        bool VerifyHash(string value, string hash);
-        bool VerifyHashWithSalt(string value, string hash, string salt);
-        int GenerateRandomOtp(int length);
-    }
+    string GenerateRandomSalt();
+    string GenerateHash(string value);
+    string GenerateHashWithSalt(string value, string salt);
+    bool VerifyHash(string value, string hash);
+    bool VerifyHashWithSalt(string value, string hash, string salt);
+    int GenerateRandomOtp(int length);
 }

@@ -7,18 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace CloudConsult.Doctor.Api.Controllers
 {
     [ApiVersion("1.0")]
+    [ApiController]
     public class ProfileController : JsonController<ProfileController>
     {
-        [HttpPost(Routes.Profile.CreateProfile)]
-        public async Task<IActionResult> CreateProfile(CreateProfile command)
+        [HttpPost(Routes.Profile.Create)]
+        public async Task<IActionResult> Create(CreateProfile command)
         {
             var response = await Mediator.Send(command);
             var resourceUrl = response.IsSuccess ? $"{HttpContext.Request.GetDisplayUrl()}/{response.Payload.ProfileId}" : "";
             return response.IsSuccess ? JsonResponse(response, resourceUrl) : JsonResponse(response);
         }
 
-        [HttpPut(Routes.Profile.UpdateProfile)]
-        public async Task<IActionResult> UpdateProfile([FromRoute] string ProfileId, UpdateProfile command)
+        [HttpPut(Routes.Profile.Update)]
+        public async Task<IActionResult> Update([FromRoute] string ProfileId, UpdateProfile command)
         {
             command.ProfileId = ProfileId;
             var response = await Mediator.Send(command);
@@ -26,15 +27,15 @@ namespace CloudConsult.Doctor.Api.Controllers
             return response.IsSuccess ? JsonResponse(response, resourceUrl) : JsonResponse(response);
         }
 
-        [HttpGet(Routes.Profile.GetProfileById)]
-        public async Task<IActionResult> GetProfileById([FromRoute] GetProfileById query)
+        [HttpGet(Routes.Profile.GetById)]
+        public async Task<IActionResult> GetById([FromRoute] GetProfileById query)
         {
             var response = await Mediator.Send(query);
             return JsonResponse(response);
         }
 
-        [HttpGet(Routes.Profile.GetProfileByIdentityId)]
-        public async Task<IActionResult> GetProfileByIdentityId([FromRoute] GetProfileByIdentityId query)
+        [HttpGet(Routes.Profile.GetByIdentityId)]
+        public async Task<IActionResult> GetByIdentityId([FromRoute] GetProfileByIdentityId query)
         {
             var response = await Mediator.Send(query);
             return JsonResponse(response);

@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace CloudConsult.Common.Email;
 
-namespace CloudConsult.Common.Email
+public interface IEmailService
 {
-    public interface IEmailService
-    {
-        Task SendTextMail(EmailServiceTextParameters param);
-    }
+    Task SendTextMail(EmailServiceTextParameters param);
 }

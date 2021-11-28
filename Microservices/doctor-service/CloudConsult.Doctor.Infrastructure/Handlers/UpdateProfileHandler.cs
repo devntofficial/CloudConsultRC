@@ -13,48 +13,46 @@ namespace CloudConsult.Doctor.Infrastructure.Handlers
     public class UpdateProfileHandler : ICommandHandler<UpdateProfile, ProfileResponse>
     {
 
-        private readonly IApiResponseBuilder<ProfileResponse> _builder;
-        private readonly IProfileService _profileService;
-        private readonly IMapper _mapper;
-        private readonly IValidator<UpdateProfile> _validator;
-
+        private readonly IApiResponseBuilder<ProfileResponse> builder;
+        private readonly IProfileService profileService;
+        private readonly IMapper mapper;
+        private readonly IValidator<UpdateProfile> validator;
 
         public UpdateProfileHandler(IApiResponseBuilder<ProfileResponse> builder,
             IProfileService profileService, IMapper mapper, IValidator<UpdateProfile> validator)
         {
-            _builder = builder;
-            _profileService = profileService;
-            _mapper = mapper;
-            _validator = validator;
+            this.builder = builder;
+            this.profileService = profileService;
+            this.mapper = mapper;
+            this.validator = validator;
         }
 
         public async Task<IApiResponse<ProfileResponse>> Handle(UpdateProfile request, CancellationToken cancellationToken)
         {
-            var validation = await _validator.ValidateAsync(request, cancellationToken);
-            if (!validation.IsValid)
+            var validation = await validator.ValidateAsync(request, cancellationToken);
+            if (validation.IsValid is false)
             {
-                return _builder.CreateErrorResponse(null, x =>
+                return builder.CreateErrorResponse(null, x =>
                 {
                     x.WithErrorCode(StatusCodes.Status400BadRequest);
                     x.WithErrors(validation.Errors.Select(y => y.ErrorMessage));
                 });
             }
 
-            var mappedProfile = _mapper.Map<UpdateProfile, DoctorProfile>(request);
+            var mappedProfile = mapper.Map<UpdateProfile, DoctorProfile>(request);
+            var updatedProfile = await profileService.Update(mappedProfile, cancellationToken);
 
-            var updatedProfile = await _profileService.Update(mappedProfile, cancellationToken);
-
-            var response = _mapper.Map<ProfileResponse>(updatedProfile);
-            if (response == null)
+            var response = mapper.Map<ProfileResponse>(updatedProfile);
+            if (response is null)
             {
-                return _builder.CreateErrorResponse(null, x =>
+                return builder.CreateErrorResponse(null, x =>
                 {
                     x.WithErrorCode(StatusCodes.Status404NotFound);
                     x.WithErrors("Profile with given Id not found!");
                 });
             }
 
-            return _builder.CreateSuccessResponse(response, x =>
+            return builder.CreateSuccessResponse(response, x =>
             {
                 x.WithSuccessCode(StatusCodes.Status200OK);
                 x.WithMessages("Profile updated successfully");

@@ -13,9 +13,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     var config = builder.Configuration as IConfiguration;
 
-    // Serilog setup
-    builder.Host
-        .UseSerilog((context, services, configuration) => configuration
+    builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
@@ -29,6 +27,7 @@ try
     builder.Services.AddCommonMediatorConfiguration("CloudConsult.Member.Domain", "CloudConsult.Member.Infrastructure");
     builder.Services.AddCommonValidationsFrom("CloudConsult.Member.Domain");
     builder.Services.AddCommonKafkaProducer(config);
+    builder.Services.AddCommonMiddlewares();
 
     var app = builder.Build();
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();

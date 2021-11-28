@@ -1,10 +1,9 @@
 ﻿using CloudConsult.Common.Builders;
 using MediatR;
 
-namespace CloudConsult.Common.CQRS
+namespace CloudConsult.Common.CQRS;
+
+public interface IQueryProcessor<in TQuery, TResponse> : IRequestHandler<TQuery, IApiResponse<TResponse>>
+        where TQuery : IQuery<TResponse>
 {
-    public interface IQueryProcessor<in TQuery, TQueryResponse> : IRequestHandler<TQuery, IApiResponse<TQueryResponse>>
-        where TQuery : IQuery<TQueryResponse>
-    {
-    }
 }

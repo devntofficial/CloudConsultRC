@@ -1,9 +1,8 @@
 ﻿using CloudConsult.Common.Builders;
 using MediatR;
 
-namespace CloudConsult.Common.CQRS
+namespace CloudConsult.Common.CQRS;
+
+public interface IQuery<T> : IRequest<IApiResponse<T>>
 {
-    public interface IQuery<T> : IRequest<IApiResponse<T>>
-    {
-    }
 }

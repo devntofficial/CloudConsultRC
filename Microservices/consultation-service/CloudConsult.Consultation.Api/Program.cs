@@ -29,6 +29,7 @@ try
     builder.Services.AddCommonMediatorConfiguration("CloudConsult.Consultation.Domain", "CloudConsult.Consultation.Infrastructure");
     builder.Services.AddCommonValidationsFrom("CloudConsult.Consultation.Domain");
     builder.Services.AddCommonKafkaProducer(config);
+    builder.Services.AddCommonMiddlewares();
 
     var app = builder.Build();
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
@@ -59,6 +60,11 @@ try
 }
 catch(Exception ex)
 {
+    string type = ex.GetType().Name;
+    if (type.Equals("StopTheHostException", StringComparison.Ordinal))
+    {
+        throw;
+    }
     Log.Fatal(ex, "Unhandled exception");
 }
 finally

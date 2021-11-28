@@ -12,7 +12,7 @@
 
     public class QuartzJobs
     {
-        public QuartzJobConfiguration ConsultationBookedEventProducer { get; set; }
+        public QuartzJobConfiguration ConsultationBookedProducer { get; set; }
     }
 
     public class QuartzJobConfiguration

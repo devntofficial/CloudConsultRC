@@ -1,52 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace CloudConsult.Common.Builders;
 
-namespace CloudConsult.Common.Builders
+public interface IApiResponseBuilder
 {
-    public interface IApiResponseBuilder<T>
-    {
-        IApiSuccessResponse<T> CreateSuccessResponse(T data, Action<IApiSuccessResponse> action);
-        IApiErrorResponse<T> CreateErrorResponse(T data, Action<IApiErrorResponse> action);
-    }
+    IApiResponse CreateSuccessResponse(Action<IApiSuccessResponse> action);
+    IApiResponse CreateErrorResponse(Action<IApiErrorResponse> action);
+}
 
-    public interface IApiResponse<T> : IApiResponse
-    {
-        public T Payload { get; set; }
-    }
+public interface IApiResponseBuilder<T>
+{
+    IApiResponse<T> CreateSuccessResponse(T data, Action<IApiSuccessResponse> action);
+    IApiResponse<T> CreateErrorResponse(T data, Action<IApiErrorResponse> action);
+}
 
-    public interface IApiErrorResponse<T> : IApiResponse<T>
-    {
-        void WithErrorCode(int code);
-        void WithErrors(params string[] errors);
-        void WithErrors(IEnumerable<string> errors);
-    }
+public interface IApiResponse<T> : IApiResponse
+{
+    public T Payload { get; }
+}
 
-    public interface IApiSuccessResponse<T> : IApiResponse<T>
-    {
-        void WithSuccessCode(int code);
-        void WithMessages(params string[] messages);
-        void WithMessages(IEnumerable<string> messages);
-    }
+public interface IApiResponse
+{
+    public bool IsSuccess { get; }
+    public int StatusCode { get; }
+    public IEnumerable<string> Errors { get; }
+    public IEnumerable<string> Messages { get; }
+}
 
-    public interface IApiResponse
-    {
-        public bool IsSuccess { get; set; }
-        public int StatusCode { get; set; }
-        public IEnumerable<string> Errors { get; set; }
-        public IEnumerable<string> Messages { get; set; }
-    }
+public interface IApiErrorResponse
+{
+    void WithErrorCode(int code);
+    void WithErrors(params string[] errors);
+    void WithErrors(IEnumerable<string> errors);
+}
 
-    public interface IApiErrorResponse : IApiResponse
-    {
-        void WithErrorCode(int code);
-        void WithErrors(params string[] errors);
-        void WithErrors(IEnumerable<string> errors);
-    }
-
-    public interface IApiSuccessResponse : IApiResponse
-    {
-        void WithSuccessCode(int code);
-        void WithMessages(params string[] messages);
-        void WithMessages(IEnumerable<string> messages);
-    }
+public interface IApiSuccessResponse
+{
+    void WithSuccessCode(int code);
+    void WithMessages(params string[] messages);
+    void WithMessages(IEnumerable<string> messages);
 }

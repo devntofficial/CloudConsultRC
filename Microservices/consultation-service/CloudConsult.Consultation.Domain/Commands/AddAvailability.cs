@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CloudConsult.Common.CQRS;
+using CloudConsult.Common.Validators;
 using FluentValidation;
 
 namespace CloudConsult.Consultation.Domain.Commands
@@ -10,17 +11,12 @@ namespace CloudConsult.Consultation.Domain.Commands
         public Dictionary<string, List<string>> AvailabilityMap { get; set; }
     }
 
-    public class AddAvailabilityValidator : AbstractValidator<AddAvailability>
+    public class AddAvailabilityValidator : ApiValidator<AddAvailability>
     {
         public AddAvailabilityValidator()
         {
             RuleFor(x => x.DoctorId).NotEmpty();
             RuleFor(x => x.AvailabilityMap).Must(HaveSomeValues);
-        }
-
-        private bool HaveSomeValues(Dictionary<string, List<string>> map)
-        {
-            return map != null && map.Count != 0;
         }
     }
 }

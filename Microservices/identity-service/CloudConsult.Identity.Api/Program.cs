@@ -30,6 +30,7 @@ try
     builder.Services.AddCommonMediatorConfiguration("CloudConsult.Identity.Domain", "CloudConsult.Identity.Infrastructure");
     builder.Services.AddCommonValidationsFrom("CloudConsult.Identity.Domain");
     builder.Services.AddCommonKafkaProducer(config);
+    builder.Services.AddCommonMiddlewares();
 
     var app = builder.Build();
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();

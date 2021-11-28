@@ -38,7 +38,7 @@ namespace CloudConsult.Consultation.Infrastructure.Producers
             try
             {
                 var cancelToken = context.CancellationToken;
-                var topicName = _config.Jobs.ConsultationBookedEventProducer.TopicName;
+                var topicName = _config.Jobs.ConsultationBookedProducer.TopicName;
 
                 _logger.LogInformation("Looking for any new consultations booked recently");
 

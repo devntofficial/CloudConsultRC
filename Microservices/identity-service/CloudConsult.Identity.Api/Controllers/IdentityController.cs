@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using CloudConsult.Common.Controllers;
+﻿using CloudConsult.Common.Controllers;
 using CloudConsult.Identity.Domain.Commands;
 using CloudConsult.Identity.Domain.Queries;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -9,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CloudConsult.Identity.Api.Controllers
 {
     [ApiVersion("1.0")]
+    [ApiController]
     public class IdentityController : JsonController<IdentityController>
     {
         [HttpGet(Routes.Identity.GetToken)]

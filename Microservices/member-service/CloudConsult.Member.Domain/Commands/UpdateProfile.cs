@@ -1,4 +1,5 @@
 ﻿using CloudConsult.Common.CQRS;
+using CloudConsult.Common.Validators;
 using CloudConsult.Member.Domain.Responses;
 using FluentValidation;
 using MongoDB.Bson;
@@ -18,7 +19,7 @@ namespace CloudConsult.Member.Domain.Commands
         public string AadhaarNo { get; set; }
     }
 
-    public class UpdateProfileValidator : AbstractValidator<UpdateProfile>
+    public class UpdateProfileValidator : ApiValidator<UpdateProfile>
     {
         public UpdateProfileValidator()
         {

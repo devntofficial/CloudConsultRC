@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CloudConsult.Common.Builders;
 using CloudConsult.Common.CQRS;
 using CloudConsult.Consultation.Domain.Queries;
@@ -23,7 +21,7 @@ namespace CloudConsult.Consultation.Infrastructure.Processors
             _mapper = mapper;
             _consultationService = consultationService;
         }
-        
+
         public async Task<IApiResponse<GetConsultationByIdResponse>> Handle(GetConsultationById request,
             CancellationToken cancellationToken)
         {
@@ -36,9 +34,9 @@ namespace CloudConsult.Consultation.Infrastructure.Processors
                     x.WithErrors("No data found for given id");
                 });
             }
-            
+
             //call doctor and patient grpc servers to get name or store them when booking consultation
-            
+
             return _builder.CreateSuccessResponse(output, x =>
             {
                 x.WithSuccessCode(StatusCodes.Status200OK);

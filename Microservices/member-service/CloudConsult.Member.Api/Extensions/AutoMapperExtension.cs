@@ -7,9 +7,7 @@ namespace CloudConsult.Member.Api.Extensions
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(x => {
-                services.AddAutoMapper(x => { x.AddProfile<ProfileMapper>(); });
-            });
+            services.AddAutoMapper(x => { x.AddProfile<ProfileMapper>(); });
         }
     }
 }

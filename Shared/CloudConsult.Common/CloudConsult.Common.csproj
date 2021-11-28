@@ -16,12 +16,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="10.3.4" />
         <PackageReference Include="MailKit" Version="2.15.0" />
         <PackageReference Include="MediatR" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
         <PackageReference Include="Isopoh.Cryptography.Argon2" Version="1.1.10" />
+        <PackageReference Include="MongoDB.Bson" Version="2.13.2" />
     </ItemGroup>
 
 </Project>
