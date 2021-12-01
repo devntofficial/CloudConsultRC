@@ -9,5 +9,10 @@
             public const string GetToken = Root + "/token/generate";
             public const string CreateUser = Root + "/user";
         }
+
+        public static class Roles
+        {
+            public const string GetUserRoles = Root + "/user/roles";
+        }
     }
 }

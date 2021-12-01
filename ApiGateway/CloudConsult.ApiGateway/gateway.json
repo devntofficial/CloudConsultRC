@@ -24,6 +24,18 @@
       "UpstreamPathTemplate": "/api/create-user",
       "UpstreamHttpMethod": [ "Post" ]
     },
+    {
+      "DownstreamPathTemplate": "/api/v1/user/roles",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-user-roles",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
 
 
 
