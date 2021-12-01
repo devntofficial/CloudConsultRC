@@ -3,11 +3,18 @@
     <PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>3ac07394-5df8-437b-ab17-48c78d9526eb</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\CloudConsult.Notification.Infrastructure\CloudConsult.Notification.Infrastructure.csproj" />
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\CloudConsult.Notification.Common\CloudConsult.Notification.Common.csproj" />
+      <ProjectReference Include="..\CloudConsult.Notification.Infrastructure\CloudConsult.Notification.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

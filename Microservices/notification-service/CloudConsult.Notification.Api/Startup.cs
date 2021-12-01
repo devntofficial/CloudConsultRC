@@ -24,6 +24,7 @@ namespace CloudConsult.Notification.Api
             _configuration.Bind(nameof(KafkaConsumerConfiguration), kafkaConsumerConfiguration);
             services.AddHostedService<DoctorUpdateConsumer>();
             services.AddSingleton(kafkaConsumerConfiguration);
+            services.AddHostedService<DoctorUpdateConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
