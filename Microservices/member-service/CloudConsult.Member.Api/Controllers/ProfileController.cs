@@ -1,10 +1,10 @@
 ﻿using CloudConsult.Common.Controllers;
-using CloudConsult.Doctor.Domain.Commands;
-using CloudConsult.Doctor.Domain.Queries;
+using CloudConsult.Member.Domain.Commands;
+using CloudConsult.Member.Domain.Queries;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CloudConsult.Doctor.Api.Controllers
+namespace CloudConsult.Member.Api.Controllers
 {
     [ApiVersion("1.0")]
     [ApiController]

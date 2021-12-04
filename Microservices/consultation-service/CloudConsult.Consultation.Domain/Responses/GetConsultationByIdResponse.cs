@@ -1,6 +1,6 @@
 ﻿namespace CloudConsult.Consultation.Domain.Responses
 {
-    public record GetConsultationByIdResponse
+    public class GetConsultationByIdResponse
     {
         public string Id { get; set; }
         public string DoctorId { get; set; }

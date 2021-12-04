@@ -10,8 +10,8 @@ namespace CloudConsult.Diagnosis.Api.Controllers
     public class ReportController : JsonController<ReportController>
     {
         [HttpPost(Routes.Report.Upload)]
-        public async Task<IActionResult> Upload([FromRoute] string ConsultationId,
-            UploadReport command, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Upload([FromRoute] string ConsultationId, UploadReport command,
+            CancellationToken cancellationToken = default)
         {
             command.ConsultationId = ConsultationId;
             var response = await Mediator.Send(command, cancellationToken);

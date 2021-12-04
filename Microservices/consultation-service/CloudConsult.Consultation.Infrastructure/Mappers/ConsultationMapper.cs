@@ -1,14 +1,13 @@
-﻿using System;
-using System.Globalization;
-using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using CloudConsult.Consultation.Domain.Commands;
 using CloudConsult.Consultation.Domain.Entities;
 using CloudConsult.Consultation.Domain.Events;
+using CloudConsult.Consultation.Domain.Responses;
+using System.Globalization;
 
 namespace CloudConsult.Consultation.Infrastructure.Mappers
 {
-    public class ConsultationMapper: Profile
+    public class ConsultationMapper : Profile
     {
         public ConsultationMapper()
         {
@@ -17,13 +16,45 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
                     y => y.MapFrom(z => BookingStartDateMapper(z)))
                 .ForMember(x => x.BookingEndDateTime,
                     y => y.MapFrom(z => BookingEndDateMapper(z)));
-            
+
             CreateMap<ConsultationBooking, ConsultationBooked>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id.ToString()))
                 .ForMember(x => x.BookingDate, y =>
                     y.MapFrom(z => $"{z.BookingStartDateTime:dd-MM-yyyy}"))
                 .ForMember(x => x.BookingTimeSlot,
                     y => y.MapFrom(z => $"{z.BookingStartDateTime:HH:mm}-{z.BookingEndDateTime:HH:mm}"));
+
+            CreateMap<List<ConsultationBooking>, ConsultationResponse>().ConvertUsing(x => ConsultationResponseMapper(x));
+        }
+
+        private ConsultationResponse ConsultationResponseMapper(List<ConsultationBooking> consultations)
+        {
+            if(consultations is null || consultations.Count == 0)
+            {
+                return new();
+            }
+
+            var doctor = consultations.Select(x => new { x.DoctorId, x.DoctorName }).First();
+
+            return new ConsultationResponse
+            {
+                DoctorId = doctor.DoctorId,
+                DoctorName = doctor.DoctorName,
+                Consultations = consultations.Select(x => new ConsultationData
+                {
+                    Id = x.Id.ToString(),
+                    PatientId = x.PatientId,
+                    PatientName = x.PatientName,
+                    BookingDate = $"{x.BookingStartDateTime:dd-MM-yyyy}",
+                    BookingTimeSlot = $"{x.BookingStartDateTime:HH:mm}-{x.BookingEndDateTime:HH:mm}",
+                    Status = x.Status,
+                    DiagnosisReportId = x.DiagnosisReportId,
+                    IsAcceptedByDoctor = x.IsAcceptedByDoctor,
+                    IsConsultationComplete = x.IsConsultationComplete,
+                    IsDiagnosisReportGenerated = x.IsDiagnosisReportGenerated,
+                    IsPaymentComplete = x.IsPaymentComplete,
+                }).ToList()
+            };
         }
 
         private DateTime BookingEndDateMapper(BookConsultation data)

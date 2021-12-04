@@ -6,14 +6,15 @@
 
         public static class Availability
         {
-            public const string AddAvailability = Root + "/availability";
+            public const string Add = Root + "/availability";
             public const string GetByDoctorId = Root + "/doctor/{DoctorId}/availability";
         }
         
         public static class Consultation
         {
-            public const string BookConsultation = Root + "/consultation";
-            public const string GetConsultationById = Root + "/consultation/{ConsultationId}";
+            public const string Book = Root + "/consultation";
+            public const string GetById = Root + "/consultation/{ConsultationId}";
+            public const string GetByDoctorId = Root + "/doctor/{DoctorId}/consultations";
         }
     }
 }

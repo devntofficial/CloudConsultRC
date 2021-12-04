@@ -13,10 +13,16 @@ namespace CloudConsult.Consultation.Domain.Entities
         
         [Required]
         public string DoctorId { get; set; }
-        
+
         [Required]
-        public string PatentId { get; set; }
-        
+        public string DoctorName { get; set; }
+
+        [Required]
+        public string PatientId { get; set; }
+
+        [Required]
+        public string PatientName { get; set; }
+
         [Required]
         public Guid TimeSlotId { get; set; }
         
@@ -25,7 +31,10 @@ namespace CloudConsult.Consultation.Domain.Entities
         
         [Required]
         public DateTime BookingEndDateTime { get; set; }
-        
+
+        [Required]
+        public string Status { get; set; }
+
         [Required]
         public bool IsBookingEventPublished { get; set; }
         

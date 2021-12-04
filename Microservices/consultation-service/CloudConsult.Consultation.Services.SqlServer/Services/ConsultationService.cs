@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using CloudConsult.Common.Enums;
 using CloudConsult.Consultation.Domain.Entities;
 using CloudConsult.Consultation.Domain.Responses;
 using CloudConsult.Consultation.Domain.Services;
@@ -18,7 +15,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
         {
             this._db = db;
         }
-        
+
         public async Task<string> BookConsultation(ConsultationBooking booking, CancellationToken cancellationToken = default)
         {
             var timeSlot = await _db.DoctorAvailabilities
@@ -38,11 +35,17 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             }
 
             booking.TimeSlotId = timeSlot.Id;
-            
+            booking.Status = ConsultationStatus.DoctorApprovalPending.ToString();
+
             await _db.ConsultationBookings.AddAsync(booking, cancellationToken);
             await _db.SaveChangesAsync(cancellationToken);
 
             return booking.Id.ToString();
+        }
+
+        public async Task<List<ConsultationBooking>> GetByDoctorId(string doctorId, CancellationToken cancellationToken = default)
+        {
+            return await _db.ConsultationBookings.Where(x => x.DoctorId.Equals(doctorId)).ToListAsync(cancellationToken);
         }
 
         public async Task<GetConsultationByIdResponse> GetById(string id, CancellationToken cancellationToken = default)
@@ -53,9 +56,12 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
                 {
                     Id = x.Id.ToString(),
                     DoctorId = x.DoctorId,
-                    PatientId = x.PatentId,
+                    DoctorName = x.DoctorName,
+                    PatientId = x.PatientId,
+                    PatientName = x.PatientName,
                     BookingDate = x.BookingStartDateTime.ToString("dd-MM-yyyy"),
-                    BookingTimeSlot = $"{x.BookingStartDateTime:HH:mm}-{x.BookingEndDateTime:HH:mm}"
+                    BookingTimeSlot = $"{x.BookingStartDateTime:HH:mm}-{x.BookingEndDateTime:HH:mm}",
+                    Status = x.Status
                 })
                 .SingleOrDefaultAsync(cancellationToken);
             return consultation;

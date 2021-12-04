@@ -8,7 +8,9 @@ namespace CloudConsult.Consultation.Domain.Commands
     public record BookConsultation : ICommand<String>
     {
         public string DoctorId { get; set; }
-        public string PatentId { get; set; }
+        public string DoctorName { get; set; }
+        public string PatientId { get; set; }
+        public string PatientName { get; set; }
         public string BookingDate { get; set; }
         public string BookingTimeSlot { get; set; }
     }
@@ -18,15 +20,12 @@ namespace CloudConsult.Consultation.Domain.Commands
         public BookConsultationCommandValidator()
         {
             RuleFor(x => x.DoctorId).NotEmpty();
-
-            RuleFor(x => x.PatentId).NotEmpty();
-
+            RuleFor(x => x.DoctorName).NotEmpty();
+            RuleFor(x => x.PatientId).NotEmpty();
+            RuleFor(x => x.PatientName).NotEmpty();
             RuleFor(x => x.BookingDate).NotEmpty();
-
             RuleFor(x => x.BookingDate).Must(HaveValidDateFormat).WithMessage("Invalid BookingDate entered");
-
             RuleFor(x => x.BookingTimeSlot).NotEmpty();
-
             RuleFor(x => x.BookingTimeSlot).Must(HaveValidTimeslotFormat).WithMessage("Invalid BookingTimeSlot format");
         }
 

@@ -4,6 +4,7 @@ using CloudConsult.Consultation.Services.SqlServer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 {
     [DbContext(typeof(ConsultationDbContext))]
-    partial class ConsultationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211128211750_BookingStatusColumn")]
+    partial class BookingStatusColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,10 +43,6 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DoctorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsAcceptedByDoctor")
                         .HasColumnType("bit");
 
@@ -60,11 +58,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                     b.Property<bool>("IsPaymentComplete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PatientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PatientName")
+                    b.Property<string>("PatentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

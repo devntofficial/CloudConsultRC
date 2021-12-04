@@ -22,6 +22,10 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - zookeeper
+      - kafkaserver
+      - mssqlserver
   
   cloudconsult.doctor.api:
     networks:
@@ -35,6 +39,10 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - zookeeper
+      - kafkaserver
+      - mongodbserver
 
   cloudconsult.identity.api:
     networks:
@@ -48,6 +56,10 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - zookeeper
+      - kafkaserver
+      - mssqlserver
 
   cloudconsult.member.api:
     networks:
@@ -61,6 +73,10 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - zookeeper
+      - kafkaserver
+      - mongodbserver
 
   cloudconsult.diagnosis.api:
     networks:
@@ -73,6 +89,10 @@ services:
       - "6011:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    depends_on:
+      - zookeeper
+      - kafkaserver
+      - mongodbserver
 
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.7

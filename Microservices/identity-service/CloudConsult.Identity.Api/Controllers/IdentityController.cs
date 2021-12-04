@@ -22,7 +22,7 @@ namespace CloudConsult.Identity.Api.Controllers
         public async Task<IActionResult> CreateUser(CreateUser command, CancellationToken cancellationToken)
         {
             var response = await Mediator.Send(command, cancellationToken);
-            var resourceUrl = response.IsSuccess ? $"{HttpContext.Request.GetDisplayUrl()}/{response.Payload.Id}" : "";
+            var resourceUrl = response.IsSuccess ? $"{HttpContext.Request.GetDisplayUrl()}/{response.Payload.Id}" : string.Empty;
             return response.IsSuccess ? JsonResponse(response, resourceUrl) : JsonResponse(response);
         }
     }

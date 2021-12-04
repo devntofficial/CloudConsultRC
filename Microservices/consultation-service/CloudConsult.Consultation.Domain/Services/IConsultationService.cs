@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CloudConsult.Consultation.Domain.Entities;
+﻿using CloudConsult.Consultation.Domain.Entities;
 using CloudConsult.Consultation.Domain.Responses;
 
 namespace CloudConsult.Consultation.Domain.Services
@@ -10,5 +7,6 @@ namespace CloudConsult.Consultation.Domain.Services
     {
         Task<String> BookConsultation(ConsultationBooking booking, CancellationToken cancellationToken = default);
         Task<GetConsultationByIdResponse> GetById(string id, CancellationToken cancellationToken = default);
+        Task<List<ConsultationBooking>> GetByDoctorId(string doctorId, CancellationToken cancellationToken = default);
     }
 }

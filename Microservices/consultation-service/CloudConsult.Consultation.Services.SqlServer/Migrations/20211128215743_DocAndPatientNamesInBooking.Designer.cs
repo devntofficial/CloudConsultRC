@@ -4,6 +4,7 @@ using CloudConsult.Consultation.Services.SqlServer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 {
     [DbContext(typeof(ConsultationDbContext))]
-    partial class ConsultationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211128215743_DocAndPatientNamesInBooking")]
+    partial class DocAndPatientNamesInBooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

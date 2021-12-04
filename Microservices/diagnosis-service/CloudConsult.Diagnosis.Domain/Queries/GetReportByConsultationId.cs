@@ -12,7 +12,7 @@ namespace CloudConsult.Diagnosis.Domain.Queries
             ConsultationId = consultationId;
         }
 
-        public string ConsultationId { get; set; } = "";
+        public string ConsultationId { get; set; } = string.Empty;
     }
 
     public class GetReportByConsultationIdValidator : ApiValidator<GetReportByConsultationId>

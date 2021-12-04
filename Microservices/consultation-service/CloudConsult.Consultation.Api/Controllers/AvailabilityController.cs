@@ -10,7 +10,7 @@ namespace CloudConsult.Consultation.Api.Controllers
     [ApiController]
     public class AvailabilityController : JsonController<AvailabilityController>
     {
-        [HttpPost(Routes.Availability.AddAvailability)]
+        [HttpPost(Routes.Availability.Add)]
         public async Task<IActionResult> Add(AddAvailability command)
         {
             var response = await Mediator.Send(command);
