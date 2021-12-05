@@ -48,7 +48,7 @@ namespace CloudConsult.Diagnosis.Infrastructure.Producers
                             Value = JsonSerializer.Serialize(mappedEvent)
                         }, cancelToken);
 
-                        await producerTask.ContinueWith(async deliveryTask =>
+                        await producerTask.ContinueWith(deliveryTask =>
                         {
                             if (deliveryTask.IsFaulted)
                             {
@@ -56,7 +56,7 @@ namespace CloudConsult.Diagnosis.Infrastructure.Producers
                             }
                             else
                             {
-                                await eventService.SetIsEventPublished(report.Id, true, cancelToken);
+                                eventService.SetIsEventPublished(report.Id, true, cancelToken);
                                 logger.LogInformation($"Diagnosis report uploaded event published successfully for {report.Id}");
                             }
                         }, cancelToken);

@@ -25,5 +25,19 @@ namespace CloudConsult.Identity.Api.Controllers
             var resourceUrl = response.IsSuccess ? $"{HttpContext.Request.GetDisplayUrl()}/{response.Payload.Id}" : string.Empty;
             return response.IsSuccess ? JsonResponse(response, resourceUrl) : JsonResponse(response);
         }
+
+        [HttpPost(Routes.Identity.GenerateOtp)]
+        public async Task<IActionResult> GenerateOtp(GenerateOtp command, CancellationToken cancellationToken)
+        {
+            var response = await Mediator.Send(command, cancellationToken);
+            return JsonResponse(response);
+        }
+
+        [HttpPost(Routes.Identity.ValidateOtp)]
+        public async Task<IActionResult> ValidateOtp(ValidateOtp command, CancellationToken cancellationToken)
+        {
+            var response = await Mediator.Send(command, cancellationToken);
+            return JsonResponse(response);
+        }
     }
 }

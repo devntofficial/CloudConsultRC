@@ -12,7 +12,7 @@
 
     public class QuartzJobs
     {
-        
+        public QuartzJobConfiguration OtpGeneratedProducer { get; set; }
     }
 
     public class QuartzJobConfiguration

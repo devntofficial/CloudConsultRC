@@ -11,6 +11,7 @@ namespace CloudConsult.Identity.Api.Extensions
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IEventService, EventService>();
         }
     }
 }

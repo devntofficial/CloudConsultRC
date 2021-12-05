@@ -7,14 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Confluent.Kafka" Version="1.8.2" />
+    <PackageReference Include="Quartz" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CloudConsult.Identity.Domain\CloudConsult.Identity.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Producers" />
   </ItemGroup>
 
 </Project>

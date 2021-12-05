@@ -6,27 +6,27 @@ using Microsoft.AspNetCore.Http;
 
 namespace CloudConsult.Doctor.Infrastructure.Handlers
 {
-    public class RejectProfileHandler : ICommandHandler<RejectProfile>
+    public class ApproveKycHandler : ICommandHandler<ApproveKyc>
     {
         private readonly IApiResponseBuilder builder;
         private readonly IKycService kycService;
 
-        public RejectProfileHandler(IApiResponseBuilder builder, IKycService kycService)
+        public ApproveKycHandler(IApiResponseBuilder builder, IKycService kycService)
         {
             this.builder = builder;
             this.kycService = kycService;
         }
 
-        public async Task<IApiResponse> Handle(RejectProfile request, CancellationToken cancellationToken)
+        public async Task<IApiResponse> Handle(ApproveKyc request, CancellationToken cancellationToken)
         {
-            var isApproved = await kycService.Reject(request, cancellationToken);
+            var isApproved = await kycService.Approve(request, cancellationToken);
 
             if(isApproved)
             {
                 return builder.CreateSuccessResponse(x =>
                 {
                     x.WithSuccessCode(StatusCodes.Status200OK);
-                    x.WithMessages("Doctor profile rejected successfully");
+                    x.WithMessages("Doctor profile approved successfully");
                 });
             }
 

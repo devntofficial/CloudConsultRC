@@ -7,3 +7,8 @@ public interface IQueryProcessor<in TQuery, TResponse> : IRequestHandler<TQuery,
         where TQuery : IQuery<TResponse>
 {
 }
+
+public interface IPaginatedQueryProcessor<in TQuery, TResponse> : IRequestHandler<TQuery, IApiResponse<TResponse>>
+        where TQuery : IPaginatedQuery<TResponse>
+{
+}

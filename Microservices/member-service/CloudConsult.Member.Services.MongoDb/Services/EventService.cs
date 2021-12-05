@@ -26,20 +26,20 @@ namespace CloudConsult.Member.Services.MongoDb.Services
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task SetProfileUpdatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default)
+        public void SetProfileUpdatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default)
         {
             var builder = Builders<MemberProfile>.Update;
             var update = builder.Set(x => x.ProfileUpdatedEventPublished, true);
 
-            await _profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            _profileCollection.UpdateOne(x => x.Id == profileId, update, null, cancellationToken);
         }
 
-        public async Task SetProfileCreatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default)
+        public void SetProfileCreatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default)
         {
             var builder = Builders<MemberProfile>.Update;
             var update = builder.Set(x => x.ProfileCreatedEventPublished, true);
 
-            await _profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            _profileCollection.UpdateOne(x => x.Id == profileId, update, null, cancellationToken);
         }
     }
 }

@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>598247e6-5552-429f-9b63-94481b118676</ProjectGuid>
     <DockerComposeProjectName>CloudConsult-Microservices</DockerComposeProjectName>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerLaunchAction>None</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api-docs</DockerServiceUrl>
     <DockerServiceName>cloudconsult.diagnosis.api</DockerServiceName>
   </PropertyGroup>

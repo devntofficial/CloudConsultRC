@@ -8,28 +8,30 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
 {
     public class KycService : IKycService
     {
-        private readonly IMongoCollection<DoctorProfile> _profileCollection;
+        private readonly IMongoCollection<DoctorProfile> profileCollection;
+        private readonly IMongoCollection<DoctorKyc> kycCollection;
 
-        public KycService(IMongoCollection<DoctorProfile> profileCollection)
+        public KycService(IMongoCollection<DoctorProfile> profileCollection, IMongoCollection<DoctorKyc> kycCollection)
         {
-            this._profileCollection = profileCollection;
+            this.profileCollection = profileCollection;
+            this.kycCollection = kycCollection;
         }
 
-        public async Task<bool> Approve(ApproveProfile command, CancellationToken cancellationToken = default)
+        public async Task<bool> Approve(ApproveKyc command, CancellationToken cancellationToken = default)
         {
-            var isValidId = ObjectId.TryParse(command.ProfileId, out var profileId);
-            if (isValidId is false)
+            var profileId = ObjectId.Parse(command.ProfileId);
+            await kycCollection.InsertOneAsync(new DoctorKyc
             {
-                return false;
-            }
+                ProfileId = profileId,
+                IsApproved = true,
+                AdministratorId = command.ApprovalIdentityId,
+                Comments = command.ApprovalComments
+            }, null, cancellationToken);
 
             var builder = Builders<DoctorProfile>.Update;
-            var update = builder
-                .Set(x => x.IsActive, true)
-                .Set(x => x.ApprovalIdentityId, command.ApprovalIdentityId)
-                .Set(x => x.ApprovalComments, command.ApprovalComments);
+            var update = builder.Set(x => x.IsActive, true);
 
-            var result = await _profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            var result = await profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
             if(result.IsModifiedCountAvailable is false)
             {
                 return false;
@@ -38,21 +40,21 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             return true;
         }
 
-        public async Task<bool> Reject(RejectProfile command, CancellationToken cancellationToken = default)
+        public async Task<bool> Reject(RejectKyc command, CancellationToken cancellationToken = default)
         {
-            var isValidId = ObjectId.TryParse(command.ProfileId, out var profileId);
-            if (isValidId is false)
+            var profileId = ObjectId.Parse(command.ProfileId);
+            await kycCollection.InsertOneAsync(new DoctorKyc
             {
-                return false;
-            }
+                ProfileId = profileId,
+                IsApproved = false,
+                AdministratorId = command.RejectionIdentityId,
+                Comments = command.RejectionComments
+            }, null, cancellationToken);
 
             var builder = Builders<DoctorProfile>.Update;
-            var update = builder
-                .Set(x => x.IsActive, false)
-                .Set(x => x.RejectionIdentityId, command.RejectionIdentityId)
-                .Set(x => x.RejectionComments, command.RejectionComments);
+            var update = builder.Set(x => x.IsActive, false);
 
-            var result = await _profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            var result = await profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
             if (result.IsModifiedCountAvailable is false)
             {
                 return false;

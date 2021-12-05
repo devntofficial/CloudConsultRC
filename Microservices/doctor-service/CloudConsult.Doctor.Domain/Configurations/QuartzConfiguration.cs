@@ -14,6 +14,8 @@
     {
         public QuartzJobConfiguration ProfileCreatedProducer { get; set; }
         public QuartzJobConfiguration ProfileUpdatedProducer { get; set; }
+        public QuartzJobConfiguration KycApprovedProducer { get; set; }
+        public QuartzJobConfiguration KycRejectedProducer { get; set; }
     }
 
     public class QuartzJobConfiguration

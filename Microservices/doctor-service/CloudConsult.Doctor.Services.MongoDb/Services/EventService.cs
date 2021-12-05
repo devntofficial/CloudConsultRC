@@ -1,4 +1,6 @@
-﻿using CloudConsult.Doctor.Domain.Entities;
+﻿using AutoMapper;
+using CloudConsult.Doctor.Domain.Entities;
+using CloudConsult.Doctor.Domain.Events;
 using CloudConsult.Doctor.Domain.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -7,39 +9,63 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
 {
     public class EventService : IEventService
     {
-        private readonly IMongoCollection<DoctorProfile> _profileCollection;
+        private readonly IMongoCollection<DoctorProfile> profileCollection;
+        private readonly IMongoCollection<DoctorKyc> kycCollection;
+        private readonly IMapper mapper;
 
-        public EventService(IMongoCollection<DoctorProfile> profileCollection)
+        public EventService(IMongoCollection<DoctorProfile> profileCollection, IMongoCollection<DoctorKyc> kycCollection, IMapper mapper)
         {
-            this._profileCollection = profileCollection;
+            this.profileCollection = profileCollection;
+            this.kycCollection = kycCollection;
+            this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<DoctorProfile>> GetUnpublishedNewProfiles(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ProfileCreated>> GetPendingProfileCreatedEvents(CancellationToken cancellationToken = default)
         {
-            return await _profileCollection.Find(x => x.ProfileCreatedEventPublished == false)
-                .ToListAsync(cancellationToken);
+            var profiles = await profileCollection.Find(x => !x.IsCreatedEventPublished).ToListAsync(cancellationToken);
+            return profiles.Count > 0 ? mapper.Map<List<ProfileCreated>>(profiles) : Enumerable.Empty<ProfileCreated>();
         }
 
-        public async Task<IEnumerable<DoctorProfile>> GetUnpublishedUpdatedProfiles(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ProfileUpdated>> GetPendingProfileUpdatedEvents(CancellationToken cancellationToken = default)
         {
-            return await _profileCollection.Find(x => x.ProfileUpdatedEventPublished == false)
-                .ToListAsync(cancellationToken);
+            var profiles = await profileCollection.Find(x => !x.IsUpdatedEventPublished).ToListAsync(cancellationToken);
+            return profiles.Count > 0 ? mapper.Map<List<ProfileUpdated>>(profiles) : Enumerable.Empty<ProfileUpdated>();
         }
 
-        public async Task SetProfileUpdatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default)
+        public void SetProfileUpdatedEventPublished(string profileId, CancellationToken cancellationToken = default)
         {
             var builder = Builders<DoctorProfile>.Update;
-            var update = builder.Set(x => x.ProfileUpdatedEventPublished, true);
+            var update = builder.Set(x => x.IsUpdatedEventPublished, true);
 
-            await _profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null, cancellationToken);
         }
 
-        public async Task SetProfileCreatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default)
+        public void SetProfileCreatedEventPublished(string profileId, CancellationToken cancellationToken = default)
         {
             var builder = Builders<DoctorProfile>.Update;
-            var update = builder.Set(x => x.ProfileCreatedEventPublished, true);
+            var update = builder.Set(x => x.IsCreatedEventPublished, true);
 
-            await _profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null, cancellationToken);
+        }
+
+        public async Task<IEnumerable<KycApproved>> GetPendingKycApprovedEvents(CancellationToken cancellationToken = default)
+        {
+            var events = await kycCollection.Find(x => !x.IsEventPublished && x.IsApproved).ToListAsync(cancellationToken);
+            return events.Count > 0 ? mapper.Map<List<KycApproved>>(events) : Enumerable.Empty<KycApproved>();
+        }
+
+        public async Task<IEnumerable<KycRejected>> GetPendingKycRejectedEvents(CancellationToken cancellationToken = default)
+        {
+            var events = await kycCollection.Find(x => !x.IsEventPublished && !x.IsApproved).ToListAsync(cancellationToken);
+            return events.Count > 0 ? mapper.Map<List<KycRejected>>(events) : Enumerable.Empty<KycRejected>();
+        }
+
+        public void SetKycEventPublished(string eventId, CancellationToken cancellationToken = default)
+        {
+            var builder = Builders<DoctorKyc>.Update;
+            var update = builder.Set(x => x.IsEventPublished, true);
+
+            kycCollection.UpdateOne(x => x.Id == ObjectId.Parse(eventId), update, null, cancellationToken);
         }
     }
 }

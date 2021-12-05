@@ -8,6 +8,7 @@
         {
             public const string Create = Root;
             public const string Update = Root + "/{ProfileId}";
+            public const string GetAll = Root;
             public const string GetById = Root + "/{ProfileId}";
             public const string GetByIdentityId = Root + "/identity/{IdentityId}";
         }

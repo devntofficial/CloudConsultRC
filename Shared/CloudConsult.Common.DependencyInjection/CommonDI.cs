@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
 
@@ -86,7 +87,9 @@ public static class CommonDI
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 RequireExpirationTime = false,
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                RoleClaimType = "Roles",
+                NameClaimType = JwtRegisteredClaimNames.Sub
             };
         });
         return services;

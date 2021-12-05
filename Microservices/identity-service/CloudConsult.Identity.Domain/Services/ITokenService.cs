@@ -6,7 +6,7 @@ namespace CloudConsult.Identity.Domain.Services
     public interface ITokenService
     {
         GetTokenResponse GenerateJwtTokenFor(User user);
-        bool GenerateEmailOtpFor(User user);
-        Task<bool> ValidateEmailOtp(UserOtp userOtp);
+        Task GenerateOtpFor(Guid userId, CancellationToken cancellationToken = default);
+        Task<bool> ValidateOtp(Guid userId, int otp, CancellationToken cancellationToken = default);
     }
 }

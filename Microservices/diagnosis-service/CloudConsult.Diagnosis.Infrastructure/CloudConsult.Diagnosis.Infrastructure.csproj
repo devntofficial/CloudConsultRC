@@ -13,10 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Producers\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Shared\CloudConsult.Common\CloudConsult.Common.csproj" />
 	  <ProjectReference Include="..\CloudConsult.Diagnosis.Domain\CloudConsult.Diagnosis.Domain.csproj" />
 	</ItemGroup>

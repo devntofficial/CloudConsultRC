@@ -19,6 +19,7 @@ namespace CloudConsult.Identity.Domain.Entities
         public bool IsBlocked { get; set; }
         public DateTime Timestamp { get; set; }
 
+        public virtual UserOtp CurrentOtp { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

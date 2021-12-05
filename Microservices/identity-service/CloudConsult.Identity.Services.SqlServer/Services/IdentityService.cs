@@ -11,21 +11,21 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
 {
     public class IdentityService : IIdentityService
     {
-        private readonly IdentityDbContext _db;
-        private readonly IHashingService _hashingService;
-        private readonly ILogger<IdentityService> _logger;
+        private readonly IdentityDbContext db;
+        private readonly IHashingService hashingService;
+        private readonly ILogger<IdentityService> logger;
 
         public IdentityService(IdentityDbContext db,
             IHashingService hashingService, ILogger<IdentityService> logger)
         {
-            _db = db;
-            _hashingService = hashingService;
-            _logger = logger;
+            this.db = db;
+            this.hashingService = hashingService;
+            this.logger = logger;
         }
 
         public async Task<User> Authenticate(GetToken query, CancellationToken cancellationToken)
         {
-            var user = await _db.Users.AsNoTracking()
+            var user = await db.Users.AsNoTracking()
                 .Where(x => x.EmailId == query.EmailId)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
@@ -36,13 +36,13 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                 return null;
             }
 
-            var hashedPassword = _hashingService.GenerateHashWithSalt(query.Password, user.PasswordSalt);
+            var hashedPassword = hashingService.GenerateHashWithSalt(query.Password, user.PasswordSalt);
             return hashedPassword == user.PasswordHash ? user : null;
         }
 
         public async Task<User> Create(CreateUser command, CancellationToken cancellationToken)
         {
-            await using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
+            await using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
             try
             {
                 var user = new User
@@ -50,11 +50,11 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                     FullName = command.FullName,
                     EmailId = command.EmailId,
                     Timestamp = DateTime.UtcNow,
-                    PasswordSalt = _hashingService.GenerateRandomSalt()
+                    PasswordSalt = hashingService.GenerateRandomSalt()
                 };
-                user.PasswordHash = _hashingService.GenerateHashWithSalt(command.Password, user.PasswordSalt);
+                user.PasswordHash = hashingService.GenerateHashWithSalt(command.Password, user.PasswordSalt);
 
-                await _db.Users.AddAsync(user, cancellationToken);
+                await db.Users.AddAsync(user, cancellationToken);
 
                 var userRole = new UserRole
                 {
@@ -63,11 +63,11 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                     Timestamp = DateTime.UtcNow
                 };
 
-                await _db.UserRoles.AddAsync(userRole, cancellationToken);
-                await _db.SaveChangesAsync(cancellationToken);
+                await db.UserRoles.AddAsync(userRole, cancellationToken);
+                await db.SaveChangesAsync(cancellationToken);
                 await transaction.CommitAsync(cancellationToken);
 
-                return await _db.Users
+                return await db.Users
                     .Where(x => x.Id == user.Id)
                     .Include(x => x.UserRoles)
                     .ThenInclude(x => x.Role)
@@ -75,7 +75,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                logger.LogError(ex.Message);
                 await transaction.RollbackAsync(cancellationToken);
                 return null;
             }

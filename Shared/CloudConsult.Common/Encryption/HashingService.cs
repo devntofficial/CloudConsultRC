@@ -88,8 +88,6 @@ public class HashingService : IHashingService
 
     public int GenerateRandomOtp(int length)
     {
-        var startValue = 10 ^ length;
-        var endValue = (10 * length) - 1;
-        return RandomNumberGenerator.GetInt32(startValue, endValue);
+        return RandomNumberGenerator.GetInt32((int)Math.Pow(10, length - 1), (int)Math.Pow(10, length) - 1);
     }
 }

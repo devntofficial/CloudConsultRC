@@ -1,5 +1,6 @@
 ﻿using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Diagnosis.Domain.Configurations;
+using CloudConsult.Diagnosis.Infrastructure.Producers;
 using Quartz;
 
 namespace CloudConsult.Diagnosis.Api.Extensions
@@ -25,7 +26,7 @@ namespace CloudConsult.Diagnosis.Api.Extensions
                 });
 
                 quartz.UseMicrosoftDependencyInjectionJobFactory();
-                //quartz.AddJobAndTrigger<DiagnosisReportProducer>(configuration);
+                quartz.AddJobAndTrigger<ReportUploadedProducer>(configuration);
             });
 
             services.AddQuartzHostedService(options =>

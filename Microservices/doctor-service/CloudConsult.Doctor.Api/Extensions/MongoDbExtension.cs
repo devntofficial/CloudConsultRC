@@ -17,9 +17,11 @@ namespace CloudConsult.Doctor.Api.Extensions
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(mongoDbConfiguration.Database);
             var doctorCollection = database.GetCollection<DoctorProfile>("DoctorProfiles");
+            var kycCollection = database.GetCollection<DoctorKyc>("DoctorKycEvents");
 
             services.AddSingleton(client);
             services.AddScoped(x => doctorCollection);
+            services.AddScoped(x => kycCollection);
         }
     }
 }

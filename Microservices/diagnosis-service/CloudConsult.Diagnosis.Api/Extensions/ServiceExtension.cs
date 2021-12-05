@@ -9,6 +9,7 @@ namespace CloudConsult.Diagnosis.Api.Extensions
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IEventService, EventService>();
         }
     }
 }

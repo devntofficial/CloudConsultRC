@@ -7,7 +7,9 @@ volumes:
     driver: local
   kafka_data:
     driver: local
-  mongodb_data_container:
+  mongodb_data:
+    driver: local
+  mssql_data:
     driver: local
 services:
   cloudconsult.consultation.api:
@@ -96,6 +98,7 @@ services:
 
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.7
+    container_name: CloudConsult.Zookeeper.Server
     networks:
       - cloud-consult
     ports:
@@ -107,6 +110,7 @@ services:
 
   kafkaserver:
     image: docker.io/bitnami/kafka:3
+    container_name: CloudConsult.Kafka.Server
     networks:
       - cloud-consult
     ports:
@@ -126,18 +130,20 @@ services:
 
   mssqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: CloudConsult.Sql.Server
     networks:
       - cloud-consult
     ports:
       - 1433:1433
     volumes:
-      - ~/apps/mssql/data:/var/lib/mssqlql/data
+      - mssql_data:/var/lib/mssqlql/data
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Itachi@123
 
   mongodbserver:
     image: mongo:latest
+    container_name: CloudConsult.MongoDb.Server
     networks:
       - cloud-consult
     environment:
@@ -146,4 +152,4 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongodb_data_container:/data/db
+      - mongodb_data:/data/db

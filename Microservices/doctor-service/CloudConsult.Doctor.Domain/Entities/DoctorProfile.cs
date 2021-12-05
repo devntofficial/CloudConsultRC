@@ -5,21 +5,16 @@ namespace CloudConsult.Doctor.Domain.Entities
 {
     public class DoctorProfile
     {
-        [BsonId] public ObjectId Id { get; set; }
-        public string IdentityId { get; set; }
-        public string FullName { get; set; }
-        public string Gender { get; set; }
-        public string EmailId { get; set; }
-        public string Address { get; set; }
-        public string AadhaarNo { get; set; }
-        public bool IsActive { get; set; }
-        public string ApprovalIdentityId { get; set; }
-        public string ApprovalComments { get; set; }
-        public string RejectionIdentityId { get; set; }
-        public string RejectionComments { get; set; }
-        public bool ProfileCreatedEventPublished { get; set; }
-        public bool ProfileUpdatedEventPublished { get; set; }
-
-        [BsonDateTimeOptions] public DateTime CreatedDate { get; set; }
+        [BsonId] public ObjectId Id { get; set; } = ObjectId.Empty;
+        public string IdentityId { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+        public string Gender { get; set; } = string.Empty ;
+        public string EmailId { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string AadhaarNo { get; set; } = string.Empty;
+        public bool IsActive { get; set; } = false;
+        public bool IsCreatedEventPublished { get; set; } = false;
+        public bool IsUpdatedEventPublished { get; set; } = false;
+        [BsonDateTimeOptions] public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     }
 }

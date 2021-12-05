@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CloudConsult.Doctor.Domain.Commands;
 
-public class RejectProfile : ICommand
+public class RejectKyc : ICommand
 {
     [JsonIgnore]
     public string ProfileId { get; set; }

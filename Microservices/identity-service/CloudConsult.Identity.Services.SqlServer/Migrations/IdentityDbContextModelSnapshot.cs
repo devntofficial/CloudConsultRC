@@ -76,16 +76,14 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
 
             modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserOtp", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ExpiryTimestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsEventPublished")
                         .HasColumnType("bit");
 
                     b.Property<int>("Otp")
@@ -95,6 +93,9 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserOtp");
                 });
@@ -125,6 +126,17 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserOtp", b =>
+                {
+                    b.HasOne("CloudConsult.Identity.Domain.Entities.User", "User")
+                        .WithOne("CurrentOtp")
+                        .HasForeignKey("CloudConsult.Identity.Domain.Entities.UserOtp", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("CloudConsult.Identity.Domain.Entities.Role", "Role")
@@ -146,6 +158,8 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
 
             modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.User", b =>
                 {
+                    b.Navigation("CurrentOtp");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

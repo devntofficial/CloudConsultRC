@@ -1,13 +1,15 @@
-﻿using CloudConsult.Doctor.Domain.Entities;
-using MongoDB.Bson;
+﻿using CloudConsult.Doctor.Domain.Events;
 
 namespace CloudConsult.Doctor.Domain.Services
 {
     public interface IEventService
     {
-        Task<IEnumerable<DoctorProfile>> GetUnpublishedNewProfiles(CancellationToken cancellationToken = default);
-        Task<IEnumerable<DoctorProfile>> GetUnpublishedUpdatedProfiles(CancellationToken cancellationToken = default);
-        Task SetProfileCreatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default);
-        Task SetProfileUpdatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<ProfileCreated>> GetPendingProfileCreatedEvents(CancellationToken cancellationToken = default);
+        Task<IEnumerable<ProfileUpdated>> GetPendingProfileUpdatedEvents(CancellationToken cancellationToken = default);
+        Task<IEnumerable<KycApproved>> GetPendingKycApprovedEvents(CancellationToken cancellationToken = default);
+        Task<IEnumerable<KycRejected>> GetPendingKycRejectedEvents(CancellationToken cancellationToken = default);
+        void SetProfileCreatedEventPublished(string profileId, CancellationToken cancellationToken = default);
+        void SetProfileUpdatedEventPublished(string profileId, CancellationToken cancellationToken = default);
+        void SetKycEventPublished(string eventId, CancellationToken cancellationToken = default);
     }
 }

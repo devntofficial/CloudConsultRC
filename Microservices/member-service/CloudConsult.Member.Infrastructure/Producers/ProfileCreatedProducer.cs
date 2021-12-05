@@ -50,7 +50,7 @@ namespace CloudConsult.Member.Infrastructure.Producers
                         Value = JsonSerializer.Serialize(mappedEvent)
                     }, cancelToken);
 
-                    await producerTask.ContinueWith(async deliveryTask =>
+                    await producerTask.ContinueWith(deliveryTask =>
                     {
                         if (deliveryTask.IsFaulted)
                         {
@@ -58,7 +58,7 @@ namespace CloudConsult.Member.Infrastructure.Producers
                         }
                         else
                         {
-                            await _eventService.SetProfileCreatedEventPublished(profile.Id, cancelToken);
+                            _eventService.SetProfileCreatedEventPublished(profile.Id, cancelToken);
                             _logger.LogInformation("Event published successfully");
                         }
                     }, cancelToken);

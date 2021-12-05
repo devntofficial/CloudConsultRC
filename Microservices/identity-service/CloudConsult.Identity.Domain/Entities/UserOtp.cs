@@ -4,22 +4,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CloudConsult.Identity.Domain.Entities
 {
     [Table("UserOtp")]
-    public sealed class UserOtp
+    public class UserOtp
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        [Required]
+        [ForeignKey("User")]
         public Guid UserId { get; set; }
 
         [Required]
         public int Otp { get; set; }
 
-        [Required]
-        public bool IsActive { get; set; } = true;
+        public DateTime ExpiryTimestamp { get; set; } = DateTime.UtcNow.AddMinutes(5);
 
         [Required]
-        public DateTime ExpiryTimestamp { get; set; }
+        public bool IsEventPublished { get; set; } = false;
+
+        [Required]
+
+        public virtual User User { get; set; }
     }
 }

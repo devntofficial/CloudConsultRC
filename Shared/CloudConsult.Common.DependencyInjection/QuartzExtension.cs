@@ -21,6 +21,6 @@ public static class QuartzExtension
         quartz.AddTrigger(opts => opts
             .ForJob(jobKey)
             .WithIdentity(jobName + "-Trigger")
-            .WithCronSchedule(cron));
+            .WithCronSchedule(cron, x => x.WithMisfireHandlingInstructionDoNothing()));
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace CloudConsult.Identity.Services.SqlServer.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,6 +42,27 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserOtp",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Otp = table.Column<int>(type: "int", nullable: false),
+                    ExpiryTimestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsEventPublished = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOtp", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserOtp_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 columns: table => new
                 {
@@ -67,6 +90,12 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserOtp_UserId",
+                table: "UserOtp",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
@@ -79,6 +108,9 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "UserOtp");
+
             migrationBuilder.DropTable(
                 name: "UserRoles");
 

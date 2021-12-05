@@ -7,7 +7,7 @@ namespace CloudConsult.Member.Domain.Services
     {
         Task<IEnumerable<MemberProfile>> GetUnpublishedNewProfiles(CancellationToken cancellationToken = default);
         Task<IEnumerable<MemberProfile>> GetUnpublishedUpdatedProfiles(CancellationToken cancellationToken = default);
-        Task SetProfileCreatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default);
-        Task SetProfileUpdatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default);
+        void SetProfileCreatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default);
+        void SetProfileUpdatedEventPublished(ObjectId profileId, CancellationToken cancellationToken = default);
     }
 }

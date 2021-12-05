@@ -13,8 +13,4 @@
     <ProjectReference Include="..\..\..\Shared\CloudConsult.Common\CloudConsult.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Events" />
-  </ItemGroup>
-
 </Project>

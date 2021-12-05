@@ -19,12 +19,12 @@ namespace CloudConsult.Diagnosis.Services.MongoDb.Services
             return await reportCollection.Find(x => x.IsEventPublished == false).ToListAsync(cancellationToken);
         }
 
-        public async Task SetIsEventPublished(ObjectId profileId, bool value, CancellationToken cancellationToken = default)
+        public void SetIsEventPublished(ObjectId profileId, bool value, CancellationToken cancellationToken = default)
         {
             var builder = Builders<DiagnosisReport>.Update;
             var update = builder.Set(x => x.IsEventPublished, value);
 
-            await reportCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            reportCollection.UpdateOne(x => x.Id == profileId, update, null, cancellationToken);
         }
     }
 }
