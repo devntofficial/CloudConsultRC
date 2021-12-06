@@ -3,19 +3,18 @@ using CloudConsult.Common.Validators;
 using CloudConsult.Doctor.Domain.Responses;
 using FluentValidation;
 
-namespace CloudConsult.Doctor.Domain.Queries
-{
-    public record DownloadKycDocuments : IQuery<KycDocumentResponse>
-    {
-        public string ProfileId { get; set; }
-    }
+namespace CloudConsult.Doctor.Domain.Queries;
 
-    public class DownloadKycDocumentsValidator : ApiValidator<DownloadKycDocuments>
+public record DownloadKycDocuments : IQuery<KycDocumentResponse>
+{
+    public string ProfileId { get; set; }
+}
+
+public class DownloadKycDocumentsValidator : ApiValidator<DownloadKycDocuments>
+{
+    public DownloadKycDocumentsValidator()
     {
-        public DownloadKycDocumentsValidator()
-        {
-            RuleFor(x => x.ProfileId).NotEmpty();
-            RuleFor(x => x.ProfileId).Must(BeValidMongoDbId).WithMessage("'ProfileId' has invalid format");
-        }
+        RuleFor(x => x.ProfileId).NotEmpty();
+        RuleFor(x => x.ProfileId).Must(BeValidMongoDbId).WithMessage("'ProfileId' has invalid format");
     }
 }

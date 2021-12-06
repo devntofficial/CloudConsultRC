@@ -4,22 +4,21 @@ using CloudConsult.Consultation.Services.SqlServer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
-namespace CloudConsult.Consultation.Api.Extensions
+namespace CloudConsult.Consultation.Api.Extensions;
+
+public class SqlServerExtension : IApiStartupExtension
 {
-    public class SqlServerExtension : IApiStartupExtension
+    public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
-        {
-            var config = new SqlServerConfiguration();
-            configuration.Bind(nameof(SqlServerConfiguration), config);
+        var config = new SqlServerConfiguration();
+        configuration.Bind(nameof(SqlServerConfiguration), config);
 
-            var builder = new StringBuilder();
-            builder.Append($"Server={config.HostName};");
-            builder.Append($"Database={config.Database};");
-            builder.Append($"User Id={config.Username};Password={config.Password};");
-            builder.Append($"MultipleActiveResultSets={config.MultipleActiveResultSets};");
+        var builder = new StringBuilder();
+        builder.Append($"Server={config.HostName};");
+        builder.Append($"Database={config.Database};");
+        builder.Append($"User Id={config.Username};Password={config.Password};");
+        builder.Append($"MultipleActiveResultSets={config.MultipleActiveResultSets};");
 
-            services.AddDbContext<ConsultationDbContext>(x => x.UseSqlServer(builder.ToString()));
-        }
+        services.AddDbContext<ConsultationDbContext>(x => x.UseSqlServer(builder.ToString()));
     }
 }

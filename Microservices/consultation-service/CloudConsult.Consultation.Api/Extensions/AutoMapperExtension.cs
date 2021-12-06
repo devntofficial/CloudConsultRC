@@ -1,19 +1,16 @@
-﻿using CloudConsult.Consultation.Infrastructure.Mappers;
-using CloudConsult.Common.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using CloudConsult.Common.DependencyInjection;
+using CloudConsult.Consultation.Infrastructure.Mappers;
 
-namespace CloudConsult.Consultation.Api.Extensions
+namespace CloudConsult.Consultation.Api.Extensions;
+
+public class AutoMapperExtension : IApiStartupExtension
 {
-    public class AutoMapperExtension: IApiStartupExtension
+    public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        services.AddAutoMapper(x =>
         {
-            services.AddAutoMapper(x =>
-            {
-                x.AddProfile<AvailabilityMapper>();
-                x.AddProfile<ConsultationMapper>();
-            });
-        }
+            x.AddProfile<AvailabilityMapper>();
+            x.AddProfile<ConsultationMapper>();
+        });
     }
 }

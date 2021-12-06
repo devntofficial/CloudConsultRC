@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using CloudConsult.Consultation.Domain.Entities;
+﻿using CloudConsult.Consultation.Domain.Entities;
 
-namespace CloudConsult.Consultation.Domain.Services
+namespace CloudConsult.Consultation.Domain.Services;
+
+public interface IConsultationEventService
 {
-    public interface IConsultationEventService
-    {
-        Task<IEnumerable<ConsultationBooking>> GetUnpublishedBookingEvents(CancellationToken cancellationToken = default);
-        Task UpdateBookingEventPublished(Guid id, CancellationToken cancellationToken = default);
-    }
+    Task<IEnumerable<ConsultationBooking>> GetUnpublishedBookingEvents(CancellationToken cancellationToken = default);
+    Task UpdateBookingEventPublished(Guid id, CancellationToken cancellationToken = default);
 }

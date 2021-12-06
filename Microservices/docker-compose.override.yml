@@ -2,15 +2,6 @@ version: '3.4'
 networks:
   cloud-consult:
     external: true
-volumes:
-  zookeeper_data:
-    driver: local
-  kafka_data:
-    driver: local
-  mongodb_data:
-    driver: local
-  mssql_data:
-    driver: local
 services:
   cloudconsult.consultation.api:
     networks:
@@ -24,10 +15,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    depends_on:
-      - zookeeper
-      - kafkaserver
-      - mssqlserver
   
   cloudconsult.doctor.api:
     networks:
@@ -41,10 +28,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    depends_on:
-      - zookeeper
-      - kafkaserver
-      - mongodbserver
 
   cloudconsult.identity.api:
     networks:
@@ -58,10 +41,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    depends_on:
-      - zookeeper
-      - kafkaserver
-      - mssqlserver
 
   cloudconsult.member.api:
     networks:
@@ -75,10 +54,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-    depends_on:
-      - zookeeper
-      - kafkaserver
-      - mongodbserver
 
   cloudconsult.diagnosis.api:
     networks:
@@ -91,65 +66,21 @@ services:
       - "6011:443"
     volumes:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  cloudconsult.notification.api:
+    networks:
+      - cloud-consult
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "7000:80"
+      - "7001:443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     depends_on:
-      - zookeeper
-      - kafkaserver
-      - mongodbserver
-
-  zookeeper:
-    image: docker.io/bitnami/zookeeper:3.7
-    container_name: CloudConsult.Zookeeper.Server
-    networks:
-      - cloud-consult
-    ports:
-      - "2181:2181"
-    volumes:
-      - "zookeeper_data:/bitnami"
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-
-  kafkaserver:
-    image: docker.io/bitnami/kafka:3
-    container_name: CloudConsult.Kafka.Server
-    networks:
-      - cloud-consult
-    ports:
-      - "9092:9092"
-      - "29092:29092"
-    volumes:
-      - "kafka_data:/bitnami"
-    environment:
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafkaserver:9092,PLAINTEXT_HOST://localhost:29092
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-    depends_on:
-      - zookeeper
-
-  mssqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: CloudConsult.Sql.Server
-    networks:
-      - cloud-consult
-    ports:
-      - 1433:1433
-    volumes:
-      - mssql_data:/var/lib/mssqlql/data
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Itachi@123
-
-  mongodbserver:
-    image: mongo:latest
-    container_name: CloudConsult.MongoDb.Server
-    networks:
-      - cloud-consult
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    ports:
-      - 27017:27017
-    volumes:
-      - mongodb_data:/data/db
+      - cloudconsult.consultation.api
+      - cloudconsult.doctor.api
+      - cloudconsult.member.api
+      - cloudconsult.identity.api
+      - cloudconsult.diagnosis.api

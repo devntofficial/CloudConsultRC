@@ -1,7 +1,11 @@
 ﻿using CloudConsult.Common.DependencyInjection;
+using CloudConsult.Notification.Api.Consumers;
+using Kafka.Public;
+using Kafka.Public.Loggers;
+using MailKit.Net.Smtp;
 using System.Text.Json.Serialization;
 
-namespace CloudConsult.Consultation.Api.Extensions;
+namespace CloudConsult.Notification.Api.Extensions;
 
 public class ApiExtension : IApiStartupExtension
 {
@@ -13,9 +17,10 @@ public class ApiExtension : IApiStartupExtension
             options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.Strict;
         });
-        services.AddCors(o => o.AddPolicy("ConsultationServicePolicy", builder =>
+        services.AddCors(o => o.AddPolicy("NotificationServicePolicy", builder =>
         {
             builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
         }));
+        
     }
 }

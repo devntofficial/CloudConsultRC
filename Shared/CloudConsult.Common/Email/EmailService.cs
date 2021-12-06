@@ -13,10 +13,10 @@ public class EmailService : IEmailService
         _config = config;
     }
 
-    public async Task SendTextMail(EmailServiceTextParameters param)
+    public async Task SendTextMail(EmailServiceTextParameters param, SmtpClient emailClient)
     {
         var message = new MimeMessage();
-        message.From.Add(new MailboxAddress(param.FromDisplayName, param.FromEmail));
+        message.From.Add(new MailboxAddress(param.FromDisplayName ?? "Cloud Consult", param.FromEmail ?? _config.Username));
         message.To.Add(new MailboxAddress(param.ToDisplayName, param.ToEmail));
         message.Subject = param.Subject;
 
@@ -25,10 +25,9 @@ public class EmailService : IEmailService
             Text = param.Message
         };
 
-        using var client = new SmtpClient();
-        await client.ConnectAsync(_config.HostName, _config.Port, _config.UseSSL);
-        await client.AuthenticateAsync(_config.Username, _config.Password);
-        await client.SendAsync(message);
-        await client.DisconnectAsync(true);
+        await emailClient.ConnectAsync(_config.HostName, _config.Port, _config.UseSSL);
+        await emailClient.AuthenticateAsync(_config.Username, _config.Password);
+        await emailClient.SendAsync(message);
+        await emailClient.DisconnectAsync(true);
     }
 }

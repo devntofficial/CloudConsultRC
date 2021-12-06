@@ -1,23 +1,61 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using CloudConsult.Common.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Serilog;
+using Serilog.Events;
 
-namespace CloudConsult.Notification.Api
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .CreateBootstrapLogger();
+
+try
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    var builder = WebApplication.CreateBuilder(args);
+    var config = builder.Configuration as IConfiguration;
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+    // Serilog setup
+    builder.Host
+        .UseSerilog((context, services, configuration) => configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext()
+        .WriteTo.Console());
+
+    // Add services to the container.
+    builder.Services.AddCommonExtensionsFromCurrentAssembly(config);
+    builder.Services.AddCommonSwaggerDocs(config);
+    builder.Services.AddCommonApiVersioning();
+    builder.Services.AddCommonEmailService(config);
+    
+    var app = builder.Build();
+    var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger(options => { options.RouteTemplate = "api-docs/{documentName}/docs.json"; });
+        app.UseSwaggerUI(options =>
+        {
+            options.RoutePrefix = "api-docs";
+            foreach (var description in versionProvider.ApiVersionDescriptions)
+                options.SwaggerEndpoint($"/api-docs/{description.GroupName}/docs.json",
+                    $"Cloud Consult - Notification API Reference {description.GroupName}");
+        });
     }
+
+    app.UseSerilogRequestLogging();
+    app.UseHttpsRedirection();
+    app.UseRouting();
+    app.UseCors("NotificationServicePolicy");
+
+    app.MapControllers();
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Unhandled exception");
+}
+finally
+{
+    Log.Information("Notification Service - Shut down complete");
+    Log.CloseAndFlush();
 }

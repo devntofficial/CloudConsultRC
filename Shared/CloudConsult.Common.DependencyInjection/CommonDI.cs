@@ -108,7 +108,7 @@ public static class CommonDI
         configuration.Bind(nameof(emailServiceConfiguration), emailServiceConfiguration);
         services.AddSingleton(emailServiceConfiguration);
 
-        services.AddScoped<IEmailService, EmailService>();
+        services.AddTransient<IEmailService, EmailService>();
     }
 
     public static IServiceCollection AddCommonHashingService(this IServiceCollection services)

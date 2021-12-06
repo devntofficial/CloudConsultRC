@@ -69,6 +69,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.Diagnosis.Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.Diagnosis.Services.MongoDb", "diagnosis-service\CloudConsult.Diagnosis.Services.MongoDb\CloudConsult.Diagnosis.Services.MongoDb.csproj", "{BC2EDA7C-5B4A-4165-ABF9-EB5290DABA72}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.Notification.Api", "notification-service\CloudConsult.Notification.Api\CloudConsult.Notification.Api.csproj", "{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -496,6 +498,24 @@ Global
 		{BC2EDA7C-5B4A-4165-ABF9-EB5290DABA72}.Release|x64.Build.0 = Release|Any CPU
 		{BC2EDA7C-5B4A-4165-ABF9-EB5290DABA72}.Release|x86.ActiveCfg = Release|Any CPU
 		{BC2EDA7C-5B4A-4165-ABF9-EB5290DABA72}.Release|x86.Build.0 = Release|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Debug|x64.Build.0 = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Debug|x86.Build.0 = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.NoVariablesDefault|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.NoVariablesDefault|Any CPU.Build.0 = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.NoVariablesDefault|x64.ActiveCfg = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.NoVariablesDefault|x64.Build.0 = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.NoVariablesDefault|x86.ActiveCfg = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.NoVariablesDefault|x86.Build.0 = Debug|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Release|x64.ActiveCfg = Release|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Release|x64.Build.0 = Release|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Release|x86.ActiveCfg = Release|Any CPU
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -523,6 +543,7 @@ Global
 		{68995E90-2C0A-4ABC-9D1C-47BF89C05C48} = {669BBB83-139E-40C3-8CB4-3A9F2603CA6E}
 		{0F76D419-7FD4-487C-BE76-86887A608215} = {669BBB83-139E-40C3-8CB4-3A9F2603CA6E}
 		{BC2EDA7C-5B4A-4165-ABF9-EB5290DABA72} = {669BBB83-139E-40C3-8CB4-3A9F2603CA6E}
+		{7DEFD7DD-8955-48CD-8492-FCDDDF3AB909} = {D74BCAFA-CE86-4850-9889-02A6CF6C8ECE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4449518A-91F7-4C25-AE26-8CBAEA014A79}

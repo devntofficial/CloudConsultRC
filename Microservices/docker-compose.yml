@@ -34,3 +34,10 @@ services:
       context: .
       dockerfile: diagnosis-service/CloudConsult.Diagnosis.Api/Dockerfile
 
+
+  cloudconsult.notification.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultnotificationapi
+    build:
+      context: .
+      dockerfile: notification-service/CloudConsult.Notification.Api/Dockerfile
+

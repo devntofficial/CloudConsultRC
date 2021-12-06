@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
+﻿namespace CloudConsult.Consultation.Domain.Responses;
 
-namespace CloudConsult.Consultation.Domain.Responses
+public record DoctorAvailabilityResponse
 {
-    public record DoctorAvailabilityResponse
-    {
-        public string DoctorId { get; set; }
-        public Dictionary<string, List<string>> AvailabilityMap { get; set; }
-    }
+    public string DoctorId { get; set; }
+    public Dictionary<string, List<string>> AvailabilityMap { get; set; }
 }

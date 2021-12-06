@@ -1,13 +1,11 @@
-﻿using System;
-using System.Text.Json;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CloudConsult.Consultation.Domain.Configurations;
 using CloudConsult.Consultation.Domain.Events;
 using CloudConsult.Consultation.Domain.Services;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Quartz;
+using System.Text.Json;
 
 namespace CloudConsult.Consultation.Infrastructure.Producers
 {
@@ -18,7 +16,7 @@ namespace CloudConsult.Consultation.Infrastructure.Producers
         private readonly IProducer<Null, string> _producer;
         private readonly IConsultationEventService _eventService;
         private readonly QuartzConfiguration _config;
-        
+
         public ConsultationBookedProducer(
             ILogger<ConsultationBookedProducer> logger,
             IMapper mapper,
@@ -32,7 +30,7 @@ namespace CloudConsult.Consultation.Infrastructure.Producers
             _eventService = eventService;
             _config = config;
         }
-        
+
         public async Task Execute(IJobExecutionContext context)
         {
             try

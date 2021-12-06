@@ -1,42 +1,38 @@
-﻿using System;
-using CloudConsult.Common.DependencyInjection;
+﻿using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Consultation.Domain.Configurations;
 using CloudConsult.Consultation.Infrastructure.Producers;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
-namespace CloudConsult.Consultation.Api.Extensions
+namespace CloudConsult.Consultation.Api.Extensions;
+
+public class QuartzExtension : IApiStartupExtension
 {
-    public class QuartzExtension : IApiStartupExtension
+    public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        var config = new QuartzConfiguration();
+        configuration.Bind(nameof(QuartzConfiguration), config);
+        services.AddSingleton(config);
+
+        services.AddQuartz(quartz =>
         {
-            var config = new QuartzConfiguration();
-            configuration.Bind(nameof(QuartzConfiguration), config);
-            services.AddSingleton(config);
-            
-            services.AddQuartz(quartz =>
+            quartz.SchedulerId = config.SchedulerId;
+            quartz.SchedulerName = config.SchedulerName;
+            quartz.MisfireThreshold = TimeSpan.FromSeconds(config.MisfireThresholdInSeconds);
+
+            quartz.UseInMemoryStore();
+            quartz.UseDefaultThreadPool(opt =>
             {
-                quartz.SchedulerId = config.SchedulerId;
-                quartz.SchedulerName = config.SchedulerName;
-                quartz.MisfireThreshold = TimeSpan.FromSeconds(config.MisfireThresholdInSeconds);
-                
-                quartz.UseInMemoryStore();
-                quartz.UseDefaultThreadPool(opt =>
-                {
-                    opt.MaxConcurrency = config.ThreadPoolMaxSize;
-                });
-                
-                quartz.UseMicrosoftDependencyInjectionJobFactory();
-                quartz.AddJobAndTrigger<ConsultationBookedProducer>(configuration);
+                opt.MaxConcurrency = config.ThreadPoolMaxSize;
             });
-            
-            services.AddQuartzHostedService(options =>
-            {
-                options.StartDelay = TimeSpan.FromSeconds(config.StartDelayInSeconds);
-                options.WaitForJobsToComplete = true;
-            });
-        }
+
+            quartz.UseMicrosoftDependencyInjectionJobFactory();
+            quartz.AddJobAndTrigger<ConsultationBookedProducer>(configuration);
+        });
+
+        services.AddQuartzHostedService(options =>
+        {
+            options.StartDelay = TimeSpan.FromSeconds(config.StartDelayInSeconds);
+            options.WaitForJobsToComplete = true;
+        });
     }
 }
