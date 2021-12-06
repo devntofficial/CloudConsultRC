@@ -17,6 +17,7 @@
         {
             public const string GetPending = Root + "/kyc/pending";
             public const string Upload = Root + "/{ProfileId}/kyc/upload";
+            public const string Download = Root + "/{ProfileId}/kyc/download";
             public const string Approve = Root + "/{ProfileId}/kyc/approve";
             public const string Reject = Root + "/{ProfileId}/kyc/reject";
         }

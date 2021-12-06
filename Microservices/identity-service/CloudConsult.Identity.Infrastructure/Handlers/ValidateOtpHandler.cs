@@ -44,7 +44,7 @@ namespace CloudConsult.Identity.Infrastructure.Handlers
 
             return builder.CreateSuccessResponse(x =>
             {
-                x.WithSuccessCode(StatusCodes.Status204NoContent);
+                x.WithSuccessCode(StatusCodes.Status200OK);
                 x.WithMessages("Otp is valid");
             });
         }
