@@ -1,0 +1,43 @@
+﻿@page "/register"
+@layout LoginLayout
+@inherits RegisterComponent
+
+<MudText Typo="Typo.h4" GutterBottom="true">
+    Sign Up
+</MudText>
+<MudText>
+    Already have an account? <MudLink Href="/login">Sign In</MudLink>
+</MudText>
+
+<MudTextField @bind-Value="@registrationModel.FullName" T="string" Label="Full Name" Variant="Variant.Outlined" Class="my-4">
+</MudTextField>
+
+<MudTextField @bind-Value="@registrationModel.EmailId" T="string" Label="E-mail" Variant="Variant.Outlined">
+</MudTextField>
+
+<MudTextField @bind-Value="@registrationModel.Password" Label="Password" Variant="Variant.Outlined"
+              InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon"
+              OnAdornmentClick="TogglePasswordVisibility" Class="mt-4"/>
+
+<MudSelect T="int" @bind-Value="@registrationModel.RoleId" Variant="Variant.Outlined" Label="Role" Strict="true" Class="mt-4">
+    @foreach(var role in rolesModel)
+    {
+        <MudSelectItem Value="@(role.Id)">@role.RoleName</MudSelectItem>
+    }
+</MudSelect>
+
+<MudCheckBox @bind-Checked="@AgreeToTerms" Label="I agree to the terms and privacy"
+             Color="Color.Primary" Class="ml-n1 my-3">
+</MudCheckBox>
+<MudButton OnClick="RegisterButtonClick" Variant="Variant.Filled" Color="Color.Primary"
+           Disabled="@(!AgreeToTerms || ShowLoadingSpinner)" Size="Size.Large" FullWidth="true">
+    @if (ShowLoadingSpinner)
+    {
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        <MudText Class="ms-2">Registering account...</MudText>
+    }
+    else
+    {
+        <MudText>Register</MudText>
+    }
+</MudButton>

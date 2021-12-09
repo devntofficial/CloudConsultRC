@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  cloudconsult.consultation.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultconsultationapi
+    build:
+      context: .
+      dockerfile: consultation-service/CloudConsult.Consultation.Api/Dockerfile
+
+  cloudconsult.doctor.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultdoctorapi
+    build:
+      context: .
+      dockerfile: doctor-service/CloudConsult.Doctor.Api/Dockerfile
+
+
+  cloudconsult.identity.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultidentityapi
+    build:
+      context: .
+      dockerfile: identity-service/CloudConsult.Identity.Api/Dockerfile
+
+
+  cloudconsult.member.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultmemberapi
+    build:
+      context: .
+      dockerfile: member-service/CloudConsult.Member.Api/Dockerfile
+
+
+  cloudconsult.diagnosis.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultdiagnosisapi
+    build:
+      context: .
+      dockerfile: diagnosis-service/CloudConsult.Diagnosis.Api/Dockerfile
+
+
+  cloudconsult.notification.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultnotificationapi
+    build:
+      context: .
+      dockerfile: notification-service/CloudConsult.Notification.Api/Dockerfile
+

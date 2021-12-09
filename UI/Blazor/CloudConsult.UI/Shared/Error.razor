@@ -1,0 +1,19 @@
+﻿@using Microsoft.Extensions.Logging
+@inject ILogger<Error> _logger
+@inject ISnackbar _snackbar
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public void ProcessError(Exception ex)
+    {
+        _logger.LogError("Error:ProcessError - Type: {Type} Message: {Message}", ex.GetType(), ex.Message);
+        //_snackbar.Add(ex.Message, Severity.Error); //use in development
+        _snackbar.Add("An unknown error occured. Please contact customer support.", Severity.Error);
+    }
+}

@@ -1,0 +1,62 @@
+﻿<PersonCard Style="background-color: var(--mud-palette-drawer-background);color: var(--mud-palette-drawer-text);" />
+<MudDivider Class="mb-4" />
+<MudNavMenu>
+    <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Personal</b></MudText>
+    <MudNavLink Href="/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
+    <MudNavLink Href="/profile" Icon="@Icons.Material.Outlined.Person">Profile</MudNavLink>
+    
+    <AuthorizeView Roles="Doctor">
+        <MudNavLink Href="/kyc" Icon="@Icons.Material.Outlined.DocumentScanner">KYC Documents</MudNavLink>
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Consultation</b></MudText>
+            <MudNavLink Href="/availability-scheduler" Icon="@Icons.Material.Outlined.FreeCancellation">Available Timeslots</MudNavLink>
+        <MudNavLink Href="/pending-consultation-requests" Icon="@Icons.Material.Outlined.PendingActions">Pending Requests</MudNavLink>
+        <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Consultation History</MudNavLink>
+        
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Diagnosis</b></MudText>
+        <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.HealthAndSafety">Upload Diagnosis Report</MudNavLink>
+        <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Diagnosis Report History</MudNavLink>
+        
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Support</b></MudText>
+        <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Raise Complaint</MudNavLink>
+        <MudNavLink Href="/track-complaint-progress" Icon="@Icons.Material.Outlined.TrackChanges">Track Complaint Progress</MudNavLink>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="Member">
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Consultation</b></MudText>
+        
+        <MudNavLink Href="/book-consultation" Icon="@Icons.Material.Outlined.FreeCancellation">Book Consultation</MudNavLink>
+        <MudNavLink Href="/pending-consultation-requests" Icon="@Icons.Material.Outlined.PendingActions">Pending Requests</MudNavLink>
+        <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Consultation History</MudNavLink>
+        <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.HealthAndSafety">View Diagnosis Reports</MudNavLink>
+        
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Support</b></MudText>
+        
+        <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Raise Complaint</MudNavLink>
+        <MudNavLink Href="/track-complaint-progress" Icon="@Icons.Material.Outlined.TrackChanges">Track Complaint Progress</MudNavLink>
+        <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Submit Feedback</MudNavLink>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="Administrator">
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>User Management</b></MudText>
+
+        <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.FreeCancellation">Register User</MudNavLink>
+        <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.FreeCancellation">Block/Unblock User</MudNavLink>
+        <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.FreeCancellation">Approve Doctor KYC</MudNavLink>
+
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Consultation</b></MudText>
+        <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.FreeCancellation">Upload Doctor Availability</MudNavLink>
+        <MudNavLink Href="/pending-consultation-requests" Icon="@Icons.Material.Outlined.PendingActions">Book Consultation</MudNavLink>
+        <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Consultation History</MudNavLink>
+        
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Diagnosis</b></MudText>
+        <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.HealthAndSafety">Upload Diagnosis Report</MudNavLink>
+        <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Diagnosis Report History</MudNavLink>
+        
+        <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Support Requests</b></MudText>
+        <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Active Complaints</MudNavLink>
+        <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Assigned To Me</MudNavLink>
+
+    </AuthorizeView>
+</MudNavMenu>
+
+@code { string AlertAssignmentIcon { get; set; } = "<path d=\"M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H9.18C9.6,1.84 10.7,1 12,1C13.3,1 14.4,1.84 14.82,3H19M12,3A1,1 0 0,0 11,4A1,1 0 0,0 12,5A1,1 0 0,0 13,4A1,1 0 0,0 12,3M7,7V5H5V19H19V5H17V7H7M11,9H13V13.5H11V9M11,15H13V17H11V15Z\" />"; } 
