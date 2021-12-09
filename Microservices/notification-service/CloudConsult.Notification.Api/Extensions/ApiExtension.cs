@@ -1,8 +1,4 @@
 ﻿using CloudConsult.Common.DependencyInjection;
-using CloudConsult.Notification.Api.Consumers;
-using Kafka.Public;
-using Kafka.Public.Loggers;
-using MailKit.Net.Smtp;
 using System.Text.Json.Serialization;
 
 namespace CloudConsult.Notification.Api.Extensions;
@@ -21,6 +17,6 @@ public class ApiExtension : IApiStartupExtension
         {
             builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
         }));
-        
+
     }
 }

@@ -45,5 +45,10 @@ namespace CloudConsult.Common.Validators
         {
             return value.All(x => char.IsLetter(x) || char.IsWhiteSpace(x));
         }
+
+        public bool BeValidGender(string value)
+        {
+            return value == "Female" || value == "Male" || value.ToUpper() == "N/A";
+        }
     }
 }

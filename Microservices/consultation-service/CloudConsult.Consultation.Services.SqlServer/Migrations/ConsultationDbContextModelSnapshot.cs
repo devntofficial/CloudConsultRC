@@ -34,14 +34,18 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                     b.Property<DateTime>("BookingStartDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DiagnosisReportId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DoctorId")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DiagnosisReportId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DoctorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorProfileId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -60,11 +64,11 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                     b.Property<bool>("IsPaymentComplete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PatientId")
+                    b.Property<string>("PatientName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PatientName")
+                    b.Property<string>("PatientProfileId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

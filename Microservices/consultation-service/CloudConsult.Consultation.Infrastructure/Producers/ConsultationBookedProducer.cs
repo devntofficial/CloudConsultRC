@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using CloudConsult.Consultation.Domain.Configurations;
-using CloudConsult.Consultation.Domain.Events;
+﻿using CloudConsult.Consultation.Domain.Configurations;
 using CloudConsult.Consultation.Domain.Services;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
@@ -11,24 +9,18 @@ namespace CloudConsult.Consultation.Infrastructure.Producers
 {
     public class ConsultationBookedProducer : IJob
     {
-        private readonly ILogger<ConsultationBookedProducer> _logger;
-        private readonly IMapper _mapper;
-        private readonly IProducer<Null, string> _producer;
-        private readonly IConsultationEventService _eventService;
-        private readonly QuartzConfiguration _config;
+        private readonly ILogger<ConsultationBookedProducer> logger;
+        private readonly IProducer<Null, string> producer;
+        private readonly IEventService eventService;
+        private readonly QuartzConfiguration config;
 
-        public ConsultationBookedProducer(
-            ILogger<ConsultationBookedProducer> logger,
-            IMapper mapper,
-            IProducer<Null, string> producer,
-            IConsultationEventService eventService,
-            QuartzConfiguration config)
+        public ConsultationBookedProducer(ILogger<ConsultationBookedProducer> logger, IProducer<Null, string> producer,
+            IEventService eventService, QuartzConfiguration config)
         {
-            _logger = logger;
-            _mapper = mapper;
-            _producer = producer;
-            _eventService = eventService;
-            _config = config;
+            this.logger = logger;
+            this.producer = producer;
+            this.eventService = eventService;
+            this.config = config;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -36,38 +28,33 @@ namespace CloudConsult.Consultation.Infrastructure.Producers
             try
             {
                 var cancelToken = context.CancellationToken;
-                var topicName = _config.Jobs.ConsultationBookedProducer.TopicName;
+                var topicName = config.Jobs.ConsultationBookedProducer.TopicName;
 
-                _logger.LogInformation("Looking for any new consultations booked recently");
-
-                var consultationEvents = await _eventService.GetUnpublishedBookingEvents(cancelToken);
-                foreach (var consultation in consultationEvents)
+                var unpublishedEvents = await eventService.GetPendingConsultationBookedEvents(cancelToken);
+                foreach (var unpublishedEvent in unpublishedEvents)
                 {
-                    var mappedEvent = _mapper.Map<ConsultationBooked>(consultation);
-
-                    var producerTask = _producer.ProduceAsync(topicName, new Message<Null, string>
+                    var producerTask = producer.ProduceAsync(topicName, new Message<Null, string>
                     {
-                        Value = JsonSerializer.Serialize(mappedEvent)
+                        Value = JsonSerializer.Serialize(unpublishedEvent)
                     }, cancelToken);
 
-                    await producerTask.ContinueWith(async deliveryTask =>
+                    await producerTask.ContinueWith(deliveryTask =>
                     {
                         if (deliveryTask.IsFaulted)
                         {
-                            _logger.LogError("Could not produce message to kafka broker");
+                            logger.LogError($"({unpublishedEvent.Id}) -> Could not produce consultation booked event message to kafka broker");
                         }
                         else
                         {
-
-                            await _eventService.UpdateBookingEventPublished(consultation.Id, cancelToken);
-                            _logger.LogInformation("Event published successfully");
+                            eventService.SetConsultationBookedEventPublished(unpublishedEvent.Id);
+                            logger.LogInformation($"({unpublishedEvent.Id}) -> Consultation booked event published successfully");
                         }
                     }, cancelToken);
                 }
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                logger.LogCritical(e.Message);
             }
         }
     }

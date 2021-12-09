@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 {
     [DbContext(typeof(ConsultationDbContext))]
-    [Migration("20211128211750_BookingStatusColumn")]
-    partial class BookingStatusColumn
+    [Migration("20211208190322_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,10 +36,18 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                     b.Property<DateTime>("BookingStartDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DiagnosisReportId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DoctorId")
+                    b.Property<string>("DoctorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorProfileId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -58,7 +66,11 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                     b.Property<bool>("IsPaymentComplete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PatentId")
+                    b.Property<string>("PatientName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientProfileId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

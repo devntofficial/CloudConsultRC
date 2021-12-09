@@ -23,7 +23,9 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
 
         public async Task<DoctorProfile> Update(DoctorProfile profile, CancellationToken cancellationToken = default)
         {
-            var filter = Builders<DoctorProfile>.Filter.Eq(x => x.Id, profile.Id);
+            var filter = Builders<DoctorProfile>.Filter.And(
+                Builders<DoctorProfile>.Filter.Eq(x => x.Id, profile.Id),
+                Builders<DoctorProfile>.Filter.Eq(x => x.IdentityId, profile.IdentityId));
 
             var builder = Builders<DoctorProfile>.Update;
             var update = builder
@@ -32,12 +34,18 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
                 .Set(x => x.Gender, profile.Gender)
                 .Set(x => x.AadhaarNo, profile.AadhaarNo)
                 .Set(x => x.EmailId, profile.EmailId)
-                .Set(x => x.FullName, profile.FullName);
+                .Set(x => x.FullName, profile.FullName)
+                .Set(x => x.DateOfBirth, profile.DateOfBirth)
+                .Set(x => x.MobileNo, profile.MobileNo)
+                .Set(x => x.Speciality, profile.Speciality);
 
-            var returnedDoctor = await profileCollection
-                .FindOneAndUpdateAsync<DoctorProfile>(filter, update, null, cancellationToken);
+            var returnedDoctor = await profileCollection.FindOneAndUpdateAsync(filter, update,
+                new FindOneAndUpdateOptions<DoctorProfile, DoctorProfile>
+                {
+                    ReturnDocument = ReturnDocument.After
+                }, cancellationToken);
 
-            return returnedDoctor is null ? null : profile;
+            return returnedDoctor;
         }
 
         public async Task<DoctorProfile> GetById(string profileId, CancellationToken cancellationToken = default)

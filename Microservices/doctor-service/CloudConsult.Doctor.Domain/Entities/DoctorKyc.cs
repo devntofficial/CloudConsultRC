@@ -7,6 +7,8 @@ namespace CloudConsult.Doctor.Domain.Entities
     {
         [BsonId] public ObjectId Id { get; set; } = ObjectId.Empty;
         public ObjectId ProfileId { get; set; } = ObjectId.Empty;
+        public string EmailId { get; set; }
+        public string FullName { get; set; }
         public bool IsApproved { get; set; } = false;
         public string AdministratorId { get; set; } = string.Empty;
         public string Comments { get; set; } = string.Empty;

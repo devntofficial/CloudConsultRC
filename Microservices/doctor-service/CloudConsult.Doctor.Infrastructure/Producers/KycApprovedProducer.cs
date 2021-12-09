@@ -47,7 +47,7 @@ namespace CloudConsult.Doctor.Infrastructure.Producers
                         }
                         else
                         {
-                            eventService.SetKycEventPublished(unpublishedEvent.ProfileId, cancelToken);
+                            eventService.SetKycEventPublished(unpublishedEvent.ProfileId);
                             logger.LogInformation($"({unpublishedEvent.ProfileId}) -> Kyc approved event published successfully");
                         }
                     }, cancelToken);

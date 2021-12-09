@@ -4,7 +4,7 @@ using Serilog;
 using Serilog.Events;
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .CreateBootstrapLogger();
 
 try

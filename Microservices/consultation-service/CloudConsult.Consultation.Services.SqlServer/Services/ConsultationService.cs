@@ -19,7 +19,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
         public async Task<string> BookConsultation(ConsultationBooking booking, CancellationToken cancellationToken = default)
         {
             var timeSlot = await _db.DoctorAvailabilities
-                .Where(x => x.DoctorId == booking.DoctorId &&
+                .Where(x => x.DoctorId == booking.DoctorProfileId &&
                             x.TimeSlotStart == booking.BookingStartDateTime &&
                             x.TimeSlotEnd == booking.BookingEndDateTime)
                 .SingleOrDefaultAsync(cancellationToken);
@@ -45,7 +45,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
 
         public async Task<List<ConsultationBooking>> GetByDoctorId(string doctorId, CancellationToken cancellationToken = default)
         {
-            return await _db.ConsultationBookings.Where(x => x.DoctorId.Equals(doctorId)).ToListAsync(cancellationToken);
+            return await _db.ConsultationBookings.Where(x => x.DoctorProfileId.Equals(doctorId)).ToListAsync(cancellationToken);
         }
 
         public async Task<GetConsultationByIdResponse> GetById(string id, CancellationToken cancellationToken = default)
@@ -55,9 +55,9 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
                 .Select(x => new GetConsultationByIdResponse
                 {
                     Id = x.Id.ToString(),
-                    DoctorId = x.DoctorId,
+                    DoctorId = x.DoctorProfileId,
                     DoctorName = x.DoctorName,
-                    PatientId = x.PatientId,
+                    PatientId = x.PatientProfileId,
                     PatientName = x.PatientName,
                     BookingDate = x.BookingStartDateTime.ToString("dd-MM-yyyy"),
                     BookingTimeSlot = $"{x.BookingStartDateTime:HH:mm}-{x.BookingEndDateTime:HH:mm}",

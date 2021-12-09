@@ -7,21 +7,24 @@ namespace CloudConsult.Consultation.Domain.Commands;
 
 public record BookConsultation : ICommand<String>
 {
-    public string DoctorId { get; set; }
+    public string DoctorProfileId { get; set; }
     public string DoctorName { get; set; }
-    public string PatientId { get; set; }
+    public string DoctorEmailId { get; set; }
+    public string PatientProfileId { get; set; }
     public string PatientName { get; set; }
+    public string PatientEmailId { get; set; }
     public string BookingDate { get; set; }
     public string BookingTimeSlot { get; set; }
+    public string Description { get; set; }
 }
 
 public class BookConsultationCommandValidator : ApiValidator<BookConsultation>
 {
     public BookConsultationCommandValidator()
     {
-        RuleFor(x => x.DoctorId).NotEmpty();
+        RuleFor(x => x.DoctorProfileId).NotEmpty();
         RuleFor(x => x.DoctorName).NotEmpty();
-        RuleFor(x => x.PatientId).NotEmpty();
+        RuleFor(x => x.PatientProfileId).NotEmpty();
         RuleFor(x => x.PatientName).NotEmpty();
         RuleFor(x => x.BookingDate).NotEmpty();
         RuleFor(x => x.BookingDate).Must(HaveValidDateFormat).WithMessage("Invalid BookingDate entered");

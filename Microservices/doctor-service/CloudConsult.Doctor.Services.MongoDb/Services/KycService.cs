@@ -20,9 +20,15 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
         public async Task<bool> Approve(ApproveKyc command, CancellationToken cancellationToken = default)
         {
             var profileId = ObjectId.Parse(command.ProfileId);
+            var profile = await profileCollection.Find(x => x.Id == profileId).FirstAsync();
+
+            if (profile is null) return false;
+
             await kycCollection.InsertOneAsync(new DoctorKyc
             {
                 ProfileId = profileId,
+                EmailId = profile.EmailId,
+                FullName = profile.FullName,
                 IsApproved = true,
                 AdministratorId = command.ApprovalIdentityId,
                 Comments = command.ApprovalComments
@@ -43,9 +49,15 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
         public async Task<bool> Reject(RejectKyc command, CancellationToken cancellationToken = default)
         {
             var profileId = ObjectId.Parse(command.ProfileId);
+            var profile = await profileCollection.Find(x => x.Id == profileId).FirstAsync();
+
+            if (profile is null) return false;
+
             await kycCollection.InsertOneAsync(new DoctorKyc
             {
                 ProfileId = profileId,
+                EmailId = profile.EmailId,
+                FullName = profile.FullName,
                 IsApproved = false,
                 AdministratorId = command.RejectionIdentityId,
                 Comments = command.RejectionComments

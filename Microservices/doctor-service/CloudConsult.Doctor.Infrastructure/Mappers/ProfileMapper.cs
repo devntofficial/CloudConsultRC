@@ -25,6 +25,11 @@ namespace CloudConsult.Doctor.Infrastructure.Mappers
                 .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
             CreateMap<DoctorProfile, ProfileUpdated>()
                 .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+
+            CreateMap<DoctorKyc, KycApproved>()
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+            CreateMap<DoctorKyc, KycRejected>()
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
         }
 
         private object ConvertStringToObjectId(string doctorId)

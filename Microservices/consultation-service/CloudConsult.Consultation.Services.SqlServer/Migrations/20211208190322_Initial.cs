@@ -14,11 +14,15 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DoctorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PatentId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorProfileId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DoctorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PatientProfileId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PatientName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TimeSlotId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookingStartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BookingEndDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsBookingEventPublished = table.Column<bool>(type: "bit", nullable: false),
                     IsAcceptedByDoctor = table.Column<bool>(type: "bit", nullable: false),
                     IsPaymentComplete = table.Column<bool>(type: "bit", nullable: false),

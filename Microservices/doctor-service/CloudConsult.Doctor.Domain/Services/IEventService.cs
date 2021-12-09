@@ -8,8 +8,8 @@ namespace CloudConsult.Doctor.Domain.Services
         Task<IEnumerable<ProfileUpdated>> GetPendingProfileUpdatedEvents(CancellationToken cancellationToken = default);
         Task<IEnumerable<KycApproved>> GetPendingKycApprovedEvents(CancellationToken cancellationToken = default);
         Task<IEnumerable<KycRejected>> GetPendingKycRejectedEvents(CancellationToken cancellationToken = default);
-        void SetProfileCreatedEventPublished(string profileId, CancellationToken cancellationToken = default);
-        void SetProfileUpdatedEventPublished(string profileId, CancellationToken cancellationToken = default);
-        void SetKycEventPublished(string eventId, CancellationToken cancellationToken = default);
+        void SetProfileCreatedEventPublished(string profileId);
+        void SetProfileUpdatedEventPublished(string profileId);
+        void SetKycEventPublished(string eventId);
     }
 }

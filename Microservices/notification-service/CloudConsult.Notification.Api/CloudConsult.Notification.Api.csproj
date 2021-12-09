@@ -13,13 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="kafka-sharp" Version="1.4.3" />
+	  <PackageReference Include="kafka-sharp" Version="1.4.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\CloudConsult.Common.DependencyInjection\CloudConsult.Common.DependencyInjection.csproj" />
+    <ProjectReference Include="..\CloudConsult.Notification.Consumers\CloudConsult.Notification.Consumers.csproj" />
   </ItemGroup>
 
 </Project>

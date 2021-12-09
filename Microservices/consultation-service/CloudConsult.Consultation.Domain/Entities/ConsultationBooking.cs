@@ -11,16 +11,22 @@ public class ConsultationBooking
     public Guid Id { get; set; }
 
     [Required]
-    public string DoctorId { get; set; }
+    public string DoctorProfileId { get; set; }
 
     [Required]
     public string DoctorName { get; set; }
 
     [Required]
-    public string PatientId { get; set; }
+    public string DoctorEmailId { get; set; }
+
+    [Required]
+    public string PatientProfileId { get; set; }
 
     [Required]
     public string PatientName { get; set; }
+
+    [Required]
+    public string PatientEmailId { get; set; }
 
     [Required]
     public Guid TimeSlotId { get; set; }
@@ -30,6 +36,9 @@ public class ConsultationBooking
 
     [Required]
     public DateTime BookingEndDateTime { get; set; }
+
+    [Required]
+    public string Description { get; set; }
 
     [Required]
     public string Status { get; set; }

@@ -7,6 +7,8 @@ volumes:
     driver: local
   kafka_data:
     driver: local
+  kafka_ui_data:
+    driver: local
   mongodb_data:
     driver: local
   mssql_data:
@@ -23,6 +25,21 @@ services:
       - "zookeeper_data:/bitnami"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+      
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: Kafka-UI
+    networks:
+      - cloud-consult
+    ports:
+      - "8080:8080"
+    restart: always
+    volumes:
+      - "kafka_ui_data:/kafka-ui"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafkaserver:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
 
   kafkaserver:
     image: docker.io/bitnami/kafka:3

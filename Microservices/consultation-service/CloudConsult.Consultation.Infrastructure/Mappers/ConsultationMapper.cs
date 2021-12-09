@@ -18,7 +18,6 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
                     y => y.MapFrom(z => BookingEndDateMapper(z)));
 
             CreateMap<ConsultationBooking, ConsultationBooked>()
-                .ForMember(x => x.Id, y => y.MapFrom(z => z.Id.ToString()))
                 .ForMember(x => x.BookingDate, y =>
                     y.MapFrom(z => $"{z.BookingStartDateTime:dd-MM-yyyy}"))
                 .ForMember(x => x.BookingTimeSlot,
@@ -34,19 +33,22 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
                 return new();
             }
 
-            var doctor = consultations.Select(x => new { x.DoctorId, x.DoctorName }).First();
+            var doctor = consultations.Select(x => new { x.DoctorProfileId, x.DoctorName, x.DoctorEmailId }).First();
 
             return new ConsultationResponse
             {
-                DoctorId = doctor.DoctorId,
+                DoctorProfileId = doctor.DoctorProfileId,
                 DoctorName = doctor.DoctorName,
+                DoctorEmailId = doctor.DoctorEmailId,
                 Consultations = consultations.Select(x => new ConsultationData
                 {
                     Id = x.Id.ToString(),
-                    PatientId = x.PatientId,
+                    PatientProfileId = x.PatientProfileId,
                     PatientName = x.PatientName,
+                    PatientEmailId = x.PatientEmailId,
                     BookingDate = $"{x.BookingStartDateTime:dd-MM-yyyy}",
                     BookingTimeSlot = $"{x.BookingStartDateTime:HH:mm}-{x.BookingEndDateTime:HH:mm}",
+                    Description = x.Description,
                     Status = x.Status,
                     DiagnosisReportId = x.DiagnosisReportId,
                     IsAcceptedByDoctor = x.IsAcceptedByDoctor,

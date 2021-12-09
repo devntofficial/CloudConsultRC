@@ -1,5 +1,6 @@
 ﻿using CloudConsult.Common.DependencyInjection;
-using CloudConsult.Notification.Api.Consumers;
+using CloudConsult.Notification.Consumers.Doctor;
+using CloudConsult.Notification.Consumers.Identity;
 using Kafka.Public;
 using Kafka.Public.Loggers;
 using MailKit.Net.Smtp;
@@ -18,6 +19,10 @@ namespace CloudConsult.Notification.Api.Extensions
             }, new ConsoleLogger()));
 
             services.AddHostedService<OtpGeneratedConsumer>();
+            services.AddHostedService<ProfileCreatedConsumer>();
+            services.AddHostedService<ProfileUpdatedConsumer>();
+            services.AddHostedService<KycApprovedConsumer>();
+            services.AddHostedService<KycRejectedConsumer>();
         }
     }
 }

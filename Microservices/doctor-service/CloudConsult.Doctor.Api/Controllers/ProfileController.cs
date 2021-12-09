@@ -20,6 +20,7 @@ public class ProfileController : JsonController<ProfileController>
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(IApiResponse))]
     public async Task<IActionResult> Create(CreateProfile command)
     {
+        command.IdentityId = Request.HttpContext.User.Identities.First().Claims.FirstOrDefault(x => x.Type == "Id").Value;
         var response = await Mediator.Send(command);
         var resourceUrl = response.IsSuccess ? $"{HttpContext.Request.GetDisplayUrl()}/{response.Payload.ProfileId}" : string.Empty;
         return response.IsSuccess ? JsonResponse(response, resourceUrl) : JsonResponse(response);
@@ -29,9 +30,9 @@ public class ProfileController : JsonController<ProfileController>
     public async Task<IActionResult> Update([FromRoute] string ProfileId, UpdateProfile command)
     {
         command.ProfileId = ProfileId;
+        command.IdentityId = Request.HttpContext.User.Identities.First().Claims.FirstOrDefault(x => x.Type == "Id").Value;
         var response = await Mediator.Send(command);
-        var resourceUrl = response.IsSuccess ? $"{HttpContext.Request.GetDisplayUrl()}/{response.Payload.ProfileId}" : string.Empty;
-        return response.IsSuccess ? JsonResponse(response, resourceUrl) : JsonResponse(response);
+        return JsonResponse(response);
     }
 
     [HttpGet(Routes.Profile.GetAll)]

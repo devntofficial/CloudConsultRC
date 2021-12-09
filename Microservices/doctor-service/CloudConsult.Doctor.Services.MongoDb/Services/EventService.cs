@@ -32,20 +32,20 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             return profiles.Count > 0 ? mapper.Map<List<ProfileUpdated>>(profiles) : Enumerable.Empty<ProfileUpdated>();
         }
 
-        public void SetProfileUpdatedEventPublished(string profileId, CancellationToken cancellationToken = default)
+        public void SetProfileUpdatedEventPublished(string profileId)
         {
             var builder = Builders<DoctorProfile>.Update;
             var update = builder.Set(x => x.IsUpdatedEventPublished, true);
 
-            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null, cancellationToken);
+            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null);
         }
 
-        public void SetProfileCreatedEventPublished(string profileId, CancellationToken cancellationToken = default)
+        public void SetProfileCreatedEventPublished(string profileId)
         {
             var builder = Builders<DoctorProfile>.Update;
             var update = builder.Set(x => x.IsCreatedEventPublished, true);
 
-            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null, cancellationToken);
+            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null);
         }
 
         public async Task<IEnumerable<KycApproved>> GetPendingKycApprovedEvents(CancellationToken cancellationToken = default)
@@ -60,12 +60,12 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             return events.Count > 0 ? mapper.Map<List<KycRejected>>(events) : Enumerable.Empty<KycRejected>();
         }
 
-        public void SetKycEventPublished(string eventId, CancellationToken cancellationToken = default)
+        public void SetKycEventPublished(string eventId)
         {
             var builder = Builders<DoctorKyc>.Update;
             var update = builder.Set(x => x.IsEventPublished, true);
 
-            kycCollection.UpdateOne(x => x.Id == ObjectId.Parse(eventId), update, null, cancellationToken);
+            kycCollection.UpdateOne(x => x.Id == ObjectId.Parse(eventId), update, null);
         }
     }
 }

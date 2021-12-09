@@ -10,6 +10,6 @@ public class ServiceExtension : IApiStartupExtension
     {
         services.AddScoped<IAvailabilityService, AvailabilityService>();
         services.AddScoped<IConsultationService, ConsultationService>();
-        services.AddScoped<IConsultationEventService, ConsultationEventService>();
+        services.AddScoped<IEventService, EventService>();
     }
 }

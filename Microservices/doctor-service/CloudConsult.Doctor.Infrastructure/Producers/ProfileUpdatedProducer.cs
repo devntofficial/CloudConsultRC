@@ -47,7 +47,7 @@ namespace CloudConsult.Doctor.Infrastructure.Producers
                         }
                         else
                         {
-                            eventService.SetProfileUpdatedEventPublished(unpublishedEvent.ProfileId, cancelToken);
+                            eventService.SetProfileUpdatedEventPublished(unpublishedEvent.ProfileId);
                             logger.LogInformation($"({unpublishedEvent.ProfileId}) -> Profile updated event published successfully");
                         }
                     }, cancelToken);
