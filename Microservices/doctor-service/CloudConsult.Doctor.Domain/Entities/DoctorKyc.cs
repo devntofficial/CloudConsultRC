@@ -13,6 +13,6 @@ namespace CloudConsult.Doctor.Domain.Entities
         public string AdministratorId { get; set; } = string.Empty;
         public string Comments { get; set; } = string.Empty;
         public bool IsEventPublished { get; set; } = false;
-        [BsonDateTimeOptions] public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+        [BsonDateTimeOptions] public DateTime Timestamp { get; set; } = DateTime.Now;
     }
 }

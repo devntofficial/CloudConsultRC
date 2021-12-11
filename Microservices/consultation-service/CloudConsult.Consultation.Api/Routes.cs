@@ -12,8 +12,11 @@ public static class Routes
 
     public static class Consultation
     {
-        public const string Book = Root + "/consultation";
-        public const string GetById = Root + "/consultation/{ConsultationId}";
+        public const string Request = Root + "/consultations";
+        public const string GetById = Root + "/consultations/{ConsultationId}";
         public const string GetByDoctorId = Root + "/doctor/{DoctorId}/consultations";
+        public const string Accept = Root + "/consultations/{ConsultationId}/accept";
+        public const string Reject = Root + "/consultations/{ConsultationId}/reject";
+        public const string Cancel = Root + "/consultations/{ConsultationId}/cancel";
     }
 }

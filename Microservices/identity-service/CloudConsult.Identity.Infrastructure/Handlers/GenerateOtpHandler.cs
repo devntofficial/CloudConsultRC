@@ -32,7 +32,7 @@ namespace CloudConsult.Identity.Infrastructure.Handlers
                 });
             }
 
-            await tokenService.GenerateOtpFor(Guid.Parse(request.IdentityId), cancellationToken);
+            await tokenService.GenerateOtpFor(request.IdentityId, cancellationToken);
             return builder.CreateSuccessResponse(x =>
             {
                 x.WithSuccessCode(StatusCodes.Status200OK);

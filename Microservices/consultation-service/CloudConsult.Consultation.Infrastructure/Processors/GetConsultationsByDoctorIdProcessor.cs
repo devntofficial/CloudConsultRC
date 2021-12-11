@@ -24,7 +24,7 @@ namespace CloudConsult.Consultation.Infrastructure.Processors
 
         public async Task<IApiResponse<ConsultationResponse>> Handle(GetConsultationsByDoctorId request, CancellationToken cancellationToken)
         {
-            var consultations = await consultationService.GetByDoctorId(request.DoctorId, cancellationToken);
+            var consultations = await consultationService.GetByDoctorProfileId(request.DoctorId, cancellationToken);
             var response = mapper.Map<ConsultationResponse>(consultations);
 
             if(response.Consultations.Count == 0)

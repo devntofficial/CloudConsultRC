@@ -22,23 +22,52 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.ConsultationBooking", b =>
+            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.ConsultationEvent", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("BookingEndDateTime")
+                    b.Property<string>("ConsultationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEventPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("BookingStartDateTime")
-                        .HasColumnType("datetime2");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultationId");
+
+                    b.ToTable("ConsultationEvents");
+                });
+
+            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.ConsultationRequest", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DiagnosisReportId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorEmailId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorMobileNo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DoctorName")
@@ -49,58 +78,53 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAcceptedByDoctor")
+                    b.Property<bool>("IsComplete")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsBookingEventPublished")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsConsultationComplete")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDiagnosisReportGenerated")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPaymentComplete")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PatientName")
+                    b.Property<string>("MemberEmailId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PatientProfileId")
+                    b.Property<string>("MemberMobileNo")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MemberName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MemberProfileId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TimeSlotId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TimeSlotId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConsultationBookings");
+                    b.HasIndex("TimeSlotId");
+
+                    b.ToTable("ConsultationRequests");
                 });
 
-            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.DoctorAvailability", b =>
+            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.DoctorTimeSlot", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BookedPatientId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ConsultationId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("BookingDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Date")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DoctorId")
+                    b.Property<string>("DoctorProfileId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -115,7 +139,45 @@ namespace CloudConsult.Consultation.Services.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DoctorAvailabilities");
+                    b.HasIndex("ConsultationId");
+
+                    b.ToTable("DoctorTimeSlots");
+                });
+
+            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.ConsultationEvent", b =>
+                {
+                    b.HasOne("CloudConsult.Consultation.Domain.Entities.ConsultationRequest", "Consultation")
+                        .WithMany("Events")
+                        .HasForeignKey("ConsultationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Consultation");
+                });
+
+            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.ConsultationRequest", b =>
+                {
+                    b.HasOne("CloudConsult.Consultation.Domain.Entities.DoctorTimeSlot", "TimeSlot")
+                        .WithMany()
+                        .HasForeignKey("TimeSlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TimeSlot");
+                });
+
+            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.DoctorTimeSlot", b =>
+                {
+                    b.HasOne("CloudConsult.Consultation.Domain.Entities.ConsultationRequest", "Consultation")
+                        .WithMany()
+                        .HasForeignKey("ConsultationId");
+
+                    b.Navigation("Consultation");
+                });
+
+            modelBuilder.Entity("CloudConsult.Consultation.Domain.Entities.ConsultationRequest", b =>
+                {
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

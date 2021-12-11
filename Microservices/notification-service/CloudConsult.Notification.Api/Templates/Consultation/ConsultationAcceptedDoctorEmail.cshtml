@@ -1,0 +1,10 @@
+﻿@model dynamic
+@{ Layout = "_Layout"; }
+
+<p>
+    Hi Dr. @Model?.DoctorName,
+</p>
+<p>
+    A Consultation request was accepted by you for @Model?.MemberName<br />
+    Once we receive payment from @Model?.MemberName we will notify you and the consultation request will be confirmed.
+</p>

@@ -46,7 +46,7 @@ public class DownloadKycDocumentsProcessor : IQueryProcessor<DownloadKycDocument
             });
         }
 
-        var zipName = $"kyc-documents-{DateTime.UtcNow.ToString("yyyyMMddHHmmss")}.zip";
+        var zipName = $"kyc-documents-{DateTime.Now.ToString("yyyyMMddHHmmss")}.zip";
         var kycDocuments = Directory.GetFiles(kycDocumentPath).ToList();
 
         using var memoryStream = new MemoryStream();

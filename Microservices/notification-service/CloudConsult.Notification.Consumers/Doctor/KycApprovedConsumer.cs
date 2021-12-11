@@ -1,8 +1,8 @@
-﻿using CloudConsult.Common.Email;
-using CloudConsult.Notification.Events.Doctor;
+﻿using CloudConsult.Notification.Events.Doctor;
+using FluentEmail.Core;
 using Kafka.Public;
-using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -14,18 +14,18 @@ namespace CloudConsult.Notification.Consumers.Doctor
     {
         private readonly ILogger<KycApprovedConsumer> logger;
         private readonly ClusterClient cluster;
-        private readonly SmtpClient emailClient;
-        private readonly IEmailService emailService;
+        private readonly IServiceProvider serviceProvider;
         private readonly string topicName;
+        private readonly string emailTemplate;
 
         public KycApprovedConsumer(ILogger<KycApprovedConsumer> logger, ClusterClient cluster,
-            SmtpClient emailClient, IEmailService emailService, IConfiguration config)
+            IServiceProvider serviceProvider, IConfiguration config)
         {
             this.logger = logger;
             this.cluster = cluster;
-            this.emailClient = emailClient;
-            this.emailService = emailService;
+            this.serviceProvider = serviceProvider;
             topicName = config["KafkaConfiguration:ConsumerTopics:DoctorKycApprovedConsumer"];
+            this.emailTemplate = "Templates/Doctor/KycApprovedEmail.cshtml";
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -45,8 +45,7 @@ namespace CloudConsult.Notification.Consumers.Doctor
                     return;
                 }
 
-                var byteArray = record.Value as byte[];
-                if (byteArray is null)
+                if (record.Value is not byte[] byteArray)
                 {
                     logger.LogError($"Invalid message payload consumed from topic: {topicName}");
                     return;
@@ -62,13 +61,12 @@ namespace CloudConsult.Notification.Consumers.Doctor
                     return;
                 }
 
-                await emailService.SendTextMail(new EmailServiceTextParameters
-                {
-                    Subject = "CloudConsult - KYC approved",
-                    ToDisplayName = kycApprovedEvent.FullName,
-                    ToEmail = kycApprovedEvent.EmailId,
-                    Message = $"Hi Dr. {kycApprovedEvent.FullName}, Your KYC documents were successfully verified and approved by an administrator. Your profile will now show up in search results."
-                }, emailClient);
+                using var scope = serviceProvider.CreateScope();
+                await scope.ServiceProvider.GetRequiredService<IFluentEmail>()
+                    .To(kycApprovedEvent.EmailId, kycApprovedEvent.FullName)
+                    .Subject("Cloud Consult - KYC approved")
+                    .UsingTemplateFromFile(emailTemplate, kycApprovedEvent)
+                    .SendAsync();
 
                 logger.LogInformation($"KYC Approved email sent to {kycApprovedEvent.EmailId}");
             }

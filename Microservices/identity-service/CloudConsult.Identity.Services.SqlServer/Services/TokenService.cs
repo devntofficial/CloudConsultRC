@@ -40,7 +40,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                     new Claim(JwtRegisteredClaimNames.Email, user.EmailId),
                     new Claim("Roles", string.Join(',', user.UserRoles.Select(x => x.Role.RoleName)))
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(jwtConfiguration.ExpiryTimeInMinutes),
+                Expires = DateTime.Now.AddMinutes(jwtConfiguration.ExpiryTimeInMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -51,7 +51,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
             };
         }
 
-        public async Task GenerateOtpFor(Guid userId, CancellationToken cancellationToken = default)
+        public async Task GenerateOtpFor(string userId, CancellationToken cancellationToken = default)
         {
             var userOtp = await db.UserOtps.FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
             var otp = hashingService.GenerateRandomOtp(6);
@@ -68,12 +68,12 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
             }
 
             userOtp.Otp = otp;
-            userOtp.ExpiryTimestamp = DateTime.UtcNow.AddMinutes(5);
+            userOtp.ExpiryTimestamp = DateTime.Now.AddMinutes(5);
             userOtp.IsEventPublished = false;
             await db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<bool> ValidateOtp(Guid userId, int otp, CancellationToken cancellationToken = default)
+        public async Task<bool> ValidateOtp(string userId, int otp, CancellationToken cancellationToken = default)
         {
             var userOtp = await db.UserOtps
                 .Include(x => x.User)
@@ -83,14 +83,14 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
 
             db.UserOtps.Remove(userOtp);
 
-            if(userOtp.ExpiryTimestamp > DateTime.UtcNow)
+            if(userOtp.ExpiryTimestamp > DateTime.Now)
             {
                 userOtp.User.IsVerified = true;
             }
 
             await db.SaveChangesAsync(cancellationToken);
 
-            return userOtp.ExpiryTimestamp > DateTime.UtcNow;
+            return userOtp.ExpiryTimestamp > DateTime.Now;
         }
     }
 }

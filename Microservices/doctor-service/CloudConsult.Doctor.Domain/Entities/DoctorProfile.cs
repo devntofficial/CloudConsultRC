@@ -18,6 +18,6 @@ namespace CloudConsult.Doctor.Domain.Entities
         public bool IsActive { get; set; } = false;
         public bool IsCreatedEventPublished { get; set; } = false;
         public bool IsUpdatedEventPublished { get; set; } = false;
-        [BsonDateTimeOptions] public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+        [BsonDateTimeOptions] public DateTime Timestamp { get; set; } = DateTime.Now;
     }
 }

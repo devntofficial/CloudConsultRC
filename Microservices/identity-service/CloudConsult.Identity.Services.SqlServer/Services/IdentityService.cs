@@ -49,7 +49,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                 {
                     FullName = command.FullName,
                     EmailId = command.EmailId,
-                    Timestamp = DateTime.UtcNow,
+                    Timestamp = DateTime.Now,
                     PasswordSalt = hashingService.GenerateRandomSalt()
                 };
                 user.PasswordHash = hashingService.GenerateHashWithSalt(command.Password, user.PasswordSalt);
@@ -60,7 +60,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                 {
                     UserId = user.Id,
                     RoleId = command.RoleId,
-                    Timestamp = DateTime.UtcNow
+                    Timestamp = DateTime.Now
                 };
 
                 await db.UserRoles.AddAsync(userRole, cancellationToken);

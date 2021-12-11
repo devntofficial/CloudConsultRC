@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using CloudConsult.Consultation.Domain.Commands;
 using CloudConsult.Consultation.Domain.Entities;
-using CloudConsult.Consultation.Domain.Events;
 using CloudConsult.Consultation.Domain.Responses;
-using System.Globalization;
 
 namespace CloudConsult.Consultation.Infrastructure.Mappers
 {
@@ -11,29 +9,22 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
     {
         public ConsultationMapper()
         {
-            CreateMap<BookConsultation, ConsultationBooking>()
-                .ForMember(x => x.BookingStartDateTime,
-                    y => y.MapFrom(z => BookingStartDateMapper(z)))
-                .ForMember(x => x.BookingEndDateTime,
-                    y => y.MapFrom(z => BookingEndDateMapper(z)));
-
-            CreateMap<ConsultationBooking, ConsultationBooked>()
-                .ForMember(x => x.BookingDate, y =>
-                    y.MapFrom(z => $"{z.BookingStartDateTime:dd-MM-yyyy}"))
-                .ForMember(x => x.BookingTimeSlot,
-                    y => y.MapFrom(z => $"{z.BookingStartDateTime:HH:mm}-{z.BookingEndDateTime:HH:mm}"));
-
-            CreateMap<List<ConsultationBooking>, ConsultationResponse>().ConvertUsing(x => ConsultationResponseMapper(x));
+            CreateMap<RequestConsultation, ConsultationRequest>();
+            CreateMap<List<ConsultationRequest>, ConsultationResponse>().ConstructUsing(x => ConsultationResponseMapper(x));
+            CreateMap<ConsultationRequest, GetConsultationByIdResponse>()
+                .ForMember(x => x.ConsultationId, y => y.MapFrom(z => z.Id.ToString()))
+                .ForMember(x => x.BookingDate, y => y.MapFrom(z => $"{z.TimeSlot.TimeSlotStart:dd-MM-yyyy}"))
+                .ForMember(x => x.BookingTimeSlot, y => y.MapFrom(z => $"{z.TimeSlot.TimeSlotStart:HH:mm}-{z.TimeSlot.TimeSlotEnd:HH:mm}"));
         }
 
-        private ConsultationResponse ConsultationResponseMapper(List<ConsultationBooking> consultations)
+        private ConsultationResponse ConsultationResponseMapper(List<ConsultationRequest> consultations)
         {
-            if(consultations is null || consultations.Count == 0)
+            if (consultations is null || consultations.Count == 0)
             {
                 return new();
             }
 
-            var doctor = consultations.Select(x => new { x.DoctorProfileId, x.DoctorName, x.DoctorEmailId }).First();
+            var doctor = consultations.Select(x => new { x.DoctorProfileId, x.DoctorName, x.DoctorEmailId, x.DoctorMobileNo }).First();
 
             return new ConsultationResponse
             {
@@ -43,34 +34,15 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
                 Consultations = consultations.Select(x => new ConsultationData
                 {
                     Id = x.Id.ToString(),
-                    PatientProfileId = x.PatientProfileId,
-                    PatientName = x.PatientName,
-                    PatientEmailId = x.PatientEmailId,
-                    BookingDate = $"{x.BookingStartDateTime:dd-MM-yyyy}",
-                    BookingTimeSlot = $"{x.BookingStartDateTime:HH:mm}-{x.BookingEndDateTime:HH:mm}",
+                    MemberProfileId = x.MemberProfileId,
+                    MemberName = x.MemberName,
+                    MemberEmailId = x.MemberEmailId,
+                    BookingDate = $"{x.TimeSlot.TimeSlotStart:dd-MM-yyyy}",
+                    BookingTimeSlot = $"{x.TimeSlot.TimeSlotStart:HH:mm}-{x.TimeSlot.TimeSlotEnd:HH:mm}",
                     Description = x.Description,
-                    Status = x.Status,
-                    DiagnosisReportId = x.DiagnosisReportId,
-                    IsAcceptedByDoctor = x.IsAcceptedByDoctor,
-                    IsConsultationComplete = x.IsConsultationComplete,
-                    IsDiagnosisReportGenerated = x.IsDiagnosisReportGenerated,
-                    IsPaymentComplete = x.IsPaymentComplete,
+                    Status = x.Status
                 }).ToList()
             };
-        }
-
-        private DateTime BookingEndDateMapper(BookConsultation data)
-        {
-            var endTime = data.BookingTimeSlot.Split("-")[1];
-            return DateTime.ParseExact($"{data.BookingDate} {endTime}", "dd-MM-yyyy HH:mm",
-                CultureInfo.InvariantCulture, DateTimeStyles.None);
-        }
-
-        private DateTime BookingStartDateMapper(BookConsultation data)
-        {
-            var startTime = data.BookingTimeSlot.Split("-")[0];
-            return DateTime.ParseExact($"{data.BookingDate} {startTime}", "dd-MM-yyyy HH:mm",
-                    CultureInfo.InvariantCulture, DateTimeStyles.None);
         }
     }
 }

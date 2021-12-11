@@ -24,8 +24,8 @@ try
     builder.Services.AddCommonExtensionsFromCurrentAssembly(config);
     builder.Services.AddCommonSwaggerDocs(config);
     builder.Services.AddCommonApiVersioning();
-    builder.Services.AddCommonEmailService(config);
-    
+    builder.Services.AddCommonEmailService(config, $"{Environment.CurrentDirectory}/Templates");
+
     var app = builder.Build();
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 

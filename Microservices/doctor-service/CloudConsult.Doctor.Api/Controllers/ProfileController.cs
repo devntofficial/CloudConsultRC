@@ -3,6 +3,8 @@ using CloudConsult.Common.Controllers;
 using CloudConsult.Doctor.Domain.Commands;
 using CloudConsult.Doctor.Domain.Queries;
 using CloudConsult.Doctor.Domain.Responses;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +20,7 @@ public class ProfileController : JsonController<ProfileController>
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(IApiResponse))]
+    [Authorize(Roles = "Doctor", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Create(CreateProfile command)
     {
         command.IdentityId = Request.HttpContext.User.Identities.First().Claims.FirstOrDefault(x => x.Type == "Id").Value;
@@ -27,6 +30,7 @@ public class ProfileController : JsonController<ProfileController>
     }
 
     [HttpPut(Routes.Profile.Update)]
+    [Authorize(Roles = "Doctor", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Update([FromRoute] string ProfileId, UpdateProfile command)
     {
         command.ProfileId = ProfileId;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CloudConsult.Common.Enums;
 using CloudConsult.Consultation.Domain.Events;
 using CloudConsult.Consultation.Domain.Services;
 using CloudConsult.Consultation.Services.SqlServer.Contexts;
@@ -17,23 +18,46 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<ConsultationBooked>> GetPendingConsultationBookedEvents(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ConsultationRequested>> GetPendingConsultationRequestedEvents(CancellationToken cancellationToken = default)
         {
-            return mapper.Map<List<ConsultationBooked>>(await db.ConsultationBookings
-                .Where(x => !x.IsBookingEventPublished)
+            var events = await db.ConsultationEvents
+                .Include(x => x.Consultation).Include(x => x.Consultation.TimeSlot)
+                .Where(x => !x.IsEventPublished && x.EventName == ConsultationEvents.ConsultationRequested.ToString())
+                .ToListAsync(cancellationToken);
+
+            return mapper.Map<List<ConsultationRequested>>(events);
+        }
+
+        public async Task<IEnumerable<ConsultationAccepted>> GetPendingConsultationAcceptedEvents(CancellationToken cancellationToken = default)
+        {
+            return mapper.Map<List<ConsultationAccepted>>(await db.ConsultationEvents.Include(x => x.Consultation)
+                .Where(x => !x.IsEventPublished && x.EventName == ConsultationEvents.ConsultationAccepted.ToString())
                 .ToListAsync(cancellationToken));
         }
 
-        public void SetConsultationBookedEventPublished(Guid id)
+        public async Task<IEnumerable<ConsultationRejected>> GetPendingConsultationRejectedEvents(CancellationToken cancellationToken = default)
         {
-            var booking = db.ConsultationBookings.Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return mapper.Map<List<ConsultationRejected>>(await db.ConsultationEvents.Include(x => x.Consultation)
+                .Where(x => !x.IsEventPublished && x.EventName == ConsultationEvents.ConsultationRejected.ToString())
+                .ToListAsync(cancellationToken));
+        }
 
-            if (booking != null)
+        public async Task<IEnumerable<ConsultationCancelled>> GetPendingConsultationCancelledEvents(CancellationToken cancellationToken = default)
+        {
+            return mapper.Map<List<ConsultationCancelled>>(await db.ConsultationEvents.Include(x => x.Consultation)
+                .Where(x => !x.IsEventPublished && x.EventName == ConsultationEvents.ConsultationCancelled.ToString())
+                .ToListAsync(cancellationToken));
+        }
+
+        public void SetEventPublished(string id)
+        {
+            var booking = db.ConsultationEvents.FirstOrDefault(x => x.Id == id);
+
+            if (booking is not null)
             {
-                booking.IsBookingEventPublished = true;
+                booking.IsEventPublished = true;
                 db.SaveChanges();
             }
         }
-
     }
 }

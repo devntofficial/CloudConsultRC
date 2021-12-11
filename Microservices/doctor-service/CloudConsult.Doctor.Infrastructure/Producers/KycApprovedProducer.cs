@@ -7,6 +7,7 @@ using System.Text.Json;
 
 namespace CloudConsult.Doctor.Infrastructure.Producers
 {
+    [DisallowConcurrentExecution]
     public class KycApprovedProducer : IJob
     {
         private readonly ILogger<KycApprovedProducer> logger;

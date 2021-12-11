@@ -19,7 +19,7 @@ namespace CloudConsult.Member.Services.MongoDb.Services
             profile.IsActive = false;
             profile.ProfileCreatedEventPublished = false;
             profile.ProfileUpdatedEventPublished = true;
-            profile.CreatedDate = DateTime.UtcNow;
+            profile.CreatedDate = DateTime.Now;
             await _profileCollection.InsertOneAsync(profile, null, cancellationToken);
             return profile;
         }

@@ -32,7 +32,7 @@ namespace CloudConsult.Identity.Infrastructure.Handlers
                 });
             }
 
-            var isValidOtp = await tokenService.ValidateOtp(Guid.Parse(request.IdentityId), request.Otp, cancellationToken);
+            var isValidOtp = await tokenService.ValidateOtp(request.IdentityId, request.Otp, cancellationToken);
             if(!isValidOtp)
             {
                 return builder.CreateErrorResponse(x =>

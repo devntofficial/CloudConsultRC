@@ -9,6 +9,7 @@ using System.Text.Json;
 
 namespace CloudConsult.Member.Infrastructure.Producers
 {
+    [DisallowConcurrentExecution]
     public class ProfileCreatedProducer : IJob
     {
         private readonly ILogger<ProfileCreatedProducer> _logger;
