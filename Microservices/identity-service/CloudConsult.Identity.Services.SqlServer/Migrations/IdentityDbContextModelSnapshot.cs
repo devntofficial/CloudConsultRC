@@ -44,9 +44,9 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
 
             modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmailId")
                         .HasColumnType("nvarchar(max)");
@@ -76,9 +76,9 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
 
             modelBuilder.Entity("CloudConsult.Identity.Domain.Entities.UserOtp", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ExpiryTimestamp")
                         .HasColumnType("datetime2");
@@ -89,8 +89,9 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                     b.Property<int>("Otp")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -114,8 +115,8 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -147,9 +148,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Migrations
 
                     b.HasOne("CloudConsult.Identity.Domain.Entities.User", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Role");
 

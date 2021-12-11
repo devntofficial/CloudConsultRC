@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using CloudConsult.Consultation.Domain.Commands;
 using CloudConsult.Consultation.Domain.Entities;
 using CloudConsult.Consultation.Domain.Responses;
+using System.Globalization;
 
 namespace CloudConsult.Consultation.Infrastructure.Mappers
 {
@@ -13,44 +10,41 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
     {
         public AvailabilityMapper()
         {
-            CreateMap<AddAvailability, List<DoctorAvailability>>()
-                .ConvertUsing(new AvailabilityMapConverter());
-            
-            CreateMap<IEnumerable<DoctorAvailability>, DoctorAvailabilityResponse>()
-                .ConvertUsing(new AvailabilityReverseMapConverter());
+            CreateMap<AddTimeSlot, List<DoctorTimeSlot>>().ConvertUsing(new AvailabilityMapConverter());
+
+            CreateMap<IEnumerable<DoctorTimeSlot>, TimeSlotResponse>().ConvertUsing(new AvailabilityReverseMapConverter());
         }
     }
 
     public class
-        AvailabilityReverseMapConverter : ITypeConverter<IEnumerable<DoctorAvailability>, DoctorAvailabilityResponse>
+        AvailabilityReverseMapConverter : ITypeConverter<IEnumerable<DoctorTimeSlot>, TimeSlotResponse>
     {
-        public DoctorAvailabilityResponse Convert(IEnumerable<DoctorAvailability> source,
-            DoctorAvailabilityResponse destination,
+        public TimeSlotResponse Convert(IEnumerable<DoctorTimeSlot> source,
+            TimeSlotResponse destination,
             ResolutionContext context)
         {
-            destination ??= new DoctorAvailabilityResponse();
+            destination ??= new TimeSlotResponse();
             var doctorAvailabilities = source.ToList();
-            destination.DoctorId = doctorAvailabilities.First().DoctorId;
+            destination.DoctorId = doctorAvailabilities.First().DoctorProfileId;
             destination.AvailabilityMap = doctorAvailabilities
-                .GroupBy(k => k.Date, v => $"{v.TimeSlotStart:HH:mm}-{v.TimeSlotEnd:HH:mm}")
-                .ToDictionary(k => k.Key, v => v.ToList());
+                .GroupBy(k => k.TimeSlotStart.Date, v => $"{v.TimeSlotStart:HH:mm}-{v.TimeSlotEnd:HH:mm}")
+                .ToDictionary(k => k.Key.ToString("dd-MM-yyyy"), v => v.ToList());
             return destination;
         }
     }
 
-    public class AvailabilityMapConverter : ITypeConverter<AddAvailability, List<DoctorAvailability>>
+    public class AvailabilityMapConverter : ITypeConverter<AddTimeSlot, List<DoctorTimeSlot>>
     {
-        public List<DoctorAvailability> Convert(AddAvailability source, List<DoctorAvailability> destination,
+        public List<DoctorTimeSlot> Convert(AddTimeSlot source, List<DoctorTimeSlot> destination,
             ResolutionContext context)
         {
-            destination ??= new List<DoctorAvailability>();
+            destination ??= new List<DoctorTimeSlot>();
 
             foreach (var map in source.AvailabilityMap)
             {
-                destination.AddRange(map.Value.Select(x => new DoctorAvailability
+                destination.AddRange(map.Value.Select(x => new DoctorTimeSlot
                 {
-                    DoctorId = source.DoctorId,
-                    Date = map.Key,
+                    DoctorProfileId = source.DoctorProfileId,
                     TimeSlotStart = DateTime.ParseExact($"{map.Key} {x.Split("-")[0]}", "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture),
                     TimeSlotEnd = DateTime.ParseExact($"{map.Key} {x.Split("-")[1]}", "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture)
                 }));

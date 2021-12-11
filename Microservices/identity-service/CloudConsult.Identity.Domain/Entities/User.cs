@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CloudConsult.Identity.Domain.Entities
@@ -10,7 +8,7 @@ namespace CloudConsult.Identity.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string EmailId { get; set; }
         public string FullName { get; set; }
         public string PasswordHash { get; set; }

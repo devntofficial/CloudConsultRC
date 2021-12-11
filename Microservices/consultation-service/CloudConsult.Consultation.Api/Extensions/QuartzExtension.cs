@@ -26,7 +26,10 @@ public class QuartzExtension : IApiStartupExtension
             });
 
             quartz.UseMicrosoftDependencyInjectionJobFactory();
-            quartz.AddJobAndTrigger<ConsultationBookedProducer>(configuration);
+            quartz.AddJobAndTrigger<ConsultationRequestedProducer>(configuration);
+            quartz.AddJobAndTrigger<ConsultationAcceptedProducer>(configuration);
+            quartz.AddJobAndTrigger<ConsultationRejectedProducer>(configuration);
+            quartz.AddJobAndTrigger<ConsultationCancelledProducer>(configuration);
         });
 
         services.AddQuartzHostedService(options =>

@@ -1,10 +1,12 @@
-﻿using CloudConsult.Consultation.Domain.Entities;
-using CloudConsult.Consultation.Domain.Events;
+﻿using CloudConsult.Consultation.Domain.Events;
 
 namespace CloudConsult.Consultation.Domain.Services;
 
 public interface IEventService
 {
-    Task<IEnumerable<ConsultationBooked>> GetPendingConsultationBookedEvents(CancellationToken cancellationToken = default);
-    void SetConsultationBookedEventPublished(Guid id);
+    Task<IEnumerable<ConsultationRequested>> GetPendingConsultationRequestedEvents(CancellationToken cancellationToken = default);
+    Task<IEnumerable<ConsultationAccepted>> GetPendingConsultationAcceptedEvents(CancellationToken cancellationToken = default);
+    Task<IEnumerable<ConsultationRejected>> GetPendingConsultationRejectedEvents(CancellationToken cancellationToken = default);
+    Task<IEnumerable<ConsultationCancelled>> GetPendingConsultationCancelledEvents(CancellationToken cancellationToken = default);
+    void SetEventPublished(string id);
 }

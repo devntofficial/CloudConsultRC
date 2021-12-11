@@ -10,13 +10,34 @@ namespace CloudConsult.Consultation.Api.Controllers;
 [ApiController]
 public class ConsultationController : JsonController<ConsultationController>
 {
-    [HttpPost(Routes.Consultation.Book)]
-    public async Task<IActionResult> Book(BookConsultation command, CancellationToken cancellationToken)
+    [HttpPost(Routes.Consultation.Request)]
+    public async Task<IActionResult> Book(RequestConsultation command, CancellationToken cancellationToken)
     {
         var response = await Mediator.Send(command, cancellationToken);
         return response.IsSuccess ?
             JsonResponse(response, $"{HttpContext.Request.GetDisplayUrl()}/{response.Payload}") :
             JsonResponse(response);
+    }
+
+    [HttpGet(Routes.Consultation.Accept)]
+    public async Task<IActionResult> Accept([FromRoute] AcceptConsultation command, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(command, cancellationToken);
+        return JsonResponse(response);
+    }
+
+    [HttpGet(Routes.Consultation.Reject)]
+    public async Task<IActionResult> Reject([FromRoute] RejectConsultation command, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(command, cancellationToken);
+        return JsonResponse(response);
+    }
+
+    [HttpGet(Routes.Consultation.Cancel)]
+    public async Task<IActionResult> Cancel([FromRoute] CancelConsultation command, CancellationToken cancellationToken)
+    {
+        var response = await Mediator.Send(command, cancellationToken);
+        return JsonResponse(response);
     }
 
     [HttpGet(Routes.Consultation.GetById)]
@@ -32,4 +53,6 @@ public class ConsultationController : JsonController<ConsultationController>
         var response = await Mediator.Send(query, cancellationToken);
         return JsonResponse(response);
     }
+
+
 }

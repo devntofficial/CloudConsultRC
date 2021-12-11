@@ -26,7 +26,7 @@ namespace CloudConsult.Diagnosis.Services.MongoDb.Services
 
         public async Task<DiagnosisReport> Upload(DiagnosisReport report, CancellationToken cancellationToken = default)
         {
-            report.TimeStamp = DateTime.UtcNow;
+            report.TimeStamp = DateTime.Now;
             await reportCollection.InsertOneAsync(report, null, cancellationToken);
             return report;
         }

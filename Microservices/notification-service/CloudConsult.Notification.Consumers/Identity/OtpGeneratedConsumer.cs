@@ -1,8 +1,8 @@
-﻿using CloudConsult.Common.Email;
-using CloudConsult.Notification.Events.Identity;
+﻿using CloudConsult.Notification.Events.Identity;
+using FluentEmail.Core;
 using Kafka.Public;
-using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -14,18 +14,18 @@ namespace CloudConsult.Notification.Consumers.Identity
     {
         private readonly ILogger<OtpGeneratedConsumer> logger;
         private readonly ClusterClient cluster;
-        private readonly SmtpClient emailClient;
-        private readonly IEmailService emailService;
+        private readonly IServiceProvider serviceProvider;
         private readonly string topicName;
+        private readonly string emailTemplate;
 
         public OtpGeneratedConsumer(ILogger<OtpGeneratedConsumer> logger, ClusterClient cluster,
-            SmtpClient emailClient, IEmailService emailService, IConfiguration config)
+            IServiceProvider serviceProvider, IConfiguration config)
         {
             this.logger = logger;
             this.cluster = cluster;
-            this.emailClient = emailClient;
-            this.emailService = emailService;
-            topicName = config["KafkaConfiguration:ConsumerTopics:OtpGeneratedConsumer"];
+            this.serviceProvider = serviceProvider;
+            this.topicName = config["KafkaConfiguration:ConsumerTopics:OtpGeneratedConsumer"];
+            this.emailTemplate = "Templates/Identity/OtpGeneratedEmail.cshtml";
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -45,8 +45,7 @@ namespace CloudConsult.Notification.Consumers.Identity
                     return;
                 }
 
-                var byteArray = record.Value as byte[];
-                if (byteArray is null)
+                if (record.Value is not byte[] byteArray)
                 {
                     logger.LogError($"Invalid message payload consumed from topic: {"user-otp-generated"}");
                     return;
@@ -62,14 +61,13 @@ namespace CloudConsult.Notification.Consumers.Identity
                     return;
                 }
 
-                await emailService.SendTextMail(new EmailServiceTextParameters
-                {
-                    Subject = "OTP Verification",
-                    ToDisplayName = otpEvent.FullName,
-                    ToEmail = otpEvent.EmailId,
-                    Message = $"Hi {otpEvent.FullName}, Please use {otpEvent.Otp} as a one-time password to verify your account."
-                }, emailClient);
-
+                using var scope = serviceProvider.CreateScope();
+                await scope.ServiceProvider.GetRequiredService<IFluentEmail>()
+                    .To(otpEvent.EmailId, otpEvent.FullName)
+                    .Subject("Cloud Consult - OTP Verification")
+                    .UsingTemplateFromFile(emailTemplate, otpEvent)
+                    .SendAsync();
+                    
                 logger.LogInformation($"OTP verification email sent to {otpEvent.EmailId}");
             }
             catch (Exception ex)

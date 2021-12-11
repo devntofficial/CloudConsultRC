@@ -1,0 +1,13 @@
+﻿@model dynamic
+@{ Layout = "_Layout"; }
+
+<p>
+    Hi Dr. @Model?.DoctorName,
+</p>
+<p>
+    A Consultation request is received from @Model?.MemberName at @Model?.BookingDate @Model?.BookingTimeSlot<br />
+    You can connect with the said person using email: @Model?.MemberEmailId or call on @Model?.MemberMobileNo if you need further info.<br />
+    <br />
+    Here's the message from @Model?.MemberName:<br />
+    @Model?.Description
+</p>

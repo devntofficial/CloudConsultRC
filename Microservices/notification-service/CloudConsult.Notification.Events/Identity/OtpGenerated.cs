@@ -2,7 +2,7 @@
 
 public class OtpGenerated
 {
-    public Guid EventId { get; set; } = Guid.Empty;
+    public string EventId { get; set; } = string.Empty;
     public string IdentityId { get; set; } = string.Empty;
     public string EmailId { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;

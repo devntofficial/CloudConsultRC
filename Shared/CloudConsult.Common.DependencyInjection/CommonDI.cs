@@ -1,9 +1,9 @@
 using CloudConsult.Common.Builders;
 using CloudConsult.Common.Configurations;
-using CloudConsult.Common.Email;
 using CloudConsult.Common.Encryption;
 using CloudConsult.Common.Middlewares;
 using Confluent.Kafka;
+using FluentEmail.MailKitSmtp;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -102,13 +102,22 @@ public static class CommonDI
         return services;
     }
 
-    public static void AddCommonEmailService(this IServiceCollection services, IConfiguration configuration)
+    public static void AddCommonEmailService(this IServiceCollection services, IConfiguration configuration, string templatePath)
     {
-        var emailServiceConfiguration = new EmailServiceConfiguration();
-        configuration.Bind(nameof(emailServiceConfiguration), emailServiceConfiguration);
-        services.AddSingleton(emailServiceConfiguration);
+        var emailConfig = new EmailServiceConfiguration();
+        configuration.Bind(nameof(EmailServiceConfiguration), emailConfig);
+        services.AddSingleton(emailConfig);
 
-        services.AddTransient<IEmailService, EmailService>();
+        services.AddFluentEmail(emailConfig.Username, "Cloud Consult")
+            .AddRazorRenderer(templatePath)
+            .AddMailKitSender(new SmtpClientOptions
+            {
+                Server = emailConfig.HostName,
+                Port = emailConfig.Port,
+                User = emailConfig.Username,
+                Password = emailConfig.Password,
+                UseSsl = emailConfig.UseSSL
+            });
     }
 
     public static IServiceCollection AddCommonHashingService(this IServiceCollection services)

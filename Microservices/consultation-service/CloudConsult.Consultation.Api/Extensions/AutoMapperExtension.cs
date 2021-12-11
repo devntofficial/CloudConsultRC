@@ -10,6 +10,7 @@ public class AutoMapperExtension : IApiStartupExtension
         services.AddAutoMapper(x =>
         {
             x.AddProfile<AvailabilityMapper>();
+            x.AddProfile<EventMapper>();
             x.AddProfile<ConsultationMapper>();
         });
     }

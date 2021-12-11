@@ -12,7 +12,10 @@ public class QuartzConfiguration
 
 public class QuartzJobs
 {
-    public QuartzJobConfiguration ConsultationBookedProducer { get; set; }
+    public QuartzJobConfiguration ConsultationRequestedProducer { get; set; }
+    public QuartzJobConfiguration ConsultationAcceptedProducer { get; set; }
+    public QuartzJobConfiguration ConsultationRejectedProducer { get; set; }
+    public QuartzJobConfiguration ConsultationCancelledProducer { get; set; }
 }
 
 public class QuartzJobConfiguration

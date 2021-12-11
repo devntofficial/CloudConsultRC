@@ -27,7 +27,7 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
             return pendingEvents.Count == 0 ? null : mapper.Map<List<OtpGenerated>>(pendingEvents);
         }
 
-        public void SetOtpGeneratedEventPublished(Guid eventId, bool value)
+        public void SetOtpGeneratedEventPublished(string eventId, bool value)
         {
             var otpEvent = db.UserOtps.FirstOrDefault(x => x.Id == eventId);
             if(otpEvent is not null)

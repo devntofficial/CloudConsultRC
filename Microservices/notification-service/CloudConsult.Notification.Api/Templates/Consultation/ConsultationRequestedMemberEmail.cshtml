@@ -1,0 +1,12 @@
+﻿@model dynamic
+@{ Layout = "_Layout"; }
+
+<p>
+    Hi @Model?.MemberName,
+</p>
+<p>
+    Your consultation request is sent to Dr. @Model?.DoctorName. Your booking reference number is @Model?.ConsultationId<br />
+    You will receive an email from us once the doctor approves your request.<br />
+    If for some unforeseen reasons, the doctor is unavailable, we will notify you about it.<br />
+    You can connect also connect with the doctor using email: @Model?.DoctorEmailId or call on @Model?.DoctorMobileNo if you need further info.
+</p>

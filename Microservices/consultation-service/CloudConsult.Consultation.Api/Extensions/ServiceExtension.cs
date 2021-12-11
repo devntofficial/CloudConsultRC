@@ -8,7 +8,7 @@ public class ServiceExtension : IApiStartupExtension
 {
     public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IAvailabilityService, AvailabilityService>();
+        services.AddScoped<ITimeSlotService, TimeSlotService>();
         services.AddScoped<IConsultationService, ConsultationService>();
         services.AddScoped<IEventService, EventService>();
     }

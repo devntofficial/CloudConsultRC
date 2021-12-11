@@ -8,15 +8,15 @@ namespace CloudConsult.Identity.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [ForeignKey("User")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public int Otp { get; set; }
 
-        public DateTime ExpiryTimestamp { get; set; } = DateTime.UtcNow.AddMinutes(5);
+        public DateTime ExpiryTimestamp { get; set; } = DateTime.Now.AddMinutes(5);
 
         [Required]
         public bool IsEventPublished { get; set; } = false;

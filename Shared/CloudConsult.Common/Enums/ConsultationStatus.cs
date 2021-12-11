@@ -2,27 +2,27 @@
 
 namespace CloudConsult.Common.Enums
 {
-    public enum ConsultationStatus
+    public enum ConsultationEvents
     {
-        [Description("DoctorApprovalPending")]
-        DoctorApprovalPending,
-        [Description("PaymentPending")]
-        PaymentPending,
+        [Description("ConsultationRequested")]
+        ConsultationRequested,
+        [Description("ConsultationAccepted")]
+        ConsultationAccepted,
+        [Description("ConsultationRejected")]
+        ConsultationRejected,
+        [Description("ConsultationCancelled")]
+        ConsultationCancelled,
+        [Description("PaymentAccepted")]
+        PaymentAccepted,
         [Description("PaymentRejected")]
         PaymentRejected,
-        [Description("Confirmed")]
-        Confirmed,
-        [Description("DiagnosisReportPending")]
-        DiagnosisReportPending,
         [Description("DiagnosisReportPublished")]
-        DiagnosisReportPublished,
-        [Description("Complete")]
-        Complete
+        DiagnosisReportPublished
     }
 
     public static class ConsultationStatusExtensions
     {
-        public static string ToString(this ConsultationStatus val)
+        public static string ToString(this ConsultationEvents val)
         {
             DescriptionAttribute[] attributes = (DescriptionAttribute[])val
                 .GetType()
