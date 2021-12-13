@@ -3,8 +3,6 @@ using CloudConsult.Doctor.Domain.Commands;
 using CloudConsult.Doctor.Domain.Entities;
 using CloudConsult.Doctor.Domain.Events;
 using CloudConsult.Doctor.Domain.Responses;
-using MongoDB.Bson;
-using System;
 
 namespace CloudConsult.Doctor.Infrastructure.Mappers
 {
@@ -14,31 +12,22 @@ namespace CloudConsult.Doctor.Infrastructure.Mappers
         {
             CreateMap<CreateProfile, DoctorProfile>();
             CreateMap<DoctorProfile, ProfileResponse>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
 
             CreateMap<UpdateProfile, DoctorProfile>()
-                .ForMember(x => x.Id, y => y.MapFrom(z => ConvertStringToObjectId(z.ProfileId)));
+                .ForMember(x => x.Id, y => y.MapFrom(z => z.ProfileId));
             CreateMap<DoctorProfile, ProfileResponse>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
 
             CreateMap<DoctorProfile, ProfileCreated>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
             CreateMap<DoctorProfile, ProfileUpdated>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
 
             CreateMap<DoctorKyc, KycApproved>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
             CreateMap<DoctorKyc, KycRejected>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
-        }
-
-        private object ConvertStringToObjectId(string doctorId)
-        {
-            if(ObjectId.TryParse(doctorId, out var convertedValue))
-            {
-                return convertedValue;
-            }
-            return ObjectId.Empty;
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
         }
     }
 }

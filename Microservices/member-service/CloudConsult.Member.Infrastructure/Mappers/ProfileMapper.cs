@@ -12,16 +12,16 @@ namespace CloudConsult.Member.Infrastructure.Mappers
         {
             CreateMap<CreateProfile, MemberProfile>();
             CreateMap<MemberProfile, ProfileResponse>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
 
             CreateMap<UpdateProfile, MemberProfile>();
             CreateMap<MemberProfile, ProfileResponse>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
 
             CreateMap<MemberProfile, ProfileCreated>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
             CreateMap<MemberProfile, ProfileUpdated>()
-                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id.ToString()));
+                .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
         }
     }
 }

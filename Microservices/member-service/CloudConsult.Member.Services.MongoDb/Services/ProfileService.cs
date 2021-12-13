@@ -1,62 +1,59 @@
 ﻿using CloudConsult.Member.Domain.Entities;
 using CloudConsult.Member.Domain.Services;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace CloudConsult.Member.Services.MongoDb.Services
 {
     public class ProfileService : IProfileService
     {
-        private readonly IMongoCollection<MemberProfile> _profileCollection;
+        private readonly IMongoCollection<MemberProfile> profileCollection;
 
         public ProfileService(IMongoCollection<MemberProfile> profileCollection)
         {
-            this._profileCollection = profileCollection;
+            this.profileCollection = profileCollection;
         }
 
         public async Task<MemberProfile> Create(MemberProfile profile, CancellationToken cancellationToken = default)
         {
-            profile.IsActive = false;
-            profile.ProfileCreatedEventPublished = false;
-            profile.ProfileUpdatedEventPublished = true;
-            profile.CreatedDate = DateTime.Now;
-            await _profileCollection.InsertOneAsync(profile, null, cancellationToken);
+            profile.IsActive = true;
+            profile.IsUpdatedEventPublished = true;
+            await profileCollection.InsertOneAsync(profile, null, cancellationToken);
             return profile;
         }
 
         public async Task<MemberProfile> Update(MemberProfile profile, CancellationToken cancellationToken = default)
         {
-            var filter = Builders<MemberProfile>.Filter.Eq("Id", profile.Id);
+            var filter = Builders<MemberProfile>.Filter.And(
+                Builders<MemberProfile>.Filter.Eq(x => x.Id, profile.Id),
+                Builders<MemberProfile>.Filter.Eq(x => x.IdentityId, profile.IdentityId));
 
             var builder = Builders<MemberProfile>.Update;
             var update = builder
-                .Set(x => x.ProfileUpdatedEventPublished, false)
+                .Set(x => x.IsUpdatedEventPublished, false)
                 .Set(x => x.Address, profile.Address)
                 .Set(x => x.Gender, profile.Gender)
-                .Set(x => x.AadhaarNo, profile.AadhaarNo)
                 .Set(x => x.EmailId, profile.EmailId)
-                .Set(x => x.FullName, profile.FullName);
+                .Set(x => x.FullName, profile.FullName)
+                .Set(x => x.DateOfBirth, profile.DateOfBirth)
+                .Set(x => x.MobileNo, profile.MobileNo);
 
-            var returnedDoctor = await _profileCollection
-                .FindOneAndUpdateAsync<MemberProfile>(filter, update, null, cancellationToken);
+            var returnedDoctor = await profileCollection.FindOneAndUpdateAsync(filter, update,
+                new FindOneAndUpdateOptions<MemberProfile, MemberProfile>
+                {
+                    ReturnDocument = ReturnDocument.After
+                }, cancellationToken);
 
-            return returnedDoctor is null ? null : profile;
+            return returnedDoctor;
         }
 
         public async Task<MemberProfile> GetById(string profileId, CancellationToken cancellationToken = default)
         {
-            var isValidIdFormat = ObjectId.TryParse(profileId, out var id);
-            if (isValidIdFormat)
-            {
-                return await _profileCollection.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
-            }
-
-            return null;
+            return await profileCollection.Find(x => x.Id == profileId).FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<MemberProfile> GetByIdentityId(string identityId, CancellationToken cancellationToken = default)
         {
-            return await _profileCollection.Find(x => x.IdentityId == identityId).FirstOrDefaultAsync(cancellationToken);
+            return await profileCollection.Find(x => x.IdentityId == identityId).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

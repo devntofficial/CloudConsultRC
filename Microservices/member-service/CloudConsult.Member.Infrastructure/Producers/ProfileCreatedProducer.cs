@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using CloudConsult.Member.Domain.Configurations;
-using CloudConsult.Member.Domain.Events;
+﻿using CloudConsult.Member.Domain.Configurations;
 using CloudConsult.Member.Domain.Services;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
@@ -12,24 +10,18 @@ namespace CloudConsult.Member.Infrastructure.Producers
     [DisallowConcurrentExecution]
     public class ProfileCreatedProducer : IJob
     {
-        private readonly ILogger<ProfileCreatedProducer> _logger;
-        private readonly IMapper _mapper;
-        private readonly IProducer<Null, string> _producer;
-        private readonly IEventService _eventService;
-        private readonly QuartzConfiguration _config;
+        private readonly ILogger<ProfileCreatedProducer> logger;
+        private readonly IProducer<Null, string> producer;
+        private readonly IEventService eventService;
+        private readonly QuartzConfiguration config;
 
-        public ProfileCreatedProducer(
-            ILogger<ProfileCreatedProducer> logger,
-            IMapper mapper,
-            IProducer<Null, string> producer,
-            IEventService eventService,
-            QuartzConfiguration config)
+        public ProfileCreatedProducer(ILogger<ProfileCreatedProducer> logger, IProducer<Null, string> producer,
+            IEventService eventService, QuartzConfiguration config)
         {
-            _logger = logger;
-            _mapper = mapper;
-            _producer = producer;
-            _eventService = eventService;
-            _config = config;
+            this.logger = logger;
+            this.producer = producer;
+            this.eventService = eventService;
+            this.config = config;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -37,37 +29,33 @@ namespace CloudConsult.Member.Infrastructure.Producers
             try
             {
                 var cancelToken = context.CancellationToken;
-                var topicName = _config.Jobs.ProfileCreatedProducer.TopicName;
+                var topicName = config.Jobs.ProfileCreatedProducer.TopicName;
 
-                _logger.LogInformation("Looking for any new member profile created recently");
-
-                var unpublishedProfiles = await _eventService.GetUnpublishedNewProfiles(cancelToken);
-                foreach (var profile in unpublishedProfiles)
+                var unpublishedEvents = await eventService.GetPendingProfileCreatedEvents(cancelToken);
+                foreach (var unpublishedEvent in unpublishedEvents)
                 {
-                    var mappedEvent = _mapper.Map<ProfileCreated>(profile);
-
-                    var producerTask = _producer.ProduceAsync(topicName, new Message<Null, string>
+                    var producerTask = producer.ProduceAsync(topicName, new Message<Null, string>
                     {
-                        Value = JsonSerializer.Serialize(mappedEvent)
+                        Value = JsonSerializer.Serialize(unpublishedEvent)
                     }, cancelToken);
 
                     await producerTask.ContinueWith(deliveryTask =>
                     {
                         if (deliveryTask.IsFaulted)
                         {
-                            _logger.LogError("Could not produce message to kafka broker");
+                            logger.LogError("({ProfileId}) -> Could not produce profile created event message to kafka broker", unpublishedEvent.ProfileId);
                         }
                         else
                         {
-                            _eventService.SetProfileCreatedEventPublished(profile.Id, cancelToken);
-                            _logger.LogInformation("Event published successfully");
+                            eventService.SetProfileCreatedEventPublished(unpublishedEvent.ProfileId);
+                            logger.LogInformation("({ProfileId}) -> Profile created event published successfully", unpublishedEvent.ProfileId);
                         }
                     }, cancelToken);
                 }
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                logger.LogCritical(e.Message);
             }
         }
     }

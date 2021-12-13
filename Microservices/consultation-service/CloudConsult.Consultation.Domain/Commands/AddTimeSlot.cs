@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CloudConsult.Consultation.Domain.Commands;
 
-public record AddTimeSlot : ICommand<object>
+public class AddTimeSlot : ICommand<object>
 {
     public string DoctorProfileId { get; set; }
     public Dictionary<string, List<string>> AvailabilityMap { get; set; }

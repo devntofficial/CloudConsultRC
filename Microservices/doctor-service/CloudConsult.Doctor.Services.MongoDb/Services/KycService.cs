@@ -19,14 +19,13 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
 
         public async Task<bool> Approve(ApproveKyc command, CancellationToken cancellationToken = default)
         {
-            var profileId = ObjectId.Parse(command.ProfileId);
-            var profile = await profileCollection.Find(x => x.Id == profileId).FirstAsync();
+            var profile = await profileCollection.Find(x => x.Id == command.ProfileId).FirstAsync(cancellationToken);
 
             if (profile is null) return false;
 
             await kycCollection.InsertOneAsync(new DoctorKyc
             {
-                ProfileId = profileId,
+                ProfileId = command.ProfileId,
                 EmailId = profile.EmailId,
                 FullName = profile.FullName,
                 IsApproved = true,
@@ -37,7 +36,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             var builder = Builders<DoctorProfile>.Update;
             var update = builder.Set(x => x.IsActive, true);
 
-            var result = await profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            var result = await profileCollection.UpdateOneAsync(x => x.Id == command.ProfileId, update, null, cancellationToken);
             if(result.IsModifiedCountAvailable is false)
             {
                 return false;
@@ -48,14 +47,13 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
 
         public async Task<bool> Reject(RejectKyc command, CancellationToken cancellationToken = default)
         {
-            var profileId = ObjectId.Parse(command.ProfileId);
-            var profile = await profileCollection.Find(x => x.Id == profileId).FirstAsync();
+            var profile = await profileCollection.Find(x => x.Id == command.ProfileId).FirstAsync(cancellationToken);
 
             if (profile is null) return false;
 
             await kycCollection.InsertOneAsync(new DoctorKyc
             {
-                ProfileId = profileId,
+                ProfileId = command.ProfileId,
                 EmailId = profile.EmailId,
                 FullName = profile.FullName,
                 IsApproved = false,
@@ -66,7 +64,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             var builder = Builders<DoctorProfile>.Update;
             var update = builder.Set(x => x.IsActive, false);
 
-            var result = await profileCollection.UpdateOneAsync(x => x.Id == profileId, update, null, cancellationToken);
+            var result = await profileCollection.UpdateOneAsync(x => x.Id == command.ProfileId, update, null, cancellationToken);
             if (result.IsModifiedCountAvailable is false)
             {
                 return false;

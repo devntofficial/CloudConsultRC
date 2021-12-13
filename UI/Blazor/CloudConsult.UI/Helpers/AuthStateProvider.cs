@@ -1,9 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace CloudConsult.UI.Helpers
 {
@@ -24,7 +22,7 @@ namespace CloudConsult.UI.Helpers
         {
             var token = await _localStorage.GetItemAsync<string>("AccessToken");
 
-            if(string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrWhiteSpace(token))
             {
                 return _anonymous;
             }

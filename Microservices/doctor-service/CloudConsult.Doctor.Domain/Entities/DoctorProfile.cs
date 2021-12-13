@@ -5,7 +5,7 @@ namespace CloudConsult.Doctor.Domain.Entities
 {
     public class DoctorProfile
     {
-        [BsonId] public ObjectId Id { get; set; } = ObjectId.Empty;
+        [BsonId] public string Id { get; set; } = string.Empty;
         public string IdentityId { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;

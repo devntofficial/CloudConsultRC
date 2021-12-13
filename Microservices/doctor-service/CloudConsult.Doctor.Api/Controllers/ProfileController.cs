@@ -15,11 +15,6 @@ namespace CloudConsult.Doctor.Api.Controllers;
 public class ProfileController : JsonController<ProfileController>
 {
     [HttpPost(Routes.Profile.Create)]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IApiResponse<ProfileResponse>))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IApiResponse))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(IApiResponse))]
     [Authorize(Roles = "Doctor", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Create(CreateProfile command)
     {

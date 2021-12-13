@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace CloudConsult.Doctor.Domain.Queries;
 
-public record DownloadKycDocuments : IQuery<KycDocumentResponse>
+public class DownloadKycDocuments : IQuery<KycDocumentResponse>
 {
     public string ProfileId { get; set; }
 }

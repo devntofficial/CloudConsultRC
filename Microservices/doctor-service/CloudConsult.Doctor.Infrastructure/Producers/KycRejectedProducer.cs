@@ -44,19 +44,19 @@ namespace CloudConsult.Doctor.Infrastructure.Producers
                     {
                         if (deliveryTask.IsFaulted)
                         {
-                            logger.LogError($"({unpublishedEvent.ProfileId}) -> Could not produce kyc rejected event message to kafka broker");
+                            logger.LogError("({ProfileId}) -> Could not produce kyc rejected event message to kafka broker", unpublishedEvent.ProfileId);
                         }
                         else
                         {
                             eventService.SetKycEventPublished(unpublishedEvent.ProfileId);
-                            logger.LogInformation($"({unpublishedEvent.ProfileId}) -> Kyc rejected event published successfully");
+                            logger.LogInformation("({ProfileId}) -> Kyc rejected event published successfully", unpublishedEvent.ProfileId);
                         }
                     }, cancelToken);
                 }
             }
             catch (Exception e)
             {
-                logger.LogCritical(e.Message);
+                logger.LogCritical("{Message}", e.Message);
             }
         }
     }

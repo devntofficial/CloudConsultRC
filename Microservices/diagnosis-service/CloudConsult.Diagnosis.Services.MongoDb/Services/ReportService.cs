@@ -19,7 +19,7 @@ namespace CloudConsult.Diagnosis.Services.MongoDb.Services
             return await reportCollection.Find(x => x.ConsultationId == consultationId).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<DiagnosisReport> GetById(ObjectId reportId, CancellationToken cancellationToken = default)
+        public async Task<DiagnosisReport> GetById(string reportId, CancellationToken cancellationToken = default)
         {
             return await reportCollection.Find(x => x.Id == reportId).FirstOrDefaultAsync(cancellationToken);
         }

@@ -12,12 +12,12 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
             CreateMap<RequestConsultation, ConsultationRequest>();
             CreateMap<List<ConsultationRequest>, ConsultationResponse>().ConstructUsing(x => ConsultationResponseMapper(x));
             CreateMap<ConsultationRequest, GetConsultationByIdResponse>()
-                .ForMember(x => x.ConsultationId, y => y.MapFrom(z => z.Id.ToString()))
+                .ForMember(x => x.ConsultationId, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.BookingDate, y => y.MapFrom(z => $"{z.TimeSlot.TimeSlotStart:dd-MM-yyyy}"))
                 .ForMember(x => x.BookingTimeSlot, y => y.MapFrom(z => $"{z.TimeSlot.TimeSlotStart:HH:mm}-{z.TimeSlot.TimeSlotEnd:HH:mm}"));
         }
 
-        private ConsultationResponse ConsultationResponseMapper(List<ConsultationRequest> consultations)
+        private static ConsultationResponse ConsultationResponseMapper(List<ConsultationRequest> consultations)
         {
             if (consultations is null || consultations.Count == 0)
             {
@@ -33,7 +33,7 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
                 DoctorEmailId = doctor.DoctorEmailId,
                 Consultations = consultations.Select(x => new ConsultationData
                 {
-                    Id = x.Id.ToString(),
+                    Id = x.Id,
                     MemberProfileId = x.MemberProfileId,
                     MemberName = x.MemberName,
                     MemberEmailId = x.MemberEmailId,

@@ -1,6 +1,6 @@
 ﻿namespace CloudConsult.Doctor.Domain.Responses
 {
-    public record ProfileResponse
+    public class ProfileResponse
     {
         public string ProfileId { get; set; }
         public string FullName { get; set; }

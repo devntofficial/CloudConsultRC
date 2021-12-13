@@ -5,10 +5,10 @@ using FluentValidation;
 
 namespace CloudConsult.Identity.Domain.Queries
 {
-    public record GetToken(string EmailId, string Password) : IQuery<GetTokenResponse>
+    public class GetToken : IQuery<GetTokenResponse>
     {
-        public string EmailId { get; set; } = EmailId;
-        public string Password { get; set; } = Password;
+        public string EmailId { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 
     public class GetTokenQueryValidator : ApiValidator<GetToken>

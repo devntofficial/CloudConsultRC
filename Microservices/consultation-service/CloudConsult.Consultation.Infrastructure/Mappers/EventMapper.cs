@@ -14,7 +14,7 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
             CreateMap<ConsultationEvent, ConsultationCancelled>().ConstructUsing(x => ConsultationCancelledMapper(x));
         }
 
-        private ConsultationRequested ConsultationRequestedMapper(ConsultationEvent data)
+        private static ConsultationRequested ConsultationRequestedMapper(ConsultationEvent data)
         {
             var consultation = data.Consultation;
             return new ConsultationRequested
@@ -36,7 +36,7 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
             };
         }
 
-        private ConsultationAccepted ConsultationAcceptedMapper(ConsultationEvent data)
+        private static ConsultationAccepted ConsultationAcceptedMapper(ConsultationEvent data)
         {
             var consultation = data.Consultation;
             return new ConsultationAccepted
@@ -54,7 +54,7 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
             };
         }
 
-        private ConsultationRejected ConsultationRejectedMapper(ConsultationEvent data)
+        private static ConsultationRejected ConsultationRejectedMapper(ConsultationEvent data)
         {
             var consultation = data.Consultation;
             return new ConsultationRejected
@@ -72,7 +72,7 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
             };
         }
 
-        private ConsultationCancelled ConsultationCancelledMapper(ConsultationEvent data)
+        private static ConsultationCancelled ConsultationCancelledMapper(ConsultationEvent data)
         {
             var consultation = data.Consultation;
             return new ConsultationCancelled
