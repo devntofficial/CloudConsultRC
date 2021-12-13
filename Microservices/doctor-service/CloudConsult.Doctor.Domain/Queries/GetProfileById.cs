@@ -3,7 +3,7 @@ using CloudConsult.Common.CQRS;
 
 namespace CloudConsult.Doctor.Domain.Queries
 {
-    public record GetProfileById : IQuery<ProfileResponse>
+    public class GetProfileById : IQuery<ProfileResponse>
     {
         public string ProfileId { get; set; }
     }

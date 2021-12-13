@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CloudConsult.Consultation.Domain.Commands;
 
-public record RequestConsultation : ICommand<String>
+public class RequestConsultation : ICommand<String>
 {
     public string DoctorProfileId { get; set; }
     public string DoctorName { get; set; }

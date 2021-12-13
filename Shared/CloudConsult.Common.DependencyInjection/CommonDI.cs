@@ -1,4 +1,5 @@
 using CloudConsult.Common.Builders;
+using CloudConsult.Common.Clients;
 using CloudConsult.Common.Configurations;
 using CloudConsult.Common.Encryption;
 using CloudConsult.Common.Middlewares;
@@ -129,6 +130,12 @@ public static class CommonDI
     public static IServiceCollection AddCommonMiddlewares(this IServiceCollection services)
     {
         services.AddTransient<GlobalExceptionHandlingMiddleware>();
+        return services;
+    }
+
+    public static IServiceCollection AddCommonApiClient<T>(this IServiceCollection services, string baseUrl) where T : CommonApiClient
+    {
+        services.AddHttpClient<T>(x => x.BaseAddress = new Uri(baseUrl));
         return services;
     }
 }

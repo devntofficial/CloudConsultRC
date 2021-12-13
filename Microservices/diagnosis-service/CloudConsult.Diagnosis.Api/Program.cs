@@ -1,5 +1,6 @@
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
+using CloudConsult.Diagnosis.Infrastructure.Clients;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 using Serilog.Events;
@@ -30,6 +31,7 @@ try
     builder.Services.AddCommonValidationsFrom("CloudConsult.Diagnosis.Domain");
     builder.Services.AddCommonKafkaProducer(config);
     builder.Services.AddCommonMiddlewares();
+    builder.Services.AddCommonApiClient<ConsultationApiClient>(config["ConsultationApiServer"]);
 
     var app = builder.Build();
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();

@@ -1,11 +1,12 @@
-﻿using CloudConsult.Diagnosis.Domain.Commands;
+﻿using MongoDB.Bson;
 
-namespace CloudConsult.Diagnosis.Domain.Responses
+namespace CloudConsult.Notification.Events.Diagnosis
 {
-    public class ReportResponse
+    public class ReportUploaded
     {
         public string ReportId { get; set; } = string.Empty;
         public string ConsultationId { get; set; } = string.Empty;
+        public string DoctorProfileId { get; set; } = string.Empty;
         public string DoctorName { get; set; } = string.Empty;
         public string DoctorEmailId { get; set; } = string.Empty;
         public string DoctorMobileNo { get; set; } = string.Empty;
@@ -17,5 +18,15 @@ namespace CloudConsult.Diagnosis.Domain.Responses
         public string Description { get; set; } = string.Empty;
         public string Summary { get; set; } = string.Empty;
         public List<MedicinePrescription> MedicinePrescriptions { get; set; } = new();
+    }
+
+    public class MedicinePrescription
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Dosage { get; set; } = string.Empty;
+        public string Duration { get; set; } = string.Empty;
+        public string Frequency { get; set; } = string.Empty;
+        public string Remarks { get; set; } = string.Empty;
     }
 }

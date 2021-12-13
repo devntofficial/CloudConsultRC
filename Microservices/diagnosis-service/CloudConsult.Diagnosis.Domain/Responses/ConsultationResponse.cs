@@ -1,11 +1,9 @@
-﻿using CloudConsult.Diagnosis.Domain.Commands;
-
-namespace CloudConsult.Diagnosis.Domain.Responses
+﻿namespace CloudConsult.Diagnosis.Domain.Responses
 {
-    public class ReportResponse
+    public class ConsultationResponse
     {
-        public string ReportId { get; set; } = string.Empty;
         public string ConsultationId { get; set; } = string.Empty;
+        public string DoctorProfileId { get; set; } = string.Empty;
         public string DoctorName { get; set; } = string.Empty;
         public string DoctorEmailId { get; set; } = string.Empty;
         public string DoctorMobileNo { get; set; } = string.Empty;
@@ -13,9 +11,9 @@ namespace CloudConsult.Diagnosis.Domain.Responses
         public string MemberName { get; set; } = string.Empty;
         public string MemberEmailId { get; set; } = string.Empty;
         public string MemberMobileNo { get; set; } = string.Empty;
-        public string Title { get; set; } = string.Empty;
+        public string BookingDate { get; set; } = string.Empty;
+        public string BookingTimeSlot { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public string Summary { get; set; } = string.Empty;
-        public List<MedicinePrescription> MedicinePrescriptions { get; set; } = new();
+        public string Status { get; set; } = string.Empty;
     }
 }

@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace CloudConsult.Identity.Domain.Commands
 {
-    public record CreateUser : ICommand<CreateUserResponse>
+    public class CreateUser : ICommand<CreateUserResponse>
     {
         public string FullName { get; set; }
         public string EmailId { get; set; }

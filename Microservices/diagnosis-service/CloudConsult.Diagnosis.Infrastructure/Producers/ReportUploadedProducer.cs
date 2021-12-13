@@ -13,16 +13,14 @@ namespace CloudConsult.Diagnosis.Infrastructure.Producers
     public class ReportUploadedProducer : IJob
     {
         private readonly ILogger<ReportUploadedProducer> logger;
-        private readonly IMapper mapper;
         private readonly IProducer<Null, string> producer;
         private readonly IEventService eventService;
         private readonly QuartzConfiguration config;
 
-        public ReportUploadedProducer(ILogger<ReportUploadedProducer> logger, IMapper mapper,
-            IProducer<Null, string> producer, IEventService eventService, QuartzConfiguration config)
+        public ReportUploadedProducer(ILogger<ReportUploadedProducer> logger, IProducer<Null, string> producer,
+            IEventService eventService, QuartzConfiguration config)
         {
             this.logger = logger;
-            this.mapper = mapper;
             this.producer = producer;
             this.eventService = eventService;
             this.config = config;
@@ -35,18 +33,14 @@ namespace CloudConsult.Diagnosis.Infrastructure.Producers
                 var cancelToken = context.CancellationToken;
                 var topicName = config.Jobs.ReportUploadedProducer.TopicName;
 
-                logger.LogInformation("Looking for recently uploaded diagnosis reports");
-
-                var unpublishedReports = await eventService.GetUnpublishedReports(cancelToken);
+                var unpublishedReports = await eventService.GetPendingReportUploadedEvents(cancelToken);
                 foreach (var report in unpublishedReports)
                 {
                     try
                     {
-                        var mappedEvent = mapper.Map<ReportUploaded>(report);
-
                         var producerTask = producer.ProduceAsync(topicName, new Message<Null, string>
                         {
-                            Value = JsonSerializer.Serialize(mappedEvent)
+                            Value = JsonSerializer.Serialize(report)
                         }, cancelToken);
 
                         await producerTask.ContinueWith(deliveryTask =>
@@ -57,21 +51,21 @@ namespace CloudConsult.Diagnosis.Infrastructure.Producers
                             }
                             else
                             {
-                                eventService.SetIsEventPublished(report.Id, true, cancelToken);
-                                logger.LogInformation($"Diagnosis report uploaded event published successfully for {report.Id}");
+                                eventService.SetReportUploadedEventPublished(report.ReportId, true, cancelToken);
+                                logger.LogInformation("({ReportId}) -> Diagnosis report uploaded event published successfully", report.ReportId);
                             }
                         }, cancelToken);
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        logger.LogCritical($"Diagnosis report uploaded event published is failing for {report.Id} with message: {ex.Message}");
+                        logger.LogCritical("({ReportId}) -> Error in publishing diagnosis report uploaded event", report.ReportId);
                         continue;
                     }
                 }
             }
             catch (Exception e)
             {
-                logger.LogCritical(e.Message);
+                logger.LogCritical("{Message}", e.Message);
             }
         }
     }

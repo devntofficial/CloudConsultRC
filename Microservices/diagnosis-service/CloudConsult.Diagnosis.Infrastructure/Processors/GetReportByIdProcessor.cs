@@ -32,7 +32,7 @@ namespace CloudConsult.Diagnosis.Infrastructure.Processors
 
             if (validation.IsValid)
             {
-                var report = await reportService.GetById(ObjectId.Parse(request.ReportId), cancellationToken);
+                var report = await reportService.GetById(request.ReportId, cancellationToken);
 
                 if (report is null)
                 {

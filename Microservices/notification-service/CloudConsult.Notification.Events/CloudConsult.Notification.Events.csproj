@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Diagnosis\" />
     <Folder Include="Member\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\CloudConsult.Common\CloudConsult.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@ namespace CloudConsult.Identity.Api.Controllers
         [HttpGet(Routes.Identity.GetToken)]
         public async Task<IActionResult> GetToken([FromHeader] string EmailId, [FromHeader] string Password, CancellationToken cancellationToken)
         {
-            var query = new GetToken(EmailId, Password);
+            var query = new GetToken { EmailId = EmailId, Password = Password };
             var response = await Mediator.Send(query, cancellationToken);
             return JsonResponse(response);
         }

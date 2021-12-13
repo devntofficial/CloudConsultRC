@@ -37,7 +37,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             var builder = Builders<DoctorProfile>.Update;
             var update = builder.Set(x => x.IsUpdatedEventPublished, true);
 
-            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null);
+            profileCollection.UpdateOne(x => x.Id == profileId, update, null);
         }
 
         public void SetProfileCreatedEventPublished(string profileId)
@@ -45,7 +45,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             var builder = Builders<DoctorProfile>.Update;
             var update = builder.Set(x => x.IsCreatedEventPublished, true);
 
-            profileCollection.UpdateOne(x => x.Id == ObjectId.Parse(profileId), update, null);
+            profileCollection.UpdateOne(x => x.Id == profileId, update, null);
         }
 
         public async Task<IEnumerable<KycApproved>> GetPendingKycApprovedEvents(CancellationToken cancellationToken = default)
@@ -65,7 +65,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             var builder = Builders<DoctorKyc>.Update;
             var update = builder.Set(x => x.IsEventPublished, true);
 
-            kycCollection.UpdateOne(x => x.Id == ObjectId.Parse(eventId), update, null);
+            kycCollection.UpdateOne(x => x.Id == eventId, update, null);
         }
     }
 }

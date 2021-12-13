@@ -1,6 +1,5 @@
 ﻿using CloudConsult.Doctor.Domain.Entities;
 using CloudConsult.Doctor.Domain.Services;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace CloudConsult.Doctor.Services.MongoDb.Services
@@ -50,13 +49,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
 
         public async Task<DoctorProfile> GetById(string profileId, CancellationToken cancellationToken = default)
         {
-            var isValidIdFormat = ObjectId.TryParse(profileId, out var id);
-            if (isValidIdFormat)
-            {
-                return await profileCollection.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
-            }
-
-            return null;
+            return await profileCollection.Find(x => x.Id == profileId).FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<DoctorProfile> GetByIdentityId(string identityId, CancellationToken cancellationToken = default)
@@ -70,7 +63,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             return await profileCollection.Find(filter).SortByDescending(x => x.Timestamp)
                 .Skip((pageNo - 1) * pageSize)
                 .Limit(pageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
     }
 }
