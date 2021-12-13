@@ -1,5 +1,6 @@
 ﻿using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Notification.Consumers.Consultation;
+using CloudConsult.Notification.Consumers.Diagnosis;
 using CloudConsult.Notification.Consumers.Doctor;
 using CloudConsult.Notification.Consumers.Identity;
 using Kafka.Public;
@@ -28,6 +29,7 @@ namespace CloudConsult.Notification.Api.Extensions
             services.AddHostedService<ConsultationAcceptedConsumer>();
             services.AddHostedService<ConsultationRejectedConsumer>();
             services.AddHostedService<ConsultationCancelledConsumer>();
+            services.AddHostedService<ReportUploadedConsumer>();
         }
     }
 }

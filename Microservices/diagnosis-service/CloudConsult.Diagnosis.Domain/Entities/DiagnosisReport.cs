@@ -1,12 +1,15 @@
 ﻿using CloudConsult.Diagnosis.Domain.Commands;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace CloudConsult.Diagnosis.Domain.Entities
 {
     public class DiagnosisReport
     {
-        [BsonId] public string Id { get; set; } = string.Empty;
+        [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+        public string Id { get; set; }
+        
         public string ConsultationId { get; set; } = string.Empty;
         public string DoctorProfileId { get; set; } = string.Empty;
         public string DoctorName { get; set; } = string.Empty;
