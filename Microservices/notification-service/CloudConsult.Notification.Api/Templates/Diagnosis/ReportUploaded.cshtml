@@ -1,4 +1,4 @@
-﻿@model CloudConsult.Notification.Events.Diagnosis.ReportUploaded
+﻿@model dynamic
 @{ Layout = "_Layout"; }
 
 <p>
@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var medicine in Model?.MedicinePrescriptions ?? new())
+            @foreach (var medicine in Model?.MedicinePrescriptions)
             {
                 <tr>
                     <td>@Model?.MedicinePrescriptions.IndexOf(medicine)</td>

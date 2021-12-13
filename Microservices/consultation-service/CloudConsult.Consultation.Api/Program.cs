@@ -1,5 +1,6 @@
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
+using CloudConsult.Consultation.Infrastructure.Consumers;
 using CloudConsult.Consultation.Services.SqlServer.Contexts;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ try
     builder.Services.AddCommonValidationsFrom("CloudConsult.Consultation.Domain");
     builder.Services.AddCommonKafkaProducer(config);
     builder.Services.AddCommonMiddlewares();
+    builder.Services.AddHostedService<ReportUploadedConsumer>();
 
     var app = builder.Build();
 
@@ -57,7 +59,6 @@ try
         });
     }
     app.UseSerilogRequestLogging();
-    app.UseHttpsRedirection();
     app.UseRouting();
     app.UseCors("ConsultationServicePolicy");
     app.UseAuthentication();

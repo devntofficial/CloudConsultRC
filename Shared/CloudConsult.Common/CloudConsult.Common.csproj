@@ -25,6 +25,7 @@
 		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
         <PackageReference Include="Isopoh.Cryptography.Argon2" Version="1.1.10" />
         <PackageReference Include="MongoDB.Bson" Version="2.13.2" />
+		<PackageReference Include="kafka-sharp" Version="1.4.3" />
     </ItemGroup>
 
 </Project>

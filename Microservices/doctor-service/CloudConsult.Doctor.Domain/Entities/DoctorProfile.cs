@@ -1,11 +1,13 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace CloudConsult.Doctor.Domain.Entities
 {
     public class DoctorProfile
     {
-        [BsonId] public string Id { get; set; } = string.Empty;
+        [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+        public string Id { get; set; }
         public string IdentityId { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;

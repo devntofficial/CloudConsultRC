@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CloudConsult.Common.Enums;
+using CloudConsult.Consultation.Domain.Entities;
 using CloudConsult.Consultation.Domain.Events;
 using CloudConsult.Consultation.Domain.Services;
 using CloudConsult.Consultation.Services.SqlServer.Contexts;
@@ -56,6 +57,28 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             if (booking is not null)
             {
                 booking.IsEventPublished = true;
+                db.SaveChanges();
+            }
+        }
+
+        public void SetReportUploadedEventConsumed(string id, string reportId)
+        {
+            var consultation = db.ConsultationRequests.FirstOrDefault(x => x.Id == id);
+
+            if (consultation is not null)
+            {
+                db.ConsultationEvents.Add(new ConsultationEvent
+                {
+                    ConsultationId = consultation.Id,
+                    EventName = ConsultationEvents.DiagnosisReportPublished.ToString(),
+                    IsEventPublished = true,
+                    Timestamp = DateTime.Now
+                });
+
+                consultation.DiagnosisReportId = reportId;
+                consultation.IsComplete = true;
+                consultation.Status = ConsultationEvents.ProcessComplete.ToString();
+
                 db.SaveChanges();
             }
         }

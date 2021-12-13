@@ -17,7 +17,9 @@ namespace CloudConsult.Common.Enums
         [Description("PaymentRejected")]
         PaymentRejected,
         [Description("DiagnosisReportPublished")]
-        DiagnosisReportPublished
+        DiagnosisReportPublished,
+        [Description("ProcessComplete")]
+        ProcessComplete
     }
 
     public static class ConsultationStatusExtensions

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Polly;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
@@ -109,7 +110,8 @@ public static class CommonDI
         configuration.Bind(nameof(EmailServiceConfiguration), emailConfig);
         services.AddSingleton(emailConfig);
 
-        services.AddFluentEmail(emailConfig.Username, "Cloud Consult")
+        services
+            .AddFluentEmail(emailConfig.Username, "Cloud Consult")
             .AddRazorRenderer(templatePath)
             .AddMailKitSender(new SmtpClientOptions
             {
@@ -135,7 +137,8 @@ public static class CommonDI
 
     public static IServiceCollection AddCommonApiClient<T>(this IServiceCollection services, string baseUrl) where T : CommonApiClient
     {
-        services.AddHttpClient<T>(x => x.BaseAddress = new Uri(baseUrl));
+        services.AddHttpClient<T>(x => x.BaseAddress = new Uri(baseUrl))
+            .AddTransientHttpErrorPolicy(x => x.WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(2)));
         return services;
     }
 }
