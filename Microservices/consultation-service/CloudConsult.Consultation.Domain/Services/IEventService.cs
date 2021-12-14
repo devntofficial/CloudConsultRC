@@ -10,4 +10,6 @@ public interface IEventService
     Task<IEnumerable<ConsultationCancelled>> GetPendingConsultationCancelledEvents(CancellationToken cancellationToken = default);
     void SetEventPublished(string id);
     void SetReportUploadedEventConsumed(string id, string reportId);
+    void SetPaymentAcceptedEventConsumed(string id, string paymentId);
+    void SetPaymentRejectedEventConsumed(string id);
 }

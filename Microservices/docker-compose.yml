@@ -41,3 +41,10 @@ services:
       context: .
       dockerfile: notification-service/CloudConsult.Notification.Api/Dockerfile
 
+
+  cloudconsult.payment.api:
+    image: ${DOCKER_REGISTRY-}cloudconsultpaymentapi
+    build:
+      context: .
+      dockerfile: payment-service/CloudConsult.Payment.Api/Dockerfile
+

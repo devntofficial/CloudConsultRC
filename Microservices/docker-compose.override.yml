@@ -84,3 +84,14 @@ services:
       - cloudconsult.member.api
       - cloudconsult.identity.api
       - cloudconsult.diagnosis.api
+  cloudconsult.payment.api:
+    networks:
+      - cloud-consult
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "6014:80"
+      - "6015:443"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

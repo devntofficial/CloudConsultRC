@@ -82,5 +82,46 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
                 db.SaveChanges();
             }
         }
+
+        public void SetPaymentAcceptedEventConsumed(string id, string paymentId)
+        {
+            var consultation = db.ConsultationRequests.FirstOrDefault(x => x.Id == id);
+
+            if (consultation is not null)
+            {
+                db.ConsultationEvents.Add(new ConsultationEvent
+                {
+                    ConsultationId = consultation.Id,
+                    EventName = ConsultationEvents.PaymentAccepted.ToString(),
+                    IsEventPublished = true,
+                    Timestamp = DateTime.Now
+                });
+
+                consultation.PaymentId = paymentId;
+                consultation.Status = ConsultationEvents.PaymentAccepted.ToString();
+
+                db.SaveChanges();
+            }
+        }
+
+        public void SetPaymentRejectedEventConsumed(string id)
+        {
+            var consultation = db.ConsultationRequests.FirstOrDefault(x => x.Id == id);
+
+            if (consultation is not null)
+            {
+                db.ConsultationEvents.Add(new ConsultationEvent
+                {
+                    ConsultationId = consultation.Id,
+                    EventName = ConsultationEvents.PaymentRejected.ToString(),
+                    IsEventPublished = true,
+                    Timestamp = DateTime.Now
+                });
+
+                consultation.Status = ConsultationEvents.PaymentRejected.ToString();
+
+                db.SaveChanges();
+            }
+        }
     }
 }
