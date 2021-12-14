@@ -17,10 +17,16 @@ public static class QuartzExtension
             throw new Exception($"No cron schedule found for job in configuration at {cronKey}");
         }
 
-        quartz.AddJob<T>(opts => opts.WithIdentity(jobKey));
-        quartz.AddTrigger(opts => opts
-            .ForJob(jobKey)
-            .WithIdentity(jobName + "-Trigger")
-            .WithCronSchedule(cron, x => x.WithMisfireHandlingInstructionDoNothing()));
+        quartz.AddJob<T>(options => 
+        {
+            options.WithIdentity(jobKey);
+        });
+
+        quartz.AddTrigger(options => 
+        {
+            options.ForJob(jobKey);
+            options.WithIdentity(jobName + "-Trigger");
+            options.WithCronSchedule(cron, x => x.WithMisfireHandlingInstructionDoNothing());
+        });
     }
 }

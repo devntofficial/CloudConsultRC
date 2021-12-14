@@ -1,8 +1,6 @@
-﻿using CloudConsult.Common.Builders;
-using CloudConsult.Common.Controllers;
+﻿using CloudConsult.Common.Controllers;
 using CloudConsult.Doctor.Domain.Commands;
 using CloudConsult.Doctor.Domain.Queries;
-using CloudConsult.Doctor.Domain.Responses;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;

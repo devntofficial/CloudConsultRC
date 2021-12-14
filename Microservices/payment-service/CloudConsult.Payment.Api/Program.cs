@@ -1,9 +1,8 @@
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
-using CloudConsult.Consultation.Infrastructure.Consumers;
-using CloudConsult.Consultation.Services.SqlServer.Contexts;
+using Kafka.Public;
+using Kafka.Public.Loggers;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 
@@ -28,24 +27,18 @@ try
     builder.Services.AddCommonExtensionsFromCurrentAssembly(config);
     builder.Services.AddCommonSwaggerDocs(config);
     builder.Services.AddCommonApiVersioning();
-    builder.Services.AddCommonJwtAuthentication(config);
-    builder.Services.AddCommonMediatorConfiguration("CloudConsult.Consultation.Domain", "CloudConsult.Consultation.Infrastructure");
-    builder.Services.AddCommonValidationsFrom("CloudConsult.Consultation.Domain");
-    builder.Services.AddCommonKafkaProducer(config);
+    builder.Services.AddCommonMediatorConfiguration("CloudConsult.Payment.Domain", "CloudConsult.Payment.Infrastructure");
+    builder.Services.AddCommonValidationsFrom("CloudConsult.Payment.Domain");
     builder.Services.AddCommonMiddlewares();
-    builder.Services.AddHostedService<ReportUploadedConsumer>();
-    builder.Services.AddHostedService<PaymentAcceptedConsumer>();
-    builder.Services.AddHostedService<PaymentRejectedConsumer>();
+    builder.Services.AddSingleton(x => new ClusterClient(new Configuration
+    {
+        Seeds = config["KafkaConfiguration:BootstrapServers"],
+        RequiredAcks = config["KafkaConfiguration:Acks"] == "All" ? RequiredAcks.AllInSyncReplicas : config["KafkaConfiguration:Acks"] == "Leader" ? RequiredAcks.Leader : RequiredAcks.None,
+        MaxRetry = Convert.ToInt32(config["KafkaConfiguration:MessageSendMaxRetries"]),
+        RequestTimeoutMs = Convert.ToInt32(config["KafkaConfiguration:MessageTimeoutMs"])
+    }, new ConsoleLogger()));
 
     var app = builder.Build();
-
-    //migrate database
-    using (var scope = app.Services.CreateScope())
-    {
-        var dataContext = scope.ServiceProvider.GetRequiredService<ConsultationDbContext>();
-        dataContext.Database.Migrate();
-    }
-
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
     // Configure the HTTP request pipeline.
@@ -57,12 +50,14 @@ try
             options.RoutePrefix = "api-docs";
             foreach (var description in versionProvider.ApiVersionDescriptions)
                 options.SwaggerEndpoint($"/api-docs/{description.GroupName}/docs.json",
-                    $"Cloud Consult - Consultation API Reference {description.GroupName}");
+                    $"Cloud Consult - Payment API Reference {description.GroupName}");
         });
     }
+
     app.UseSerilogRequestLogging();
+    app.UseHttpsRedirection();
     app.UseRouting();
-    app.UseCors("ConsultationServicePolicy");
+    app.UseCors("PaymentServicePolicy");
     app.UseAuthentication();
     app.UseAuthorization();
 
@@ -71,17 +66,12 @@ try
     app.MapControllers();
     app.Run();
 }
-catch(Exception ex)
+catch (Exception ex)
 {
-    string type = ex.GetType().Name;
-    if (type.Equals("StopTheHostException", StringComparison.Ordinal))
-    {
-        throw;
-    }
     Log.Fatal(ex, "Unhandled exception");
 }
 finally
 {
-    Log.Information("Consultation Service - Shut down complete");
+    Log.Information("Payment Service - Shut down complete");
     Log.CloseAndFlush();
 }
