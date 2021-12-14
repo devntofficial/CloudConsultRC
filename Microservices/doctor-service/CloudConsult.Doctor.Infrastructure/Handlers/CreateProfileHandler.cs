@@ -38,13 +38,17 @@ public class CreateProfileHandler : ICommandHandler<CreateProfile, ProfileRespon
             });
         }
 
-        var mappedProfile = mapper.Map<DoctorProfile>(request);
+        var createdProfile = await profileService.Create(mapper.Map<DoctorProfile>(request), cancellationToken);
+        if (createdProfile is null)
+        {
+            return builder.CreateErrorResponse(null, x =>
+            {
+                x.WithErrorCode(StatusCodes.Status400BadRequest);
+                x.WithErrors("A profile already exists for this identity");
+            });
+        }
 
-        var createdProfile = await profileService.Create(mappedProfile, cancellationToken);
-
-        var response = mapper.Map<ProfileResponse>(createdProfile);
-
-        return builder.CreateSuccessResponse(response, x =>
+        return builder.CreateSuccessResponse(mapper.Map<ProfileResponse>(createdProfile), x =>
         {
             x.WithSuccessCode(StatusCodes.Status201Created);
             x.WithMessages("Profile created successfully");
