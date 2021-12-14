@@ -15,6 +15,11 @@ namespace CloudConsult.Member.Services.MongoDb.Services
 
         public async Task<MemberProfile> Create(MemberProfile profile, CancellationToken cancellationToken = default)
         {
+            if (await GetByIdentityId(profile.IdentityId, cancellationToken) is not null)
+            {
+                return null;
+            }
+
             profile.IsActive = true;
             profile.IsUpdatedEventPublished = true;
             await profileCollection.InsertOneAsync(profile, null, cancellationToken);

@@ -14,7 +14,8 @@ namespace CloudConsult.Member.Infrastructure.Mappers
             CreateMap<MemberProfile, ProfileResponse>()
                 .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
 
-            CreateMap<UpdateProfile, MemberProfile>();
+            CreateMap<UpdateProfile, MemberProfile>()
+                .ForMember(x => x.Id, y => y.MapFrom(z => z.ProfileId)); ;
             CreateMap<MemberProfile, ProfileResponse>()
                 .ForMember(x => x.ProfileId, y => y.MapFrom(z => z.Id));
 
