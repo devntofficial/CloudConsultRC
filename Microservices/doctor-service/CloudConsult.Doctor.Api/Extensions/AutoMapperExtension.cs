@@ -7,7 +7,11 @@ namespace CloudConsult.Doctor.Api.Extensions
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(x => { x.AddProfile<ProfileMapper>(); });
+            services.AddAutoMapper(x =>
+            { 
+                x.AddProfile<ProfileMapper>();
+                x.AddProfile<KycMapper>();
+            });
         }
     }
 }

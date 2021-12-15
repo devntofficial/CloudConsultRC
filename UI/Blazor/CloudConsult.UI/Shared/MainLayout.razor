@@ -1,7 +1,11 @@
-﻿@inherits LayoutComponentBase
-@inject IIdentityService _authenticationService
-@inject NavigationManager _navigationManager
-@inject ISnackbar _snackbar
+﻿@using Blazored.LocalStorage
+@using CloudConsult.UI.Helpers
+@inherits LayoutComponentBase
+@inject NavigationManager navigationManager
+@inject ISnackbar snackbar
+@inject AuthenticationStateProvider authStateProvider
+@inject ILocalStorageService localStorage 
+@inject HttpClient client
 
 
 <MudThemeProvider Theme="_theme" />
@@ -57,7 +61,6 @@
 
 @code {
     private readonly DefaultTheme _theme = new();
-
     private bool _drawerOpen = true;
 
     void DrawerToggle()
@@ -78,8 +81,10 @@
 
     private async Task Logout()
     {
-        await _authenticationService.Logout();
-        _navigationManager.NavigateTo("/");
-        _snackbar.Add("You were logged out successfully", Severity.Info);
+        await localStorage.RemoveItemAsync("AccessToken");
+        ((AuthStateProvider)authStateProvider).NotifyUserLogout();
+        client.DefaultRequestHeaders.Authorization = null;
+        navigationManager.NavigateTo("/");
+        snackbar.Add("You were logged out successfully", Severity.Info);
     }
 }

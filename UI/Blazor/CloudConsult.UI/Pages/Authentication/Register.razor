@@ -9,18 +9,18 @@
     Already have an account? <MudLink Href="/login">Sign In</MudLink>
 </MudText>
 
-<MudTextField @bind-Value="@registrationModel.FullName" T="string" Label="Full Name" Variant="Variant.Outlined" Class="my-4">
+<MudTextField @bind-Value="@RegistrationModel.FullName" T="string" Label="Full Name" Variant="Variant.Outlined" Class="my-4">
 </MudTextField>
 
-<MudTextField @bind-Value="@registrationModel.EmailId" T="string" Label="E-mail" Variant="Variant.Outlined">
+<MudTextField @bind-Value="@RegistrationModel.EmailId" T="string" Label="E-mail" Variant="Variant.Outlined">
 </MudTextField>
 
-<MudTextField @bind-Value="@registrationModel.Password" Label="Password" Variant="Variant.Outlined"
+<MudTextField @bind-Value="@RegistrationModel.Password" Label="Password" Variant="Variant.Outlined"
               InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon"
               OnAdornmentClick="TogglePasswordVisibility" Class="mt-4"/>
 
-<MudSelect T="int" @bind-Value="@registrationModel.RoleId" Variant="Variant.Outlined" Label="Role" Strict="true" Class="mt-4">
-    @foreach(var role in rolesModel)
+<MudSelect T="int" @bind-Value="@RegistrationModel.RoleId" Variant="Variant.Outlined" Label="Role" Strict="true" Class="mt-4">
+    @foreach(var role in RolesModel)
     {
         <MudSelectItem Value="@(role.Id)">@role.RoleName</MudSelectItem>
     }

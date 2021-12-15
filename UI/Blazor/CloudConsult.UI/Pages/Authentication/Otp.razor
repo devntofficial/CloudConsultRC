@@ -1,0 +1,45 @@
+﻿@page "/verify-otp/{IdentityId}"
+@layout LoginLayout
+@inherits OtpComponent
+
+<style>
+    input[type=text]
+    {
+        text-align: center;
+    }
+</style>
+<MudText Typo="Typo.h4" GutterBottom="true">
+    OTP Verification
+</MudText>
+<MudText>
+    Please enter 6-digit OTP sent to your email.
+</MudText>
+<br />
+<MudGrid>
+    <MudItem xs="2" sm="2" md="2">
+        <MudTextField TextChanged="(string num) => focusToNum2(num)" @ref=num1Ref @bind-Value="num1" T="int?" Variant="Variant.Outlined" MaxLength=1 Immediate=true AutoFocus=true></MudTextField>
+    </MudItem>
+    <MudItem xs="2" sm="2" md="2">
+        <MudTextField TextChanged="(string num) => focusToNum3(num)" @ref=num2Ref @bind-Value="num2" T="int?" Variant="Variant.Outlined" MaxLength=1 Immediate=true></MudTextField>
+    </MudItem>
+    <MudItem xs="2" sm="2" md="2">
+        <MudTextField TextChanged="(string num) => focusToNum4(num)" @ref=num3Ref @bind-Value="num3" T="int?" Variant="Variant.Outlined" MaxLength=1 Immediate=true></MudTextField>
+    </MudItem>
+    <MudItem xs="2" sm="2" md="2">
+        <MudTextField TextChanged="(string num) => focusToNum5(num)" @ref=num4Ref @bind-Value="num4" T="int?" Variant="Variant.Outlined" MaxLength=1 Immediate=true></MudTextField>
+    </MudItem>
+    <MudItem xs="2" sm="2" md="2">
+        <MudTextField TextChanged="(string num) => focusToNum6(num)" @ref=num5Ref @bind-Value="num5" T="int?" Variant="Variant.Outlined" MaxLength=1 Immediate=true></MudTextField>
+    </MudItem>
+    <MudItem xs="2" sm="2" md="2">
+        <MudTextField @ref=num6Ref @bind-Value="num6" T="int?" Variant="Variant.Outlined" MaxLength=1 Immediate=true></MudTextField>
+    </MudItem>
+</MudGrid>
+<br />
+<MudButton Disabled="@isOtpFilled()" Variant="Variant.Filled" Color="Color.Primary" OnClick="ValidateOtp" Size="Size.Large" FullWidth="true" Class="mt-3">
+    Verify
+</MudButton>
+
+<MudButton OnClick="GoBackToLogin" Variant="Variant.Filled" Color="Color.Error" Size="Size.Large" FullWidth="true" Class="mt-3">
+    Cancel
+</MudButton>

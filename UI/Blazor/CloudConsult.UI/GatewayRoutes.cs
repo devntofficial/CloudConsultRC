@@ -7,6 +7,8 @@ public static class GatewayRoutes
         public const string GetToken = "/api/get-token";
         public const string CreateUser = "/api/create-user";
         public const string GetUserRoles = "/api/get-user-roles";
+        public const string GenerateOtp = "/api/generate-otp";
+        public const string ValidateOtp = "/api/validate-otp";
     }
 
     public static class DoctorService

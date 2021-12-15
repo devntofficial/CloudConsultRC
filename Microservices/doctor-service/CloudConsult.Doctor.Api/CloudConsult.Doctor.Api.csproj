@@ -10,6 +10,13 @@
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..</DockerfileContext>
 	</PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="kyc\**" />
+      <Content Remove="kyc\**" />
+      <EmbeddedResource Remove="kyc\**" />
+      <None Remove="kyc\**" />
+    </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
 	</ItemGroup>

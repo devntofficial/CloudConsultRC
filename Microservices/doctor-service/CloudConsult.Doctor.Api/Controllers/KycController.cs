@@ -12,6 +12,7 @@ namespace CloudConsult.Doctor.Api.Controllers;
 public class KycController : JsonController<KycController>
 {
     [HttpPost(Routes.Kyc.Upload)]
+    [Authorize(Roles = "Doctor", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Upload([FromRoute] string ProfileId, List<IFormFile> KycDocuments, CancellationToken cancellationToken = default)
     {
         var command = new UploadKycDocuments
@@ -24,6 +25,7 @@ public class KycController : JsonController<KycController>
     }
 
     [HttpGet(Routes.Kyc.Download)]
+    [Authorize(Roles = "Doctor,Administrator", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Download([FromRoute] DownloadKycDocuments query, CancellationToken cancellationToken = default)
     {
         var response = await Mediator.Send(query, cancellationToken);
@@ -39,6 +41,7 @@ public class KycController : JsonController<KycController>
     public async Task<IActionResult> Approve([FromRoute] string ProfileId, ApproveKyc command, CancellationToken cancellationToken = default)
     {
         command.ProfileId = ProfileId;
+        command.ApprovalIdentityId = Request.HttpContext.User.Identities.First().Claims.FirstOrDefault(x => x.Type == "Id").Value;
         var response = await Mediator.Send(command, cancellationToken);
         return JsonResponse(response);
     }
@@ -48,6 +51,7 @@ public class KycController : JsonController<KycController>
     public async Task<IActionResult> Reject([FromRoute] string ProfileId, RejectKyc command, CancellationToken cancellationToken = default)
     {
         command.ProfileId = ProfileId;
+        command.RejectionIdentityId = Request.HttpContext.User.Identities.First().Claims.FirstOrDefault(x => x.Type == "Id").Value;
         var response = await Mediator.Send(command, cancellationToken);
         return JsonResponse(response);
     }

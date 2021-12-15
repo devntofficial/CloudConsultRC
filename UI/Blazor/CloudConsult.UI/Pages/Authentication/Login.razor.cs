@@ -1,8 +1,12 @@
-﻿using CloudConsult.UI.Models.Identity;
+﻿using Blazored.LocalStorage;
+using CloudConsult.UI.Helpers;
+using CloudConsult.UI.Models.Identity;
 using CloudConsult.UI.Services.Interfaces;
 using CloudConsult.UI.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using System.Net.Http.Headers;
 
 namespace CloudConsult.UI.Pages.Authentication
 {
@@ -14,17 +18,12 @@ namespace CloudConsult.UI.Pages.Authentication
         protected bool ShowLoadingSpinner;
         private bool _passwordVisibility;
 
-        [Inject]
-        private IIdentityService AuthService { get; set; }
-
-        [Inject]
-        private NavigationManager Navigation { get; set; }
-
-        [Inject]
-        private ISnackbar Snackbar { get; set; }
-
-        [CascadingParameter]
-        private Error Error { get; set; }
+        [Inject] private IIdentityService IdentityService { get; set; }
+        [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; }
+        [Inject] private ILocalStorageService LocalStorage { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private HttpClient Client { get; set; }
+        [CascadingParameter] private Error Error { get; set; }
 
         protected void TogglePasswordVisibility()
         {
@@ -47,14 +46,18 @@ namespace CloudConsult.UI.Pages.Authentication
             ShowLoadingSpinner = true;
             try
             {
-                var result = await AuthService.Login(LoginModel);
-                if (result is true)
+                var result = await IdentityService.GetToken(LoginModel);
+                if(result.IsSuccess)
                 {
-                    Navigation.NavigateTo("/dashboard");
+                    var token = result.Payload.AccessToken;
+                    await LocalStorage.SetItemAsync("AccessToken", token);
+                    ((AuthStateProvider)AuthStateProvider).NotifyUserLogin(token);
+                    Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    NavigationManager.NavigateTo("/dashboard");
                 }
-                else
+                else if(result.StatusCode == 401)
                 {
-                    Snackbar.Add("Invalid email/password combination", Severity.Error);
+                    NavigationManager.NavigateTo($"/verify-otp/{result.Payload.IdentityId}");
                 }
             }
             catch (Exception ex)

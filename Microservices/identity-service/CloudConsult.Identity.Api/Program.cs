@@ -1,5 +1,6 @@
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
+using CloudConsult.Identity.Domain.Entities;
 using CloudConsult.Identity.Services.SqlServer.Contexts;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,13 @@ try
     {
         var dataContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
         dataContext.Database.Migrate();
+        if (!dataContext.Roles.Any())
+        {
+            await dataContext.Roles.AddAsync(new Role { RoleName = "Administrator", Timestamp = DateTime.Now });
+            await dataContext.Roles.AddAsync(new Role { RoleName = "Doctor", Timestamp = DateTime.Now });
+            await dataContext.Roles.AddAsync(new Role { RoleName = "Member", Timestamp = DateTime.Now });
+            await dataContext.SaveChangesAsync();
+        }
     }
 
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
