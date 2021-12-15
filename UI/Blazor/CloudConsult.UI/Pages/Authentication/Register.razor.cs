@@ -8,8 +8,8 @@ namespace CloudConsult.UI.Pages.Authentication
 {
     public class RegisterComponent : ComponentBase
     {
-        protected UserRegistrationModel registrationModel = new();
-        protected List<UserRoleModel> rolesModel = new();
+        protected RegistrationModel RegistrationModel = new();
+        protected List<RoleModel> RolesModel = new();
         protected bool AgreeToTerms;
         protected bool ShowLoadingSpinner;
         protected InputType PasswordInput = InputType.Password;
@@ -30,7 +30,18 @@ namespace CloudConsult.UI.Pages.Authentication
 
         protected override async Task OnInitializedAsync()
         {
-            rolesModel = await IdentityService.GetUserRoles();
+            var output = await IdentityService.GetUserRoles();
+            if(output.IsSuccess)
+            {
+                RolesModel = output.Payload;
+            }
+            else
+            {
+                for (int i = 0; i < output.Errors.Count(); i++)
+                {
+                    Snackbar.Add(output.Errors.ElementAt(i), Severity.Error);
+                }
+            }
         }
 
         protected void TogglePasswordVisibility()
@@ -54,11 +65,18 @@ namespace CloudConsult.UI.Pages.Authentication
             ShowLoadingSpinner = true;
             try
             {
-                var isRegistered = await IdentityService.Register(registrationModel);
-                if (isRegistered)
+                var output = await IdentityService.Register(RegistrationModel);
+                if (output.IsSuccess)
                 {
                     Snackbar.Add("Your account was created successfully. Please login with your saved password.", Severity.Info);
-                    Navigation.NavigateTo("/login");
+                    Navigation.NavigateTo("/verify-otp");
+                }
+                else
+                {
+                    for (int i = 0; i < output.Errors.Count(); i++)
+                    {
+                        Snackbar.Add(output.Errors.ElementAt(i), Severity.Error);
+                    }
                 }
             }
             catch (Exception ex)

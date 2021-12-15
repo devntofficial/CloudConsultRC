@@ -49,10 +49,15 @@ namespace CloudConsult.Identity.Infrastructure.Processors
 
             if (authenticatedUser.IsVerified == false)
             {
-                return builder.CreateErrorResponse(null, x =>
+                await tokenService.GenerateOtpFor(authenticatedUser.Id, cancellationToken);
+                return builder.CreateErrorResponse(new GetTokenResponse
+                {
+                    IdentityId = authenticatedUser.Id,
+                    IsVerified = authenticatedUser.IsVerified
+                }, x =>
                 {
                     x.WithErrorCode(StatusCodes.Status401Unauthorized);
-                    x.WithErrors("User is not verified. Please verify your email.");
+                    x.WithErrors("Your email is not verified. Please validate an OTP sent to your email.");
                 });
             }
 

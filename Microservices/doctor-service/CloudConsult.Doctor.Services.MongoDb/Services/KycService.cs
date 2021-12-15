@@ -1,7 +1,6 @@
 ﻿using CloudConsult.Doctor.Domain.Commands;
 using CloudConsult.Doctor.Domain.Entities;
 using CloudConsult.Doctor.Domain.Services;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace CloudConsult.Doctor.Services.MongoDb.Services
@@ -37,7 +36,7 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             var update = builder.Set(x => x.IsActive, true);
 
             var result = await profileCollection.UpdateOneAsync(x => x.Id == command.ProfileId, update, null, cancellationToken);
-            if(result.IsModifiedCountAvailable is false)
+            if (result.IsModifiedCountAvailable is false)
             {
                 return false;
             }

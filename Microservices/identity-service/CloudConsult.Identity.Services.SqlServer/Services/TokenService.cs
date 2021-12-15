@@ -46,6 +46,8 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
 
             return new GetTokenResponse
             {
+                IdentityId = user.Id,
+                IsVerified = user.IsVerified,
                 AccessToken = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor)),
                 ExpiryTimestamp = tokenDescriptor.Expires.Value
             };

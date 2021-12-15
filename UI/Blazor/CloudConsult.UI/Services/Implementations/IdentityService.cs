@@ -1,10 +1,7 @@
-﻿using Blazored.LocalStorage;
-using CloudConsult.UI.Helpers;
+﻿using CloudConsult.UI.Helpers;
 using CloudConsult.UI.Models.Identity;
 using CloudConsult.UI.Services.Interfaces;
-using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -13,104 +10,123 @@ namespace CloudConsult.UI.Services.Implementations
     public class IdentityService : IIdentityService
     {
         private readonly HttpClient client;
-        private readonly AuthenticationStateProvider authStateProvider;
-        private readonly ILocalStorageService localStorage;
         private readonly ISnackbar snackbar;
+        private readonly JsonSerializerOptions options;
 
-        public IdentityService(HttpClient client, AuthenticationStateProvider authStateProvider,
-            ILocalStorageService localStorage, ISnackbar snackbar)
+        public IdentityService(HttpClient client, ISnackbar snackbar)
         {
             this.client = client;
-            this.authStateProvider = authStateProvider;
-            this.localStorage = localStorage;
             this.snackbar = snackbar;
+            this.options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
-        public async Task<List<UserRoleModel>> GetUserRoles()
+        public async Task<ApiResponse<List<RoleModel>>> GetUserRoles()
         {
             var response = await client.GetAsync(GatewayRoutes.IdentityService.GetUserRoles);
-            var json = await response.Content
-                .ReadFromJsonAsync<ApiResponseBuilder<List<UserRoleModel>>>(new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-            if (json is null)
+            if (response is null)
             {
                 snackbar.Add("Unable to connect to server", Severity.Error);
                 return new();
             }
 
-            if (!json.IsSuccess)
+            var json = await response.Content.ReadFromJsonAsync<ApiResponse<List<RoleModel>>>(options);
+            if (json is null)
             {
-                for(int i = 0; i < json.Errors.Count(); i++)
-                {
-                    snackbar.Add(json.Errors.ElementAt(i), Severity.Error);
-                }
+                snackbar.Add("Unable to parse response from server", Severity.Error);
                 return new();
             }
 
-            return json.Payload;
+            return json;
         }
 
-        public async Task<bool> Login(LoginModel userLoginData)
+        public async Task<ApiResponse<TokenModel>> GetToken(LoginModel userLoginData)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, GatewayRoutes.IdentityService.GetToken);
             request.Headers.Add("EmailId", userLoginData.EmailId);
             request.Headers.Add("Password", userLoginData.Password);
 
             var response = await client.SendAsync(request);
-            var json = await response.Content
-                .ReadFromJsonAsync<ApiResponseBuilder<AuthenticatedUserModel>>(new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-            if(json is null)
+            if (response is null)
             {
                 snackbar.Add("Unable to connect to server", Severity.Error);
-                return false;
+                return new();
             }
 
-            await localStorage.SetItemAsync("AccessToken", json.Payload.AccessToken);
-            ((AuthStateProvider)authStateProvider).NotifyUserLogin(json.Payload.AccessToken);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", json.Payload.AccessToken);
-
-            return true;
-        }
-
-        public async Task Logout()
-        {
-            await localStorage.RemoveItemAsync("AccessToken");
-            ((AuthStateProvider)authStateProvider).NotifyUserLogout();
-            client.DefaultRequestHeaders.Authorization = null;
-        }
-
-        public async Task<bool> Register(UserRegistrationModel data)
-        {
-            var response = await client.PostAsJsonAsync(GatewayRoutes.IdentityService.CreateUser, data);
-            var json = await response.Content
-                .ReadFromJsonAsync<ApiResponseBuilder>(new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
+            var json = await response.Content.ReadFromJsonAsync<ApiResponse<TokenModel>>(options);
             if (json is null)
             {
+                snackbar.Add("Unable to parse response from server", Severity.Error);
+                return new();
+            }
+
+            return json;
+        }
+
+        public async Task<ApiResponse> Register(RegistrationModel data)
+        {
+            var response = await client.PostAsJsonAsync(GatewayRoutes.IdentityService.CreateUser, data);
+            if (response is null)
+            {
                 snackbar.Add("Unable to connect to server", Severity.Error);
                 return new();
             }
 
-            if (!json.IsSuccess)
+            var json = await response.Content.ReadFromJsonAsync<ApiResponse>(options);
+            if (json is null)
             {
-                for (int i = 0; i < json.Errors.Count(); i++)
-                {
-                    snackbar.Add(json.Errors.ElementAt(i), Severity.Error);
-                }
+                snackbar.Add("Unable to parse response from server", Severity.Error);
                 return new();
             }
 
-            return true;
+            return json;
+        }
+
+        public async Task<ApiResponse> ValidateOtp(string identityId, int otp)
+        {
+            var response = await client.PostAsJsonAsync(GatewayRoutes.IdentityService.ValidateOtp, new
+            {
+                IdentityId = identityId,
+                Otp = otp
+            });
+            if (response is null)
+            {
+                snackbar.Add("Unable to connect to server", Severity.Error);
+                return new();
+            }
+
+            var json = await response.Content.ReadFromJsonAsync<ApiResponse>(options);
+            if (json is null)
+            {
+                snackbar.Add("Unable to parse response from server", Severity.Error);
+                return new();
+            }
+
+            return json;
+        }
+
+        public async Task<ApiResponse> GenerateOtp(string identityId)
+        {
+            var response = await client.PostAsJsonAsync(GatewayRoutes.IdentityService.GenerateOtp, new
+            {
+                IdentityId = identityId
+            });
+            if (response is null)
+            {
+                snackbar.Add("Unable to connect to server", Severity.Error);
+                return new();
+            }
+
+            var json = await response.Content.ReadFromJsonAsync<ApiResponse>(options);
+            if (json is null)
+            {
+                snackbar.Add("Unable to parse response from server", Severity.Error);
+                return new();
+            }
+
+            return json;
         }
     }
 }

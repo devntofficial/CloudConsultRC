@@ -7,6 +7,7 @@ public class ApproveKyc : ICommand
 {
     [JsonIgnore]
     public string ProfileId { get; set; } = string.Empty;
+    [JsonIgnore]
     public string ApprovalIdentityId { get; set; } = string.Empty;
     public string ApprovalComments { get; set; } = string.Empty;
 }
