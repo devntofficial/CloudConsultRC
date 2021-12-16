@@ -1,0 +1,53 @@
+﻿@page "/doctor/profile"
+@using System.ComponentModel.DataAnnotations
+@inherits CreateDoctorProfileComponent
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" sm="12" md="4">
+        <MudSkeleton SkeletonType="SkeletonType.Circle" Width="350px" Height="350px" Style="margin: auto;" /><br />
+        <MudGrid Spacing="2" Justify="Justify.Center">
+            <MudItem>
+                <MudButton StartIcon="@Icons.Material.Filled.Upload" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium">
+                    Upload
+                </MudButton>
+            </MudItem>
+            <MudItem>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Error" Size="Size.Medium">
+                    Remove
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+        <MudGrid Justify="Justify.Center">
+            <MudItem>
+                <MudButton StartIcon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Info" Size="Size.Medium" FullWidth=true>
+                    Save Profile
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="4">
+        <MudTextField @bind-Value="@model.FullName" T="string" Label="Full Name" Variant="Variant.Outlined">
+        </MudTextField>
+        <div class="d-flex">
+            <MudRadioGroup T="string" Required="true" RequiredError="Gender is required!">
+                <MudRadio Color="Color.Primary" Option="@("Male")">Male</MudRadio>
+                <MudRadio Color="Color.Primary" Option="@("Female")">Female</MudRadio>
+            </MudRadioGroup>
+        </div>
+
+        <MudTextField @bind-Value="@model.EmailId" T="string" Label="Email Id" Variant="Variant.Outlined">
+        </MudTextField>
+
+        <MudTextField @bind-Value="@model.MobileNo" T="string" Label="Mobile No" Variant="Variant.Outlined">
+        </MudTextField>
+
+        <MudTextField @bind-Value="@model.Address" T="string" Label="Address" Variant="Variant.Outlined" Lines="3">
+        </MudTextField>
+
+        <MudTextField @bind-Value="@model.AadhaarNo" T="string" Label="Aadhaar No" Variant="Variant.Outlined">
+        </MudTextField>
+
+        <MudTextField @bind-Value="@model.Speciality" T="string" Label="Speciality" Variant="Variant.Outlined">
+        </MudTextField>
+    </MudItem>
+</MudGrid>
