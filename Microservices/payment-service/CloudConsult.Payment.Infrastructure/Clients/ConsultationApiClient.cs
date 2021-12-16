@@ -1,10 +1,6 @@
 ﻿using CloudConsult.Common.Builders;
 using CloudConsult.Common.Clients;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CloudConsult.Payment.Domain.Responses;
 
 namespace CloudConsult.Payment.Infrastructure.Clients
 {
