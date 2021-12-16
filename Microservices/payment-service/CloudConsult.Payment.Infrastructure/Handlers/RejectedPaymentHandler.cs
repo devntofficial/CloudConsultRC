@@ -39,7 +39,7 @@ namespace CloudConsult.Payment.Infrastructure.Handlers
             }
 
             var consultation = consultationApiResponse.Payload;
-            if (consultation.Status != ConsultationEvents.ConsultationAccepted)
+            if (consultation.Status != ConsultationEvents.ConsultationAccepted.ToString())
             {
                 return builder.CreateErrorResponse(null, x =>
                 {

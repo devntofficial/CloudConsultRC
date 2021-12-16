@@ -1,26 +1,25 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
-namespace CloudConsult.ApiGateway
+var builder = WebApplication.CreateBuilder(args);
+//add gateway configuration
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    config
+        .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+        .AddJsonFile("appsettings.json", true, true)
+        .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
+        .AddOcelot(builder.Environment)
+        .AddEnvironmentVariables();
+}).ConfigureServices(s =>
+{
+    s.AddOcelot();
+}).ConfigureLogging((hostingContext, logging) =>
+{
+    logging.AddConsole();
+});
+var app = builder.Build();
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config
-                        .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                        .AddJsonFile("gateway.json")
-                        .AddEnvironmentVariables();
-                });
-    }
-}
+app.UseOcelot().Wait();
+
+app.Run();
