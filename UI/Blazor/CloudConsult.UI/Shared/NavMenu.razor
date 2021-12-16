@@ -3,9 +3,9 @@
 <MudNavMenu>
     <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Personal</b></MudText>
     <MudNavLink Href="/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
-    <MudNavLink Href="/profile" Icon="@Icons.Material.Outlined.Person">Profile</MudNavLink>
     
     <AuthorizeView Roles="Doctor">
+        <MudNavLink Href="/doctor/profile" Icon="@Icons.Material.Outlined.Person">Profile</MudNavLink>
         <MudNavLink Href="/kyc" Icon="@Icons.Material.Outlined.DocumentScanner">KYC Documents</MudNavLink>
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Consultation</b></MudText>
             <MudNavLink Href="/availability-scheduler" Icon="@Icons.Material.Outlined.FreeCancellation">Available Timeslots</MudNavLink>

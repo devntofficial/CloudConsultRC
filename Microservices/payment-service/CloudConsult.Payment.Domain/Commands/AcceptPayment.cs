@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace CloudConsult.Payment.Domain.Commands
 {
-    public class AcceptPayment : ICommand<PaymentResponse>
+    public class AcceptPayment : ICommand<PaymentResponse?>
     {
         public string ConsultationId { get; set; } = string.Empty;
     }

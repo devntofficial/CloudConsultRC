@@ -8,7 +8,9 @@
         "cloudconsult.diagnosis.api": "StartDebugging",
         "cloudconsult.doctor.api": "StartDebugging",
         "cloudconsult.identity.api": "StartDebugging",
-        "cloudconsult.member.api": "StartDebugging"
+        "cloudconsult.member.api": "StartDebugging",
+        "cloudconsult.notification.api": "StartDebugging",
+        "cloudconsult.payment.api": "StartDebugging"
       }
     }
   }

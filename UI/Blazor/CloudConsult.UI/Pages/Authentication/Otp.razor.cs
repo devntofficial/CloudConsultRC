@@ -27,10 +27,14 @@ namespace CloudConsult.UI.Pages.Authentication
         [Inject] private ISnackbar Snackbar { get; set; }
         [CascadingParameter] private Error Error { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected async Task GenerateOtp()
         {
             var output = await IdentityService.GenerateOtp(IdentityId);
-            if(!output.IsSuccess)
+            if (output.IsSuccess)
+            {
+                Snackbar.Add("OTP was sent successfully", Severity.Info);
+            }
+            else
             {
                 for (int i = 0; i < output.Errors.Count(); i++)
                 {
@@ -44,7 +48,7 @@ namespace CloudConsult.UI.Pages.Authentication
             return new[] { num1, num2, num3, num4, num5, num6 }.Any(x => x == null);
         }
 
-        protected async void ValidateOtp()
+        protected async Task ValidateOtp()
         {
             ShowLoadingSpinner = true;
             try

@@ -1,5 +1,6 @@
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
+using CloudConsult.Payment.Infrastructure.Clients;
 using Kafka.Public;
 using Kafka.Public.Loggers;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -37,6 +38,7 @@ try
         MaxRetry = Convert.ToInt32(config["KafkaConfiguration:MessageSendMaxRetries"]),
         RequestTimeoutMs = Convert.ToInt32(config["KafkaConfiguration:MessageTimeoutMs"])
     }, new ConsoleLogger()));
+    builder.Services.AddCommonApiClient<ConsultationApiClient>(config["ConsultationApiServer"]);
 
     var app = builder.Build();
     var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
