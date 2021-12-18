@@ -1,7 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using CloudConsult.Common.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using CloudConsult.Common.DependencyInjection;
+using System.Text.Json.Serialization;
 
 namespace CloudConsult.Identity.Api.Extensions
 {

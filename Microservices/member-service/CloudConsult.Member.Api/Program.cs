@@ -1,5 +1,6 @@
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
+using CloudConsult.Member.Domain.Events;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 using Serilog.Events;

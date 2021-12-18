@@ -20,10 +20,10 @@ namespace CloudConsult.Doctor.Services.MongoDb.Services
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProfileCreated>> GetPendingProfileCreatedEvents(CancellationToken cancellationToken = default)
+        public async Task<List<ProfileCreated>> GetPendingProfileCreatedEvents(CancellationToken cancellationToken = default)
         {
             var profiles = await profileCollection.Find(x => !x.IsCreatedEventPublished).ToListAsync(cancellationToken);
-            return profiles.Count > 0 ? mapper.Map<List<ProfileCreated>>(profiles) : Enumerable.Empty<ProfileCreated>();
+            return profiles.Count > 0 ? mapper.Map<List<ProfileCreated>>(profiles) : new();
         }
 
         public async Task<IEnumerable<ProfileUpdated>> GetPendingProfileUpdatedEvents(CancellationToken cancellationToken = default)

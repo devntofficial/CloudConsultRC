@@ -24,7 +24,7 @@ namespace CloudConsult.Notification.Consumers.Doctor
             this.logger = logger;
             this.cluster = cluster;
             this.serviceProvider = serviceProvider;
-            topicName = config["KafkaConfiguration:ConsumerTopics:DoctorKycRejectedConsumer"];
+            topicName = config["KafkaConfiguration:ConsumerTopics:DoctorKycRejected"];
             this.emailTemplate = "Templates/Doctor/KycRejectedEmail.cshtml";
         }
 

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
+﻿using CloudConsult.Common.Kafka;
 using CloudConsult.Diagnosis.Domain.Configurations;
 using CloudConsult.Diagnosis.Domain.Events;
 using CloudConsult.Diagnosis.Domain.Services;
-using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using System.Text.Json;
 
 namespace CloudConsult.Diagnosis.Infrastructure.Producers
 {
@@ -13,11 +11,11 @@ namespace CloudConsult.Diagnosis.Infrastructure.Producers
     public class ReportUploadedProducer : IJob
     {
         private readonly ILogger<ReportUploadedProducer> logger;
-        private readonly IProducer<Null, string> producer;
+        private readonly IKafkaProducer<ReportUploaded> producer;
         private readonly IEventService eventService;
         private readonly QuartzConfiguration config;
 
-        public ReportUploadedProducer(ILogger<ReportUploadedProducer> logger, IProducer<Null, string> producer,
+        public ReportUploadedProducer(ILogger<ReportUploadedProducer> logger, IKafkaProducer<ReportUploaded> producer,
             IEventService eventService, QuartzConfiguration config)
         {
             this.logger = logger;
@@ -38,10 +36,7 @@ namespace CloudConsult.Diagnosis.Infrastructure.Producers
                 {
                     try
                     {
-                        var producerTask = producer.ProduceAsync(topicName, new Message<Null, string>
-                        {
-                            Value = JsonSerializer.Serialize(report)
-                        }, cancelToken);
+                        var producerTask = producer.ProduceAsync(topicName, report, cancelToken);
 
                         await producerTask.ContinueWith(deliveryTask =>
                         {

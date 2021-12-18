@@ -44,9 +44,13 @@ try
         dataContext.Database.Migrate();
         if (!dataContext.Roles.Any())
         {
-            await dataContext.Roles.AddAsync(new Role { RoleName = "Administrator", Timestamp = DateTime.Now });
-            await dataContext.Roles.AddAsync(new Role { RoleName = "Doctor", Timestamp = DateTime.Now });
-            await dataContext.Roles.AddAsync(new Role { RoleName = "Member", Timestamp = DateTime.Now });
+            await dataContext.Roles.AddRangeAsync(new Role[]
+            {
+                new Role { RoleName = "Administrator", Timestamp = DateTime.Now },
+                new Role { RoleName = "Doctor", Timestamp = DateTime.Now },
+                new Role { RoleName = "Member", Timestamp = DateTime.Now }
+            });
+
             await dataContext.SaveChangesAsync();
         }
     }

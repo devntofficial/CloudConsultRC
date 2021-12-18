@@ -24,7 +24,7 @@ namespace CloudConsult.Notification.Consumers.Diagnosis
             this.logger = logger;
             this.cluster = cluster;
             this.serviceProvider = serviceProvider;
-            topicName = config["KafkaConfiguration:ConsumerTopics:DiagnosisReportUploadedConsumer"];
+            topicName = config["KafkaConfiguration:ConsumerTopics:DiagnosisReportUploaded"];
             this.emailTemplate = "Templates/Diagnosis/ReportUploaded.cshtml";
         }
 

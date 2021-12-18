@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\CloudConsult.Common.DependencyInjection\CloudConsult.Common.DependencyInjection.csproj" />
     <ProjectReference Include="..\CloudConsult.Notification.Consumers\CloudConsult.Notification.Consumers.csproj" />
+    <ProjectReference Include="..\CloudConsult.Notification.Indexers\CloudConsult.Notification.Indexers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

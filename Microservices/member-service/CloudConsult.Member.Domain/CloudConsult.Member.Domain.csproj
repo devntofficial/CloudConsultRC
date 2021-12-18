@@ -6,18 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="10.3.4">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
-		<PackageReference Include="MongoDB.Bson" Version="2.13.2">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\Shared\CloudConsult.Common\CloudConsult.Common.csproj">
-		  <TreatAsUsed>true</TreatAsUsed>
-		</ProjectReference>
+		<ProjectReference Include="..\..\..\Shared\CloudConsult.Common\CloudConsult.Common.csproj"></ProjectReference>
 	</ItemGroup>
 
 </Project>

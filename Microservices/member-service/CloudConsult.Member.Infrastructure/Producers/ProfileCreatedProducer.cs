@@ -1,9 +1,10 @@
-﻿using CloudConsult.Member.Domain.Configurations;
+﻿using CloudConsult.Common.Kafka;
+using CloudConsult.Member.Domain.Configurations;
+using CloudConsult.Member.Domain.Events;
 using CloudConsult.Member.Domain.Services;
 using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using System.Text.Json;
 
 namespace CloudConsult.Member.Infrastructure.Producers
 {
@@ -11,11 +12,11 @@ namespace CloudConsult.Member.Infrastructure.Producers
     public class ProfileCreatedProducer : IJob
     {
         private readonly ILogger<ProfileCreatedProducer> logger;
-        private readonly IProducer<Null, string> producer;
+        private readonly IKafkaProducer<ProfileCreated> producer;
         private readonly IEventService eventService;
         private readonly QuartzConfiguration config;
 
-        public ProfileCreatedProducer(ILogger<ProfileCreatedProducer> logger, IProducer<Null, string> producer,
+        public ProfileCreatedProducer(ILogger<ProfileCreatedProducer> logger, IKafkaProducer<ProfileCreated> producer,
             IEventService eventService, QuartzConfiguration config)
         {
             this.logger = logger;
@@ -34,10 +35,7 @@ namespace CloudConsult.Member.Infrastructure.Producers
                 var unpublishedEvents = await eventService.GetPendingProfileCreatedEvents(cancelToken);
                 foreach (var unpublishedEvent in unpublishedEvents)
                 {
-                    var producerTask = producer.ProduceAsync(topicName, new Message<Null, string>
-                    {
-                        Value = JsonSerializer.Serialize(unpublishedEvent)
-                    }, cancelToken);
+                    var producerTask = producer.ProduceAsync(topicName, unpublishedEvent, cancelToken);
 
                     await producerTask.ContinueWith(deliveryTask =>
                     {

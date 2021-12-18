@@ -47,4 +47,3 @@ services:
     build:
       context: .
       dockerfile: payment-service/CloudConsult.Payment.Api/Dockerfile
-

@@ -46,7 +46,7 @@ try
                     $"Cloud Consult - Doctor API Reference {description.GroupName}");
         });
     }
-    
+
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
     app.UseRouting();

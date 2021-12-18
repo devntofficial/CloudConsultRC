@@ -22,7 +22,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/create-user",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post", "Options" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/otp/generate",
@@ -34,7 +34,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/generate-otp",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post", "Options" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/otp/validate",
@@ -46,7 +46,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/validate-otp",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post", "Options" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/user/roles",
