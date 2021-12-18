@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\CloudConsult.Common.DependencyInjection\CloudConsult.Common.DependencyInjection.csproj" />
     <ProjectReference Include="..\CloudConsult.Diagnosis.Domain\CloudConsult.Diagnosis.Domain.csproj" />
     <ProjectReference Include="..\CloudConsult.Diagnosis.Infrastructure\CloudConsult.Diagnosis.Infrastructure.csproj" />
     <ProjectReference Include="..\CloudConsult.Diagnosis.Services.MongoDb\CloudConsult.Diagnosis.Services.MongoDb.csproj" />

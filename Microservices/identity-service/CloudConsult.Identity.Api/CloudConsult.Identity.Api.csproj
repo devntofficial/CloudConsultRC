@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\CloudConsult.Common.DependencyInjection\CloudConsult.Common.DependencyInjection.csproj" />
     <ProjectReference Include="..\CloudConsult.Identity.Domain\CloudConsult.Identity.Domain.csproj" />
     <ProjectReference Include="..\CloudConsult.Identity.Infrastructure\CloudConsult.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\CloudConsult.Identity.Services.SqlServer\CloudConsult.Identity.Services.SqlServer.csproj" />

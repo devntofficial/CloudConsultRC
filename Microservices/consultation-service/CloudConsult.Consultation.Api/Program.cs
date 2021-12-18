@@ -71,7 +71,7 @@ try
     app.MapControllers();
     app.Run();
 }
-catch(Exception ex)
+catch (Exception ex)
 {
     string type = ex.GetType().Name;
     if (type.Equals("StopTheHostException", StringComparison.Ordinal))

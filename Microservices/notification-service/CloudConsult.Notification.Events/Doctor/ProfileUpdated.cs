@@ -1,5 +1,8 @@
-﻿namespace CloudConsult.Notification.Events.Doctor;
+﻿using Nest;
 
+namespace CloudConsult.Notification.Events.Doctor;
+
+[ElasticsearchType(IdProperty = "ProfileId")]
 public class ProfileUpdated
 {
     public string ProfileId { get; set; } = string.Empty;

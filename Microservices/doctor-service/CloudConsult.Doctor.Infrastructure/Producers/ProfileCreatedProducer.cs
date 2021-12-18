@@ -1,9 +1,9 @@
-﻿using CloudConsult.Doctor.Domain.Configurations;
+﻿using CloudConsult.Common.Kafka;
+using CloudConsult.Doctor.Domain.Configurations;
+using CloudConsult.Doctor.Domain.Events;
 using CloudConsult.Doctor.Domain.Services;
-using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using System.Text.Json;
 
 namespace CloudConsult.Doctor.Infrastructure.Producers
 {
@@ -11,11 +11,11 @@ namespace CloudConsult.Doctor.Infrastructure.Producers
     public class ProfileCreatedProducer : IJob
     {
         private readonly ILogger<ProfileCreatedProducer> logger;
-        private readonly IProducer<Null, string> producer;
+        private readonly IKafkaProducer<ProfileCreated> producer;
         private readonly IEventService eventService;
         private readonly QuartzConfiguration config;
 
-        public ProfileCreatedProducer(ILogger<ProfileCreatedProducer> logger, IProducer<Null, string> producer,
+        public ProfileCreatedProducer(ILogger<ProfileCreatedProducer> logger, IKafkaProducer<ProfileCreated> producer,
             IEventService eventService, QuartzConfiguration config)
         {
             this.logger = logger;
@@ -28,30 +28,25 @@ namespace CloudConsult.Doctor.Infrastructure.Producers
         {
             try
             {
-                var cancelToken = context.CancellationToken;
                 var topicName = config.Jobs.ProfileCreatedProducer.TopicName;
-
-                var unpublishedEvents = await eventService.GetPendingProfileCreatedEvents(cancelToken);
-                foreach (var unpublishedEvent in unpublishedEvents)
+                var pendingEvents = await eventService.GetPendingProfileCreatedEvents(context.CancellationToken);
+                var pendingTasks = pendingEvents.Select(pendingEvent =>
                 {
-                    var producerTask = producer.ProduceAsync(topicName, new Message<Null, string>
-                    {
-                        Value = JsonSerializer.Serialize(unpublishedEvent)
-                    }, cancelToken);
+                    var delivery = producer.ProduceAsync(topicName, pendingEvent, context.CancellationToken);
 
-                    await producerTask.ContinueWith(deliveryTask =>
+                    if (delivery.IsFaulted)
                     {
-                        if (deliveryTask.IsFaulted)
-                        {
-                            logger.LogError($"({unpublishedEvent.ProfileId}) -> Could not produce profile created event message to kafka broker");
-                        }
-                        else
-                        {
-                            eventService.SetProfileCreatedEventPublished(unpublishedEvent.ProfileId);
-                            logger.LogInformation($"({unpublishedEvent.ProfileId}) -> Profile created event published successfully");
-                        }
-                    }, cancelToken);
-                }
+                        logger.LogError($"({pendingEvent.ProfileId}) -> Could not produce profile created event message to kafka broker");
+                    }
+                    else
+                    {
+                        eventService.SetProfileCreatedEventPublished(pendingEvent.ProfileId);
+                        logger.LogInformation($"({pendingEvent.ProfileId}) -> Profile created event published successfully");
+                    }
+                    return delivery;
+                }).ToArray();
+
+                await Task.WhenAll(pendingTasks);
             }
             catch (Exception e)
             {

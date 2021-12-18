@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\CloudConsult.Common.DependencyInjection\CloudConsult.Common.DependencyInjection.csproj" />
     <ProjectReference Include="..\CloudConsult.Payment.Domain\CloudConsult.Payment.Domain.csproj" />
     <ProjectReference Include="..\CloudConsult.Payment.Infrastructure\CloudConsult.Payment.Infrastructure.csproj" />
   </ItemGroup>

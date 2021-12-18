@@ -21,7 +21,6 @@
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Shared\CloudConsult.Common.DependencyInjection\CloudConsult.Common.DependencyInjection.csproj" />
 		<ProjectReference Include="..\CloudConsult.Doctor.Domain\CloudConsult.Doctor.Domain.csproj" />
 		<ProjectReference Include="..\CloudConsult.Doctor.Infrastructure\CloudConsult.Doctor.Infrastructure.csproj" />
 		<ProjectReference Include="..\CloudConsult.Doctor.Services.MongoDb\CloudConsult.Doctor.Services.MongoDb.csproj" />

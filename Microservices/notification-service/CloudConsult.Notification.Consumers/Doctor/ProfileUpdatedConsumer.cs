@@ -24,7 +24,7 @@ namespace CloudConsult.Notification.Consumers.Doctor
             this.logger = logger;
             this.cluster = cluster;
             this.serviceProvider = serviceProvider;
-            topicName = config["KafkaConfiguration:ConsumerTopics:DoctorProfileUpdatedConsumer"];
+            topicName = config["KafkaConfiguration:ConsumerTopics:DoctorProfileUpdated"];
             this.emailTemplate = "Templates/Doctor/ProfileUpdatedEmail.cshtml";
         }
 

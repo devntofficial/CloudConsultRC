@@ -25,7 +25,7 @@ namespace CloudConsult.Notification.Consumers.Consultation
             this.logger = logger;
             this.cluster = cluster;
             this.serviceProvider = serviceProvider;
-            topicName = config["KafkaConfiguration:ConsumerTopics:ConsultationAcceptedConsumer"];
+            topicName = config["KafkaConfiguration:ConsumerTopics:ConsultationAccepted"];
             this.doctorEmailTemplate = "Templates/Consultation/ConsultationAcceptedDoctorEmail.cshtml";
             this.memberEmailTemplate = "Templates/Consultation/ConsultationAcceptedMemberEmail.cshtml";
         }

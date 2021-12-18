@@ -24,7 +24,7 @@ namespace CloudConsult.Notification.Consumers.Identity
             this.logger = logger;
             this.cluster = cluster;
             this.serviceProvider = serviceProvider;
-            this.topicName = config["KafkaConfiguration:ConsumerTopics:OtpGeneratedConsumer"];
+            this.topicName = config["KafkaConfiguration:ConsumerTopics:OtpGenerated"];
             this.emailTemplate = "Templates/Identity/OtpGeneratedEmail.cshtml";
         }
 

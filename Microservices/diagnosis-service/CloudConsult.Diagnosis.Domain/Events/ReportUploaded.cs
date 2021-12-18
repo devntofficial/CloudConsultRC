@@ -1,5 +1,4 @@
 ﻿using CloudConsult.Diagnosis.Domain.Commands;
-using MongoDB.Bson;
 
 namespace CloudConsult.Diagnosis.Domain.Events
 {

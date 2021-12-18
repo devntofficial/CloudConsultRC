@@ -1,9 +1,9 @@
-﻿using CloudConsult.Identity.Domain.Configurations;
+﻿using CloudConsult.Common.Kafka;
+using CloudConsult.Identity.Domain.Configurations;
+using CloudConsult.Identity.Domain.Events;
 using CloudConsult.Identity.Domain.Services;
-using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using System.Text.Json;
 
 namespace CloudConsult.Identity.Infrastructure.Producers;
 
@@ -11,11 +11,11 @@ namespace CloudConsult.Identity.Infrastructure.Producers;
 public class OtpGeneratedProducer : IJob
 {
     private readonly ILogger<OtpGeneratedProducer> logger;
-    private readonly IProducer<Null, string> producer;
+    private readonly IKafkaProducer<OtpGenerated> producer;
     private readonly IEventService eventService;
     private readonly QuartzConfiguration config;
 
-    public OtpGeneratedProducer(ILogger<OtpGeneratedProducer> logger, IProducer<Null, string> producer,
+    public OtpGeneratedProducer(ILogger<OtpGeneratedProducer> logger, IKafkaProducer<OtpGenerated> producer,
         IEventService eventService, QuartzConfiguration config)
     {
         this.logger = logger;
@@ -36,10 +36,7 @@ public class OtpGeneratedProducer : IJob
 
             foreach (var unpublishedEvent in unpublishedEvents)
             {
-                var producerTask = producer.ProduceAsync(topicName, new Message<Null, string>
-                {
-                    Value = JsonSerializer.Serialize(unpublishedEvent)
-                }, cancelToken);
+                var producerTask = producer.ProduceAsync(topicName, unpublishedEvent, cancelToken);
 
                 await producerTask.ContinueWith(deliveryTask =>
                 {

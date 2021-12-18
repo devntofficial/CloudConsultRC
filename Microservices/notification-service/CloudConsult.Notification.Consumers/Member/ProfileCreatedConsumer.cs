@@ -24,7 +24,7 @@ namespace CloudConsult.Notification.Consumers.Member
             this.logger = logger;
             this.cluster = cluster;
             this.serviceProvider = serviceProvider;
-            topicName = config["KafkaConfiguration:ConsumerTopics:MemberProfileCreatedConsumer"];
+            topicName = config["KafkaConfiguration:ConsumerTopics:MemberProfileCreated"];
             this.emailTemplate = "Templates/Member/ProfileCreatedEmail.cshtml";
         }
 
