@@ -9,6 +9,7 @@
     <UserSecretsId>fd6fc4e9-b8f2-4720-a60c-ce6d7457011c</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+	  <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
 
   <ItemGroup>

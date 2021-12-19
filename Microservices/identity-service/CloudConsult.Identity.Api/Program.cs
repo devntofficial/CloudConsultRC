@@ -1,12 +1,11 @@
-using App.Metrics.AspNetCore;
-using App.Metrics.Formatters.Prometheus;
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
 using CloudConsult.Identity.Domain.Entities;
 using CloudConsult.Identity.Services.SqlServer.Contexts;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
+using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
@@ -36,20 +35,8 @@ try
             NumberOfReplicas = 1
         }));
 
-    //Add Metrics using Prometheus
-    builder.Host.UseMetricsWebTracking().UseMetrics(options =>
-    {
-        options.EndpointOptions = endpointOptions =>
-        {
-            endpointOptions.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
-            endpointOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
-            endpointOptions.EnvironmentInfoEndpointEnabled = true;
-        };
-    });
-
     // Add services to the container.
-    builder.Services.AddMetrics();
-    builder.Services.AddMvcCore(x => x.EnableEndpointRouting = false).AddMetricsCore();
+    builder.Services.AddSystemMetrics();
     builder.Services.AddCommonExtensionsFromCurrentAssembly(config);
     builder.Services.AddCommonHashingService();
     builder.Services.AddCommonSwaggerDocs(config);
@@ -95,14 +82,19 @@ try
         });
     }
 
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
     app.UseCors("IdentityServicePolicy");
+    app.UseRouting();
+    app.UseHttpMetrics();
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-
-    app.UseMvc();
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapMetrics();
+        endpoints.MapControllers();
+    });
     app.Run();
 }
 catch (Exception ex)
