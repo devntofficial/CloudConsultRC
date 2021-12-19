@@ -9,7 +9,7 @@ The project aims at implementing microservices using the following concepts/libr
 		c. Prometheus :green_circle:
 		d. Grafana :green_circle:
 5.	Synchronous/Asynchronous Communication (Http REST/Apache Kafka) :green_circle:
-6.	Redis Cache
+6.	Memory Cache :green_circle: / Redis Cache :red_circle:
 7.	Containerization & Container Orchestration (Docker/Docker Compose/Kubernetes) :green_circle:
 8.	Command Query Responsibility Segregator (using Mediator pattern) :green_circle:
 9.	Circuit Breaker (Polly) :green_circle:
@@ -19,8 +19,8 @@ The project aims at implementing microservices using the following concepts/libr
 13. AutoMapper :green_circle:
 14. FluentValidations :green_circle:
 15. Entity Framework Core :green_circle:
-16. xUnit, SpecFlow and Moq
-17. BenchmarkDotNet
+16. xUnit, SpecFlow and Moq :red_circle:
+17. BenchmarkDotNet :red_circle:
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
