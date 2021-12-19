@@ -14,7 +14,7 @@ The project aims at implementing microservices using the following concepts/libr
 8.	Command Query Responsibility Segregator (using Mediator pattern) :green_circle:
 9.	Circuit Breaker (Polly) :green_circle:
 10.	Jwt Authentication :green_circle:
-11. .NET 5/6 Web API
+11. .NET 5/6 Web API :green_circle:
 12. MongoDB/Microsoft Sql Server :green_circle:
 13. AutoMapper :green_circle:
 14. FluentValidations :green_circle:
