@@ -37,43 +37,43 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['cloudconsult.identity.api:80']
-    metrics_path: /metrics-text
+    metrics_path: /metrics
     
   - job_name: 'cloudconsult-doctor-api'
     scrape_interval: 5s
     static_configs:
       - targets: ['cloudconsult.doctor.api:80']
-    metrics_path: /metrics-text
+    metrics_path: /metrics
     
   - job_name: 'cloudconsult-member-api'
     scrape_interval: 5s
     static_configs:
       - targets: ['cloudconsult.member.api:80']
-    metrics_path: /metrics-text
+    metrics_path: /metrics
     
   - job_name: 'cloudconsult-consultation-api'
     scrape_interval: 5s
     static_configs:
       - targets: ['cloudconsult.consultation.api:80']
-    metrics_path: /metrics-text
+    metrics_path: /metrics
     
   - job_name: 'cloudconsult-diagnosis-api'
     scrape_interval: 5s
     static_configs:
       - targets: ['cloudconsult.diagnosis.api:80']
-    metrics_path: /metrics-text
+    metrics_path: /metrics
     
   - job_name: 'cloudconsult-payment-api'
     scrape_interval: 5s
     static_configs:
       - targets: ['cloudconsult.payment.api:80']
-    metrics_path: /metrics-text
+    metrics_path: /metrics
     
   - job_name: 'cloudconsult-notification-api'
     scrape_interval: 5s
     static_configs:
       - targets: ['cloudconsult.notification.api:80']
-    metrics_path: /metrics-text
+    metrics_path: /metrics
 
   - job_name: 'prometheus'
     # Override the global default and scrape targets from this job every 5 seconds.
