@@ -13,10 +13,65 @@ volumes:
     driver: local
   mssql_data:
     driver: local
+  elasticsearch_data_01:
+    driver: local
+  elasticsearch_data_02:
+    driver: local
 services:
+  elasticsearch01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
+    container_name: Elasticsearch-Cluster-Node-01
+    environment:
+      - node.name=elasticsearch01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=elasticsearch02
+      - cluster.initial_master_nodes=elasticsearch01,elasticsearch02
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data_01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - cloud-consult
+  elasticsearch02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
+    container_name: Elasticsearch-Cluster-Node-02
+    environment:
+      - node.name=elasticsearch02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=elasticsearch01
+      - cluster.initial_master_nodes=elasticsearch01,elasticsearch02
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data_02:/usr/share/elasticsearch/data
+    ports:
+      - "9200"
+    networks:
+      - cloud-consult
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.16.1
+    container_name: Kibana-Server
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch01:9200
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch01:9200","http://elasticsearch02:9200"]'
+    networks:
+      - cloud-consult
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.7
     container_name: Zookeeper
+    restart: always
     networks:
       - cloud-consult
     ports:
@@ -25,7 +80,6 @@ services:
       - "zookeeper_data:/bitnami"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-      
   kafka-ui:
     image: provectuslabs/kafka-ui
     container_name: Kafka-UI
@@ -40,10 +94,10 @@ services:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafkaserver:9092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-
   kafkaserver:
     image: docker.io/bitnami/kafka:3
     container_name: Apache-Kafka
+    restart: always
     networks:
       - cloud-consult
     ports:
@@ -60,10 +114,10 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
     depends_on:
       - zookeeper
-
   mssqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: Microsoft-Sql-Server-2019
+    restart: always
     networks:
       - cloud-consult
     ports:
@@ -73,10 +127,10 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Itachi@123
-
   mongodbserver:
     image: mongo:latest
     container_name: MongoDb-Server
+    restart: always
     networks:
       - cloud-consult
     environment:

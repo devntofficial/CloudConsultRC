@@ -1,4 +1,6 @@
 ﻿using CloudConsult.Common.DependencyInjection;
+using CloudConsult.Notification.Indexers.Doctor;
+using Elasticsearch.Net;
 using Nest;
 
 namespace CloudConsult.Notification.Api.Extensions
@@ -7,10 +9,18 @@ namespace CloudConsult.Notification.Api.Extensions
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            //var elasticSearchServer = new Uri(configuration["ElasticsearchServer"]);
-            //services.AddSingleton<IElasticClient>(x => new ElasticClient(new ConnectionSettings(elasticSearchServer)));
+            var nodes = configuration["ElasticsearchServers"]
+                .Split(',')
+                .Select(x => new Uri(x));
 
+            //will add cluster pooling later
+            var pool = new StaticConnectionPool(nodes);
+            var settings = new ConnectionSettings(pool);
 
+            services.AddSingleton<IElasticClient>(x => new ElasticClient(settings));
+
+            services.AddHostedService<ProfileCreatedIndexer>();
+            services.AddHostedService<ProfileUpdatedIndexer>();
         }
     }
 }

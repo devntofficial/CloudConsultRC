@@ -9,20 +9,20 @@ using System.Text.Json;
 
 namespace CloudConsult.Notification.Indexers.Doctor
 {
-    public class ProfileCreatedIndexer : IHostedService
+    public class ProfileUpdatedIndexer : IHostedService
     {
-        private readonly ILogger<ProfileCreatedIndexer> logger;
+        private readonly ILogger<ProfileUpdatedIndexer> logger;
         private readonly ClusterClient cluster;
         private readonly IElasticClient elasticClient;
         private readonly string topicName;
 
-        public ProfileCreatedIndexer(ILogger<ProfileCreatedIndexer> logger, ClusterClient cluster,
+        public ProfileUpdatedIndexer(ILogger<ProfileUpdatedIndexer> logger, ClusterClient cluster,
             IConfiguration config, IElasticClient elasticClient)
         {
             this.logger = logger;
             this.cluster = cluster;
             this.elasticClient = elasticClient;
-            topicName = config["KafkaConfiguration:ConsumerTopics:DoctorProfileCreated"];
+            topicName = config["KafkaConfiguration:ConsumerTopics:DoctorProfileUpdated"];
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -51,26 +51,26 @@ namespace CloudConsult.Notification.Indexers.Doctor
                 using var memoryStream = new MemoryStream(byteArray);
                 using var reader = new StreamReader(memoryStream, Encoding.UTF8);
 
-                var profileCreatedEvent = await JsonSerializer.DeserializeAsync<ProfileCreated>(reader.BaseStream);
-                if (profileCreatedEvent is null)
+                var profileUpdatedEvent = await JsonSerializer.DeserializeAsync<ProfileUpdated>(reader.BaseStream);
+                if (profileUpdatedEvent is null)
                 {
                     logger.LogError($"Invalid message format consumed from topic: {topicName}");
                     return;
                 }
 
-                var indexing = await elasticClient.IndexAsync(profileCreatedEvent, idx => idx.Index("doctorindex"));
+                var indexing = await elasticClient.IndexAsync(profileUpdatedEvent, idx => idx.Index("doctorindex"));
                 if(indexing.IsValid)
                 {
-                    logger.LogInformation($"Successfully indexed doctor with profile id: {profileCreatedEvent.ProfileId}");
+                    logger.LogInformation($"Successfully indexed doctor with profile id: {profileUpdatedEvent.ProfileId}");
                 }
                 else
                 {
-                    logger.LogError($"Serverside error occured when indexing doctor with profile id: {profileCreatedEvent.ProfileId}");
+                    logger.LogError($"Serverside error occured when indexing doctor with profile id: {profileUpdatedEvent.ProfileId}");
                 }
             }
             catch (Exception ex)
             {
-                logger.LogCritical("Error occured when indexing doctor profile created event");
+                logger.LogCritical("Error occured when indexing doctor profile updated event");
                 logger.LogCritical(ex.Message);
             }
         }
