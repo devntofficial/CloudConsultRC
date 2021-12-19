@@ -1,4 +1,40 @@
 {
   "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/diagnosis/{ConsultationId}/report",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6011
+        }
+      ],
+      "UpstreamPathTemplate": "/api/publish-diagnosis-report/{ConsultationId}",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/diagnosis/{ConsultationId}/report",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6011
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-diagnosis-report/{ConsultationId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/diagnosis/report/{ReportId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6011
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-diagnosis-report-by-id/{ReportId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    }
   ]
 }

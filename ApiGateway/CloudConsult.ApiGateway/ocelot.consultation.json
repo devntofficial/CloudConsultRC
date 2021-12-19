@@ -1,4 +1,100 @@
 {
   "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/consultations",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/request-consultation",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}/accept",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/doctor-accepted-consultation/{ConsultationId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}/reject",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/doctor-rejected-consultation/{ConsultationId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}/cancel",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/member-cancelled-consultation/{ConsultationId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-consultation/{ConsultationId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctor/{DoctorId}/consultation",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-consultations-by-doctor/{DoctorId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/availability",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/upload-doctor-availability",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctor/{DoctorId}/availability",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6009
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-doctor-availability/{DoctorId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    }
   ]
 }
