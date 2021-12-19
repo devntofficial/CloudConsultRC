@@ -4,6 +4,7 @@ using CloudConsult.Diagnosis.Infrastructure.Clients;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -15,12 +16,20 @@ try
     var config = builder.Configuration as IConfiguration;
 
     // Serilog setup
+    var elasticSearchServers = config["ElasticsearchServers"].Split(',').Select(x => new Uri(x));
     builder.Host
-        .UseSerilog((context, services, configuration) => configuration
+        .UseSerilog((context, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
         .Enrich.FromLogContext()
-        .WriteTo.Console());
+        .Enrich.WithMachineName()
+        .WriteTo.Console()
+        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(elasticSearchServers)
+        {
+            IndexFormat = $"{config["ApiName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.Now:MM-yyyy}",
+            AutoRegisterTemplate = true,
+            NumberOfShards = 2,
+            NumberOfReplicas = 1
+        }));
 
     // Add services to the container.
     builder.Services.AddCommonExtensionsFromCurrentAssembly(config);

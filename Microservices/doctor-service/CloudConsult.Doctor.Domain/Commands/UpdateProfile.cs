@@ -9,9 +9,9 @@ namespace CloudConsult.Doctor.Domain.Commands
     public class UpdateProfile : ICommand<ProfileResponse>
     {
         [JsonIgnore]
-        public string ProfileId { get; set; }
+        public virtual string ProfileId { get; set; }
         [JsonIgnore]
-        public string IdentityId { get; set; }
+        public virtual string IdentityId { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
         public string DateOfBirth { get; set; }
