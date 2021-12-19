@@ -3,7 +3,11 @@ The project aims at implementing microservices using the following concepts/libr
 1.	API Gateway (Ocelot)
 2.	Centralized Configuration Server (Spring Cloud Config Server)
 3.	Service Discovery and Registry (Spring Cloud Netflix)
-4.	Distributed logging, traces and metrics
+4.	Distributed logging, traces and metrics using
+        a. Elasticsearch
+		b. Kibana
+		c. Prometheus
+		d. Grafana
 5.	Synchronous/Asynchronous Communication (Http REST/Apache Kafka)
 6.	Redis Cache
 7.	Containerization & Container Orchestration (Docker/Docker Compose/Kubernetes)
