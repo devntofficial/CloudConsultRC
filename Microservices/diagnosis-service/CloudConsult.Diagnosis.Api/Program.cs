@@ -1,6 +1,9 @@
+using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.Prometheus;
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
 using CloudConsult.Diagnosis.Infrastructure.Clients;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 using Serilog.Events;
@@ -31,7 +34,19 @@ try
             NumberOfReplicas = 1
         }));
 
+    //Add Metrics using Prometheus
+    builder.Host.UseMetricsWebTracking().UseMetrics(options =>
+    {
+        options.EndpointOptions = endpointOptions =>
+        {
+            endpointOptions.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+            endpointOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
+        };
+    });
+
     // Add services to the container.
+    builder.Services.AddMetrics();
+    builder.Services.AddMvcCore(x => x.EnableEndpointRouting = false).AddMetricsCore();
     builder.Services.AddCommonExtensionsFromCurrentAssembly(config);
     builder.Services.AddCommonSwaggerDocs(config);
     builder.Services.AddCommonApiVersioning();
@@ -58,16 +73,14 @@ try
         });
     }
 
-    app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
-    app.UseRouting();
     app.UseCors("DiagnosisServicePolicy");
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
-    app.MapControllers();
+    app.UseMvc();
     app.Run();
 }
 catch (Exception ex)
