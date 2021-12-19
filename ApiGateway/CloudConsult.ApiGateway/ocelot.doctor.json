@@ -1,4 +1,112 @@
 {
   "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/create-doctor",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/update-doctor/{ProfileId}",
+      "UpstreamHttpMethod": [ "Put", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-doctor/{ProfileId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/identity/{IdentityId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-doctor-by-identity/{IdentityId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-all-doctors",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/upload",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/upload-kyc/{ProfileId}",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/download",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/download-kyc/{ProfileId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/approve",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/approve-kyc/{ProfileId}",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/reject",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 6005
+        }
+      ],
+      "UpstreamPathTemplate": "/api/reject-kyc/{ProfileId}",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
+    }
   ]
 }
