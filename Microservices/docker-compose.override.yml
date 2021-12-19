@@ -1,4 +1,19 @@
 version: '3.4'
+volumes:
+  cloudconsult_identity_api_data:
+    driver: local
+  cloudconsult_member_api_data:
+    driver: local
+  cloudconsult_doctor_api_data:
+    driver: local
+  cloudconsult_consultation_api_data:
+    driver: local
+  cloudconsult_diagnosis_api_data:
+    driver: local
+  cloudconsult_payment_api_data:
+    driver: local
+  cloudconsult_notification_api_data:
+    driver: local
 networks:
   cloud-consult:
     external: true

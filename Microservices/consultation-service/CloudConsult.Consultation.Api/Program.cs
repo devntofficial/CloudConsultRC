@@ -1,7 +1,10 @@
+using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.Prometheus;
 using CloudConsult.Common.DependencyInjection;
 using CloudConsult.Common.Middlewares;
 using CloudConsult.Consultation.Infrastructure.Consumers;
 using CloudConsult.Consultation.Services.SqlServer.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -17,7 +20,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     var config = builder.Configuration as IConfiguration;
 
-    // Serilog setup
+    // Serilog setup with Elasticsearch
     var elasticSearchServers = config["ElasticsearchServers"].Split(',').Select(x => new Uri(x));
     builder.Host
         .UseSerilog((context, configuration) => configuration
@@ -33,7 +36,19 @@ try
             NumberOfReplicas = 1
         }));
 
+    //Add Metrics using Prometheus
+    builder.Host.UseMetricsWebTracking().UseMetrics(options =>
+    {
+        options.EndpointOptions = endpointOptions =>
+        {
+            endpointOptions.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+            endpointOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
+        };
+    });
+
     // Add services to the container.
+    builder.Services.AddMetrics();
+    builder.Services.AddMvcCore(x => x.EnableEndpointRouting = false).AddMetricsCore();
     builder.Services.AddCommonExtensionsFromCurrentAssembly(config);
     builder.Services.AddCommonSwaggerDocs(config);
     builder.Services.AddCommonApiVersioning();
@@ -69,15 +84,14 @@ try
                     $"Cloud Consult - Consultation API Reference {description.GroupName}");
         });
     }
-    app.UseSerilogRequestLogging();
-    app.UseRouting();
+    
     app.UseCors("ConsultationServicePolicy");
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-
-    app.MapControllers();
+    
+    app.UseMvc();
     app.Run();
 }
 catch (Exception ex)

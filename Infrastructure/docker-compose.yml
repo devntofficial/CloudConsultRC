@@ -17,7 +17,61 @@ volumes:
     driver: local
   elasticsearch_data_02:
     driver: local
+  prometheus_data: {}
+  grafana_data: {}
 services:
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    container_name: Prometheus
+    networks:
+      - cloud-consult
+    volumes:
+      - ./prometheus:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - "9090:9090"
+    links:
+      - alertmanager:alertmanager
+
+  alertmanager:
+    image: prom/alertmanager
+    restart: always
+    container_name: Prometheus-Alert-Manager
+    networks:
+      - cloud-consult
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
+  grafana:
+    image: grafana/grafana
+    restart: always
+    container_name: Grafana
+    networks:
+      - cloud-consult
+    environment:
+      GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./grafana/config.monitoring
+    links:
+      - prometheus:prometheus
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
   elasticsearch01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.1
     container_name: Elasticsearch-Cluster-Node-01
@@ -86,7 +140,7 @@ services:
     networks:
       - cloud-consult
     ports:
-      - "8080:8080"
+      - "8081:8080"
     restart: always
     volumes:
       - "kafka_ui_data:/kafka-ui"
