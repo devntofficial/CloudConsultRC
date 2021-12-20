@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/diagnosis/{ConsultationId}/report",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6011
+          "Host": "cloudconsult.diagnosis.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/publish-diagnosis-report/{ConsultationId}",
@@ -14,11 +14,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/diagnosis/{ConsultationId}/report",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6011
+          "Host": "cloudconsult.diagnosis.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-diagnosis-report/{ConsultationId}",
@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/diagnosis/report/{ReportId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6011
+          "Host": "cloudconsult.diagnosis.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-diagnosis-report-by-id/{ReportId}",

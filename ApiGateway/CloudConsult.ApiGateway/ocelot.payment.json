@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/payments/{ConsultationId}/accept",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6013
+          "Host": "cloudconsult.payment.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/accept-payment/{ConsultationId}",
@@ -14,11 +14,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/payments/{ConsultationId}/reject",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6013
+          "Host": "cloudconsult.payment.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/reject-payment/{ConsultationId}",

@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/doctors",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/create-doctor",
@@ -14,11 +14,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/update-doctor/{ProfileId}",
@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-doctor/{ProfileId}",
@@ -38,11 +38,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors/identity/{IdentityId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-doctor-by-identity/{IdentityId}",
@@ -50,11 +50,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-all-doctors",
@@ -62,11 +62,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/upload",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/upload-kyc/{ProfileId}",
@@ -74,11 +74,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/download",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/download-kyc/{ProfileId}",
@@ -86,11 +86,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/approve",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/approve-kyc/{ProfileId}",
@@ -98,11 +98,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/reject",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6005
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/reject-kyc/{ProfileId}",
