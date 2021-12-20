@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudConsult.ApiGateway", "CloudConsult.ApiGateway\CloudConsult.ApiGateway.csproj", "{06643FEA-76E8-4214-9DC8-4AFC9D285FCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.ApiGateway", "CloudConsult.ApiGateway\CloudConsult.ApiGateway.csproj", "{06643FEA-76E8-4214-9DC8-4AFC9D285FCE}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4CB49D33-BEE5-465E-9DDA-8DBC5BA62CE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{06643FEA-76E8-4214-9DC8-4AFC9D285FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06643FEA-76E8-4214-9DC8-4AFC9D285FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06643FEA-76E8-4214-9DC8-4AFC9D285FCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CB49D33-BEE5-465E-9DDA-8DBC5BA62CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CB49D33-BEE5-465E-9DDA-8DBC5BA62CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CB49D33-BEE5-465E-9DDA-8DBC5BA62CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CB49D33-BEE5-465E-9DDA-8DBC5BA62CE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

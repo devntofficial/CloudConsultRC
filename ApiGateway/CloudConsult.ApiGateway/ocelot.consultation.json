@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/consultations",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/request-consultation",
@@ -14,11 +14,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}/accept",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/doctor-accepted-consultation/{ConsultationId}",
@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}/reject",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/doctor-rejected-consultation/{ConsultationId}",
@@ -38,11 +38,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}/cancel",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/member-cancelled-consultation/{ConsultationId}",
@@ -50,11 +50,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/consultations/{ConsultationId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-consultation/{ConsultationId}",
@@ -62,11 +62,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctor/{DoctorId}/consultation",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-consultations-by-doctor/{DoctorId}",
@@ -74,11 +74,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/availability",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/upload-doctor-availability",
@@ -86,11 +86,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/doctor/{DoctorId}/availability",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6009
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-doctor-availability/{DoctorId}",

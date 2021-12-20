@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/members",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6007
+          "Host": "cloudconsult.member.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/create-member",
@@ -14,11 +14,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/members/{ProfileId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6007
+          "Host": "cloudconsult.member.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/update-member/{ProfileId}",
@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/members/{ProfileId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6007
+          "Host": "cloudconsult.member.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-member/{ProfileId}",
@@ -38,11 +38,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/members/identity/{IdentityId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6007
+          "Host": "cloudconsult.member.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-member-by-identity/{IdentityId}",

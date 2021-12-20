@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/token/generate",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6003
+          "Host": "cloudconsult.identity.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-token",
@@ -14,11 +14,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/user",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6003
+          "Host": "cloudconsult.identity.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/create-user",
@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/otp/generate",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6003
+          "Host": "cloudconsult.identity.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/generate-otp",
@@ -38,11 +38,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/otp/validate",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6003
+          "Host": "cloudconsult.identity.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/validate-otp",
@@ -50,11 +50,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/user/roles",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 6003
+          "Host": "cloudconsult.identity.api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/get-user-roles",

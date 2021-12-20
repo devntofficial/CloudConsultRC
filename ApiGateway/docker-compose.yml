@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  cloudconsult.apigateway:
+    image: ${DOCKER_REGISTRY-}cloudconsultapigateway
+    build:
+      context: .
+      dockerfile: CloudConsult.ApiGateway/Dockerfile
