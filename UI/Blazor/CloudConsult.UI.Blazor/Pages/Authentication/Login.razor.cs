@@ -1,30 +1,59 @@
-﻿using Blazored.LocalStorage;
-using CloudConsult.UI.Blazor.Helpers;
-using CloudConsult.UI.Blazor.Models.Identity;
-using CloudConsult.UI.Blazor.Services.Interfaces;
-using CloudConsult.UI.Blazor.Shared;
+﻿using CloudConsult.UI.Blazor.Shared;
+using CloudConsult.UI.Data.Authentication;
+using CloudConsult.UI.Data.Common;
+using CloudConsult.UI.Redux.Actions.Authentication;
+using CloudConsult.UI.Redux.States.Authentication;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace CloudConsult.UI.Blazor.Pages.Authentication
 {
-    public class LoginComponent : ComponentBase
+    public class LoginComponent : BaseComponent<LoginState>
     {
-        protected readonly LoginModel LoginModel = new();
+        protected LoginData data = new();
         protected InputType PasswordInput = InputType.Password;
         protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
-        protected bool ShowLoadingSpinner;
         private bool _passwordVisibility;
 
-        [Inject] private IIdentityService IdentityService { get; set; }
-        [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; }
-        [Inject] private ILocalStorageService LocalStorage { get; set; }
-        [Inject] private NavigationManager NavigationManager { get; set; }
-        [Inject] private HttpClient Client { get; set; }
-        [CascadingParameter] private Error Error { get; set; }
+        [CascadingParameter] private Error error { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            Subscriber.SubscribeToAction<LoginSuccessAction>(this, action => OnLoginSuccess(action));
+            Subscriber.SubscribeToAction<LoginUnverifiedAction>(this, action => OnLoginUnverified(action));
+
+            var state = await ((AuthStateProvider)AuthStateProvider).GetAuthenticationStateAsync();
+            if(state.User.HasClaim(x => x.Type == ClaimTypes.Role))
+            {
+                var id = state.User.Claims.FirstOrDefault(x => x.Type == "Id").Value;
+                var role = state.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
+                Dispatcher.Dispatch(new LoginSuccessAction(id, role));
+            }
+
+            await base.OnInitializedAsync();
+        }
+
+        private void OnLoginUnverified(LoginUnverifiedAction action)
+        {
+            Navigation.NavigateTo($"/verify-otp/{action.IdentityId}");
+        }
+
+        private void OnLoginSuccess(LoginSuccessAction action)
+        {
+            SessionStorage.SetItemAsync("Role", action.Role);
+            switch (action.Role)
+            {
+                default: Notifier.Add("Not Allowed", Severity.Error);
+                    return;
+                case "Administrator":
+                case "Doctor":
+                case "Member":
+                    Navigation.NavigateTo($"/{action.Role.ToLower()}/{action.IdentityId}/dashboard");
+                    return;
+            }
+            
+        }
 
         protected void TogglePasswordVisibility()
         {
@@ -42,36 +71,16 @@ namespace CloudConsult.UI.Blazor.Pages.Authentication
             }
         }
 
-        protected async Task LoginButtonClick()
+        protected void LoginButtonClick()
         {
-            ShowLoadingSpinner = true;
             try
             {
-                var result = await IdentityService.GetToken(LoginModel);
-                if(result.IsSuccess)
-                {
-                    var token = result.Payload.AccessToken;
-                    await LocalStorage.SetItemAsync("AccessToken", token);
-                    Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    
-                    var stateProvider = (AuthStateProvider)AuthStateProvider;
-                    stateProvider.NotifyUserLogin(token);
-
-                    var state = await stateProvider.GetAuthenticationStateAsync();
-                    var role = state.User.Claims.First(x => x.Type == ClaimTypes.Role)?.Value.ToLower();
-
-                    NavigationManager.NavigateTo($"/{role}/{result.Payload.IdentityId}/dashboard");
-                }
-                else if(result.StatusCode == 401)
-                {
-                    NavigationManager.NavigateTo($"/verify-otp/{result.Payload.IdentityId}");
-                }
+                Dispatcher.Dispatch(new LoginAction(data));
             }
             catch (Exception ex)
             {
-                Error.ProcessError(ex);
+                error.ProcessError(ex);
             }
-            ShowLoadingSpinner = false;
         }
     }
 }

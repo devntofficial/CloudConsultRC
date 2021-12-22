@@ -1,12 +1,12 @@
-﻿using CloudConsult.UI.Blazor.Services.Interfaces;
-using CloudConsult.UI.Blazor.Shared;
+﻿using CloudConsult.UI.Blazor.Shared;
+using CloudConsult.UI.Redux.Actions.Authentication;
+using CloudConsult.UI.Redux.States.Authentication;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 
 namespace CloudConsult.UI.Blazor.Pages.Authentication
 {
-    public class OtpComponent : ComponentBase
+    public class OtpComponent : BaseComponent<OtpState>
     {
         protected int? num1 = null;
         protected int? num2 = null;
@@ -20,61 +20,36 @@ namespace CloudConsult.UI.Blazor.Pages.Authentication
         protected MudTextField<int?> num4Ref;
         protected MudTextField<int?> num5Ref;
         protected MudTextField<int?> num6Ref;
-        protected bool ShowLoadingSpinner;
         [Parameter] public string IdentityId { get; set; }
-        [Inject] private IIdentityService IdentityService { get; set; }
-        [Inject] private NavigationManager Navigation { get; set; }
-        [Inject] private ISnackbar Snackbar { get; set; }
         [CascadingParameter] private Error Error { get; set; }
 
-        protected async Task GenerateOtp()
+        protected override async Task OnInitializedAsync()
         {
-            var output = await IdentityService.GenerateOtp(IdentityId);
-            if (output.IsSuccess)
-            {
-                Snackbar.Add("OTP was sent successfully", Severity.Info);
-            }
-            else
-            {
-                for (int i = 0; i < output.Errors.Count(); i++)
-                {
-                    Snackbar.Add(output.Errors.ElementAt(i), Severity.Error);
-                }
-            }
+            Dispatcher.Dispatch(new OtpGenerationAction(IdentityId));
+            Subscriber.SubscribeToAction<OtpVerificationSuccessAction>(this, action => OnOtpVerificationSuccess(action));
+            await base.OnInitializedAsync();
+        }
+
+        protected void VerifyOtpButtonClick()
+        {
+            Dispatcher.Dispatch(new OtpVerificationAction(IdentityId, Convert.ToInt32($"{num1}{num2}{num3}{num4}{num5}{num6}")));
+        }
+
+        private void OnOtpVerificationSuccess(OtpVerificationSuccessAction action)
+        {
+            Notifier.Add("Your account was registered", Severity.Info);
+            Notifier.Add("Please login with your chosen password to proceed", Severity.Info);
+            Navigation.NavigateTo("/");
+        }
+
+        protected void ResendOtpLinkClick()
+        {
+            Dispatcher.Dispatch(new OtpGenerationAction(IdentityId));
         }
 
         protected bool isOtpFilled()
         {
             return new[] { num1, num2, num3, num4, num5, num6 }.Any(x => x == null);
-        }
-
-        protected async Task ValidateOtp()
-        {
-            ShowLoadingSpinner = true;
-            try
-            {
-                var output = await IdentityService.ValidateOtp(IdentityId, Convert.ToInt32($"{num1}{num2}{num3}{num4}{num5}{num6}"));
-                if (output is not null)
-                {
-                    if (output.IsSuccess)
-                    {
-                        Snackbar.Add("OTP verified successfully. Please login again to proceed.", Severity.Info);
-                        Navigation.NavigateTo("/");
-                    }
-                    else
-                    {
-                        for (int i = 0; i < output.Errors.Count(); i++)
-                        {
-                            Snackbar.Add(output.Errors.ElementAt(i), Severity.Error);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Error.ProcessError(ex);
-            }
-            ShowLoadingSpinner = false;
         }
 
         protected void GoBackToLogin()

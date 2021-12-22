@@ -2,15 +2,51 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>f644235d-6e06-4cf0-a020-fe34d4691c0c</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
-    <PackageReference Include="MudBlazor" Version="6.0.2" />
-    <PackageReference Include="Radzen.Blazor" Version="3.13.7" />
-	  <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="..\.dockerignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CloudConsult.UI.Data\CloudConsult.UI.Data.csproj" />
+    <ProjectReference Include="..\CloudConsult.UI.Interfaces\CloudConsult.UI.Interfaces.csproj" />
+    <ProjectReference Include="..\CloudConsult.UI.Redux\CloudConsult.UI.Redux.csproj" />
+    <ProjectReference Include="..\CloudConsult.UI.Services\CloudConsult.UI.Services.csproj" />
   </ItemGroup>
 
 </Project>

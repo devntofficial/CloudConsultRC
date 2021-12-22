@@ -9,7 +9,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/create-doctor",
+      "UpstreamPathTemplate": "/api/create-doctor-profile",
       "UpstreamHttpMethod": [ "Post", "Options" ]
     },
     {
@@ -21,7 +21,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/update-doctor/{ProfileId}",
+      "UpstreamPathTemplate": "/api/update-doctor-profile/{ProfileId}",
       "UpstreamHttpMethod": [ "Put", "Options" ]
     },
     {
@@ -33,7 +33,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/get-doctor/{ProfileId}",
+      "UpstreamPathTemplate": "/api/get-doctor-profile/{ProfileId}",
       "UpstreamHttpMethod": [ "Get", "Options" ]
     },
     {
@@ -45,7 +45,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/get-doctor-by-identity/{IdentityId}",
+      "UpstreamPathTemplate": "/api/get-doctor-profile-by-identity/{IdentityId}",
       "UpstreamHttpMethod": [ "Get", "Options" ]
     },
     {
@@ -57,7 +57,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/get-all-doctors",
+      "UpstreamPathTemplate": "/api/get-all-doctor-profiles",
       "UpstreamHttpMethod": [ "Get", "Options" ]
     },
     {

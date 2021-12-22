@@ -36,9 +36,9 @@
     </MudItem>
 </MudGrid>
 <br />
-<MudText Align="Align.Center">Did not receive OTP? <MudLink @onclick="@GenerateOtp">Click here</MudLink> to resend.</MudText>
+<MudText Align="Align.Center">Did not receive OTP? <MudLink @onclick="@ResendOtpLinkClick">Click here</MudLink> to resend.</MudText>
 <br />
-<MudButton Disabled="@isOtpFilled()" Variant="Variant.Filled" Color="Color.Primary" OnClick="ValidateOtp" Size="Size.Large" FullWidth="true" Class="mt-3">
+<MudButton Disabled="@isOtpFilled()" Variant="Variant.Filled" Color="Color.Primary" OnClick="VerifyOtpButtonClick" Size="Size.Large" FullWidth="true" Class="mt-3">
     Verify
 </MudButton>
 

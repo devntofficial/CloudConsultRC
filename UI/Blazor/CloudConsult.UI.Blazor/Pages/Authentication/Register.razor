@@ -1,6 +1,7 @@
 ﻿@page "/register"
 @layout LoginLayout
 @inherits RegisterComponent
+@using CloudConsult.UI.Blazor.Pages.Doctor;
 
 <MudText Typo="Typo.h4" GutterBottom="true">
     Sign Up
@@ -9,18 +10,18 @@
     Already have an account? <MudLink Href="/login">Sign In</MudLink>
 </MudText>
 
-<MudTextField @bind-Value="@RegistrationModel.FullName" T="string" Label="Full Name" Variant="Variant.Outlined" Class="my-4">
+<MudTextField @bind-Value="@data.FullName" T="string" Label="Full Name" Variant="Variant.Outlined" Class="my-4">
 </MudTextField>
 
-<MudTextField @bind-Value="@RegistrationModel.EmailId" T="string" Label="E-mail" Variant="Variant.Outlined">
+<MudTextField @bind-Value="@data.EmailId" T="string" Label="E-mail" Variant="Variant.Outlined">
 </MudTextField>
 
-<MudTextField @bind-Value="@RegistrationModel.Password" Label="Password" Variant="Variant.Outlined"
+<MudTextField @bind-Value="@data.Password" Label="Password" Variant="Variant.Outlined"
               InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon"
-              OnAdornmentClick="TogglePasswordVisibility" Class="mt-4"/>
+              OnAdornmentClick="TogglePasswordVisibility" Class="mt-4" />
 
-<MudSelect T="int" @bind-Value="@RegistrationModel.RoleId" Variant="Variant.Outlined" Label="Role" Strict="true" Class="mt-4">
-    @foreach(var role in RolesModel)
+<MudSelect T="int" @bind-Value="@data.RoleId" Variant="Variant.Outlined" Label="Role" Strict="true" Class="mt-4">
+    @foreach (var role in State.Value.Roles)
     {
         <MudSelectItem Value="@(role.Id)">@role.RoleName</MudSelectItem>
     }
@@ -30,10 +31,10 @@
              Color="Color.Primary" Class="ml-n1 my-3">
 </MudCheckBox>
 <MudButton OnClick="RegisterButtonClick" Variant="Variant.Filled" Color="Color.Primary"
-           Disabled="@(!AgreeToTerms || ShowLoadingSpinner)" Size="Size.Large" FullWidth="true">
-    @if (ShowLoadingSpinner)
+           Disabled="@(!AgreeToTerms || State.Value.Processing)" Size="Size.Large" FullWidth="true">
+    @if (State.Value.Processing)
     {
-        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
         <MudText Class="ms-2">Registering account...</MudText>
     }
     else

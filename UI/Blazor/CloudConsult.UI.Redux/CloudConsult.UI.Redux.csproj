@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CloudConsult.UI.Data\CloudConsult.UI.Data.csproj" />
+    <ProjectReference Include="..\CloudConsult.UI.Interfaces\CloudConsult.UI.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

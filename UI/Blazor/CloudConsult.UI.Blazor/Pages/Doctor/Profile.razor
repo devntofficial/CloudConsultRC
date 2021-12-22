@@ -1,0 +1,169 @@
+﻿@page "/doctor/profile"
+@inherits ProfileComponent
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<MudTabs Elevation="1" Rounded="true" PanelClass="mt-6">
+    <MudTabPanel Text="General">
+        <MudGrid>
+            <MudItem xs="12" sm="4" md="3">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText>Public Profile</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <div class="d-flex justify-center mb-4">
+                            <MudAvatar Image="@AvatarImageLink" Style="height:100px; width:100px;">
+                                @if (AvatarImageLink == null)
+                                {
+                                    <MudIcon Icon="@AvatarIcon" Size="Size.Large"></MudIcon>
+                                }
+                            </MudAvatar>
+
+                        </div>
+                        <MudText Align="Align.Center">@data.FullName</MudText>
+                        <MudText Align="Align.Center">@data.Role</MudText>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-center">
+                        <MudButton OnClick="DeletePicture" Color="@AvatarButtonColor">@AvatarButtonText</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="8" md="9">
+                <MudCard>
+                    <MudCardContent>
+                        <MudGrid>
+                            <MudItem xs="12" md="4">
+                                <MudTextField @bind-Value="data.FullName" Label="Full Name" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudSelect T="string" @bind-Value="data.Gender" Label="Gender" Strict="true" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                                    <MudSelectItem T="string" Value="@("Male")" />
+                                    <MudSelectItem T="string" Value="@("Female")" />
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudDatePicker Variant="Variant.Outlined" OpenTo="OpenTo.Date" @bind-Date="dateOfBirthPicker" Label="Date Of Birth" DisableToolbar="true" DateFormat="dd-MM-yyyy" />
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudTextField @bind-Value="data.EmailId" Label="Email Id" Variant="Variant.Outlined" HelperText="Dont worry, we shall not spam!" InputType="InputType.Email" />
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudTextField @bind-Value="@data.MobileNo" MaxLength="10" Immediate=true Label="Mobile No" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentText="+91" />
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudTextField @bind-Value="data.AadhaarNo" Immediate=true MaxLength="12" Label="Aadhaar No" Variant="Variant.Outlined" InputType="InputType.Number" />
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudTextField @bind-Value="data.Speciality" Label="Speciality" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="8">
+                                <MudTextField @bind-Value="data.Address" Label="Full Address" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12" md="8">
+                                <MudText>
+                                    <b>Visible To Public</b>
+                                </MudText>
+                                <MudText Typo="Typo.body2">
+                                    Means that your profile will be indexed and will show up in our search results.
+                                </MudText>
+                                <MudSwitch @bind-Checked="@VisibilitySwitch" Color="Color.Primary" />
+                            </MudItem>
+                            <MudItem xs="12" md="4" Style=" display:flex; align-items:center; justify-content:right;">
+                                <MudButton Disabled="@State.Value.Processing" OnClick="SaveProfileClick" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">
+                                    @if (State.Value.Processing)
+                                    {
+                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                        <MudText Class="ms-2">Saving...</MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText>Save Changes</MudText>
+                                    }
+                                </MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudTabPanel>
+    <MudTabPanel Text="Notifications">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText>Notifications</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudGrid>
+                    <MudItem xs="12" sm="4">
+                        <MudText>
+                            <b>Email</b>
+                        </MudText>
+                        <MudText Typo="Typo.body2">
+                            What type of system notifications you want to recieve to your email.
+                        </MudText>
+                        <div class="d-flex flex-column mt-6">
+                            <MudCheckBox @bind-Checked="@NotificationEmail_1" Label="Threat Detection" Color="Color.Primary"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationEmail_2" Label="Server Errors" Color="Color.Error"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationEmail_3" Label="Server Warnings" Color="Color.Warning"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationEmail_4" Label="Spam" Color="Color.Success"></MudCheckBox>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" sm="8">
+                        <MudText>
+                            <b>SMS</b>
+                        </MudText>
+                        <MudText Typo="Typo.body2">
+                            What type of system notifications you want to recieve via SMS.
+                        </MudText>
+                        <div class="d-flex flex-column mt-6">
+                            <MudCheckBox @bind-Checked="@NotificationSMS_1" Label="Threat Detection" Color="Color.Primary"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationSMS_2" Label="Server Errors" Color="Color.Error"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationSMS_3" Label="Server Warnings" Color="Color.Warning"></MudCheckBox>
+                            <MudCheckBox @bind-Checked="@NotificationSMS_4" Label="Spam" Color="Color.Success"></MudCheckBox>
+                        </div>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+            <MudCardActions Class="pb-4 pl-4">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save Changes</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudTabPanel>
+    <MudTabPanel Text="Security">
+        <MudForm @ref="form">
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText>Change Password</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" @ref="pwField1" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Password is required!" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" Label="Password Confirmation" Variant="Variant.Outlined" InputType="InputType.Password" Validation="@(new Func<string, string>(PasswordMatch))" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField T="string" Label="Current Password" Variant="Variant.Outlined" InputType="InputType.Password" />
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions Class="pb-4 pl-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Change Password</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudForm>
+    </MudTabPanel>
+</MudTabs>

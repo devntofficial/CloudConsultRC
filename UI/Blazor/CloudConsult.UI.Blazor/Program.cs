@@ -1,7 +1,11 @@
 using Blazored.LocalStorage;
-using CloudConsult.UI.Blazor.Helpers;
-using CloudConsult.UI.Blazor.Services.Implementations;
-using CloudConsult.UI.Blazor.Services.Interfaces;
+using Blazored.SessionStorage;
+using CloudConsult.UI.Data.Common;
+using CloudConsult.UI.Interfaces.Doctor;
+using CloudConsult.UI.Interfaces.Identity;
+using CloudConsult.UI.Redux.States.Authentication;
+using CloudConsult.UI.Services;
+using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 using MudBlazor.Services;
@@ -13,12 +17,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
-builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:6001") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://cloudconsult.apigateway") });
 
 builder.Services.AddMudServices(config =>
 {
@@ -26,7 +31,7 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.PreventDuplicates = false;
     config.SnackbarConfiguration.NewestOnTop = false;
     config.SnackbarConfiguration.ShowCloseIcon = true;
-    config.SnackbarConfiguration.VisibleStateDuration = 10000;
+    config.SnackbarConfiguration.VisibleStateDuration = 5000;
     config.SnackbarConfiguration.HideTransitionDuration = 500;
     config.SnackbarConfiguration.ShowTransitionDuration = 500;
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
@@ -36,6 +41,8 @@ builder.Services.AddScoped<Radzen.DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
+
+builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(LoginState).Assembly));
 
 var app = builder.Build();
 
