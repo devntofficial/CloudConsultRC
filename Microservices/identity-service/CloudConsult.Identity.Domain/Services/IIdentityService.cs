@@ -7,6 +7,6 @@ namespace CloudConsult.Identity.Domain.Services
     public interface IIdentityService
     {
         Task<User> Authenticate(GetToken query, CancellationToken cancellationToken);
-        Task<User> Create(CreateUser command, CancellationToken cancellationToken);
+        Task<(bool created, User user, string message)> Create(CreateUser command, CancellationToken cancellationToken);
     }
 }

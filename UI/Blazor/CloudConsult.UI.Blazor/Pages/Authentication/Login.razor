@@ -8,9 +8,9 @@
 
 <MudText>Don't have an account? <MudLink Href="/register">Sign Up</MudLink></MudText>
 
-<MudTextField @bind-Value="@LoginModel.EmailId" Label="E-mail" Variant="Variant.Outlined" Class="my-6"></MudTextField>
+<MudTextField @bind-Value="@data.EmailId" Label="E-mail" Variant="Variant.Outlined" Class="my-6"></MudTextField>
 
-<MudTextField @bind-Value="@LoginModel.Password" Label="Password" Variant="Variant.Outlined"
+<MudTextField @bind-Value="@data.Password" Label="Password" Variant="Variant.Outlined"
               InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon"
               OnAdornmentClick="TogglePasswordVisibility" />
 
@@ -20,8 +20,8 @@
 </div>
 
 
-<MudButton Disabled="@ShowLoadingSpinner" OnClick="LoginButtonClick" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true">
-    @if (ShowLoadingSpinner)
+<MudButton Disabled="@State.Value.Processing" OnClick="LoginButtonClick" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true">
+    @if (State.Value.Processing)
     {
         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
         <MudText Class="ms-2">Signing In...</MudText>

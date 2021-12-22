@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Prometheus;
 
 namespace CloudConsult.Doctor.Api.Controllers;
 
@@ -12,6 +13,11 @@ namespace CloudConsult.Doctor.Api.Controllers;
 [ApiController]
 public class ProfileController : JsonController<ProfileController>
 {
+    public ProfileController()
+    {
+        
+    }
+
     [HttpPost(Routes.Profile.Create)]
     [Authorize(Roles = "Doctor", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Create(CreateProfile command)

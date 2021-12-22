@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudConsult.UI.Blazor", "CloudConsult.UI.Blazor\CloudConsult.UI.Blazor.csproj", "{32103CBA-A31B-46B8-ACA7-B04830F5A31F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.UI.Blazor", "CloudConsult.UI.Blazor\CloudConsult.UI.Blazor.csproj", "{32103CBA-A31B-46B8-ACA7-B04830F5A31F}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{99ADA5DF-0723-453D-ACA3-187DE85F8D58}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.UI.Data", "CloudConsult.UI.Data\CloudConsult.UI.Data.csproj", "{1A3A5CDE-431A-4D52-9936-D29DAD249427}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.UI.Redux", "CloudConsult.UI.Redux\CloudConsult.UI.Redux.csproj", "{39C1A8CB-412B-4F9F-A166-568AB4DBB65F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.UI.Services", "CloudConsult.UI.Services\CloudConsult.UI.Services.csproj", "{8FBCDEE9-0551-4072-B6C5-526D48D5B129}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudConsult.UI.Interfaces", "CloudConsult.UI.Interfaces\CloudConsult.UI.Interfaces.csproj", "{103FA199-47D7-4987-9295-6E321C9F561D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{32103CBA-A31B-46B8-ACA7-B04830F5A31F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32103CBA-A31B-46B8-ACA7-B04830F5A31F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32103CBA-A31B-46B8-ACA7-B04830F5A31F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99ADA5DF-0723-453D-ACA3-187DE85F8D58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99ADA5DF-0723-453D-ACA3-187DE85F8D58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99ADA5DF-0723-453D-ACA3-187DE85F8D58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99ADA5DF-0723-453D-ACA3-187DE85F8D58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A3A5CDE-431A-4D52-9936-D29DAD249427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A3A5CDE-431A-4D52-9936-D29DAD249427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A3A5CDE-431A-4D52-9936-D29DAD249427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A3A5CDE-431A-4D52-9936-D29DAD249427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39C1A8CB-412B-4F9F-A166-568AB4DBB65F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C1A8CB-412B-4F9F-A166-568AB4DBB65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C1A8CB-412B-4F9F-A166-568AB4DBB65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C1A8CB-412B-4F9F-A166-568AB4DBB65F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FBCDEE9-0551-4072-B6C5-526D48D5B129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FBCDEE9-0551-4072-B6C5-526D48D5B129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FBCDEE9-0551-4072-B6C5-526D48D5B129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FBCDEE9-0551-4072-B6C5-526D48D5B129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{103FA199-47D7-4987-9295-6E321C9F561D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{103FA199-47D7-4987-9295-6E321C9F561D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{103FA199-47D7-4987-9295-6E321C9F561D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{103FA199-47D7-4987-9295-6E321C9F561D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

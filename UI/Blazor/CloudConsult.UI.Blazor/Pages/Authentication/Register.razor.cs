@@ -1,46 +1,50 @@
-﻿using CloudConsult.UI.Blazor.Models.Identity;
-using CloudConsult.UI.Blazor.Services.Interfaces;
-using CloudConsult.UI.Blazor.Shared;
+﻿using CloudConsult.UI.Blazor.Shared;
+using CloudConsult.UI.Data.Authentication;
+using CloudConsult.UI.Redux.Actions.Authentication;
+using CloudConsult.UI.Redux.States.Authentication;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace CloudConsult.UI.Blazor.Pages.Authentication
 {
-    public class RegisterComponent : ComponentBase
+    public class RegisterComponent : BaseComponent<RegisterState>
     {
-        protected RegistrationModel RegistrationModel = new();
-        protected List<RoleModel> RolesModel = new();
-        protected bool AgreeToTerms;
-        protected bool ShowLoadingSpinner;
+        protected RegisterData data = new();
+        protected bool AgreeToTerms = false;
         protected InputType PasswordInput = InputType.Password;
         protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
         private bool _passwordVisibility;
-
-        [Inject]
-        private IIdentityService IdentityService { get; set; }
-
-        [Inject]
-        private NavigationManager Navigation { get; set; }
-
-        [Inject]
-        private ISnackbar Snackbar { get; set; }
 
         [CascadingParameter]
         private Error Error { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var output = await IdentityService.GetUserRoles();
-            if(output.IsSuccess)
+            Dispatcher.Dispatch(new GetRolesAction());
+            Subscriber.SubscribeToAction<RegisterSuccessAction>(this, async action => await OnRegisterSuccess(action));
+            await base.OnInitializedAsync();
+        }
+
+        private async Task OnRegisterSuccess(RegisterSuccessAction action)
+        {
+            switch(State.Value.Roles.FirstOrDefault(x => x.Id == data.RoleId).RoleName)
             {
-                RolesModel = output.Payload;
-            }
-            else
-            {
-                for (int i = 0; i < output.Errors.Count(); i++)
-                {
-                    Snackbar.Add(output.Errors.ElementAt(i), Severity.Error);
-                }
+                case "Administrator":
+                    Navigation.NavigateTo($"/verify-otp/{action.IdentityId}");
+                    return;
+                case "Doctor":
+                    await SessionStorage.SetItemAsync("FullName", action.Data.FullName);
+                    await SessionStorage.SetItemAsync("EmailId", action.Data.EmailId);
+                    Navigation.NavigateTo($"/doctor/{action.IdentityId}/profile/create");
+                    return;
+                case "Member":
+                    await SessionStorage.SetItemAsync("FullName", action.Data.FullName);
+                    await SessionStorage.SetItemAsync("EmailId", action.Data.EmailId);
+                    Navigation.NavigateTo($"/member/{action.IdentityId}/profile/create");
+                    return;
+                default:
+                    Notifier.Add("An unknown error occured");
+                    return;
             }
         }
 
@@ -60,30 +64,16 @@ namespace CloudConsult.UI.Blazor.Pages.Authentication
             }
         }
 
-        protected async Task RegisterButtonClick()
+        protected void RegisterButtonClick()
         {
-            ShowLoadingSpinner = true;
             try
             {
-                var output = await IdentityService.Register(RegistrationModel);
-                if (output.IsSuccess)
-                {
-                    Snackbar.Add("Your account was created successfully. Please login with your saved password.", Severity.Info);
-                    Navigation.NavigateTo("/verify-otp");
-                }
-                else
-                {
-                    for (int i = 0; i < output.Errors.Count(); i++)
-                    {
-                        Snackbar.Add(output.Errors.ElementAt(i), Severity.Error);
-                    }
-                }
+                Dispatcher.Dispatch(new RegisterAction(data));
             }
             catch (Exception ex)
             {
                 Error.ProcessError(ex);
             }
-            ShowLoadingSpinner = false;
         }
     }
 }

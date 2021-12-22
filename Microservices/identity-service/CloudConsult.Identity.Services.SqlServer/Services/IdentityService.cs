@@ -40,8 +40,13 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
             return hashedPassword == user.PasswordHash ? user : null;
         }
 
-        public async Task<User> Create(CreateUser command, CancellationToken cancellationToken)
+        public async Task<(bool created, User user, string message)> Create(CreateUser command, CancellationToken cancellationToken)
         {
+            if (await db.Users.AnyAsync(x => x.EmailId == command.EmailId, cancellationToken))
+            {
+                return (false, null, "An account with this email id already exists");
+            }
+
             await using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
             try
             {
@@ -67,17 +72,17 @@ namespace CloudConsult.Identity.Services.SqlServer.Services
                 await db.SaveChangesAsync(cancellationToken);
                 await transaction.CommitAsync(cancellationToken);
 
-                return await db.Users
+                return (true, await db.Users
                     .Where(x => x.Id == user.Id)
                     .Include(x => x.UserRoles)
                     .ThenInclude(x => x.Role)
-                    .SingleOrDefaultAsync(cancellationToken);
+                    .SingleOrDefaultAsync(cancellationToken), "Success");
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
                 await transaction.RollbackAsync(cancellationToken);
-                return null;
+                return (false, null, ex.Message);
             }
         }
     }

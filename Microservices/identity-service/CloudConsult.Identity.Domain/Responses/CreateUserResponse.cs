@@ -8,6 +8,7 @@ namespace CloudConsult.Identity.Domain.Responses
         public string FullName { get; set; }
         public string EmailId { get; set; }
         public string Roles { get; set; }
+        public string AccessToken { get; set; }
         public DateTime Timestamp { get; set; }
     }
 }

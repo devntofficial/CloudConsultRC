@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  cloudconsult.ui.blazor:
+    image: ${DOCKER_REGISTRY-}cloudconsultuiblazor
+    build:
+      context: .
+      dockerfile: CloudConsult.UI.Blazor/Dockerfile
