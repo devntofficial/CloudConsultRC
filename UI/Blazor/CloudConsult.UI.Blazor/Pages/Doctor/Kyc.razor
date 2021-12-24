@@ -1,0 +1,39 @@
+﻿@page "/doctor/kyc"
+@inherits DoctorKycComponent
+
+
+<MudGrid>
+    <MudItem xs="12" sm="4" md="3">
+        <MudPaper>
+            <InputFile OnChange="OnFileUpload" id="kycFileInput" hidden multiple accept=".jpg, .jpeg, .png, .pdf" />
+            <MudList Clickable="true">
+                <MudListItem Icon="@Icons.Material.Filled.CloudUpload">
+                    <label for="kycFileInput">Upload KYC Document(s)</label>
+                </MudListItem>
+                <MudListItem Text="Download All Document(s)" Icon="@Icons.Material.Filled.FileDownload" />
+                <MudDivider/>
+                @if(State.Value.Processing)
+                {
+                    <MudText>Uploading....</MudText>
+                }
+                    
+                
+            </MudList>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="8" md="9">
+        <MudSimpleTable Hover="true" Striped="true" Style="overflow-x: auto;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>File Name</th>
+                    <th>File Size</th>
+                    <th>Uploaded On</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+</MudGrid>

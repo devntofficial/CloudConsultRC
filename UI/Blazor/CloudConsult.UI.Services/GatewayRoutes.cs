@@ -17,6 +17,7 @@ public static class GatewayRoutes
         public const string GetProfileById = "/api/get-doctor-profile/{ProfileId}";
         public const string GetProfileByIdentityId = "/api/get-doctor-profile-by-identity/{IdentityId}";
         public const string UpdateProfile = "/api/update-doctor-profile/{ProfileId}";
+        public const string KycUpload = "/api/upload-doctor-kyc-documents/{ProfileId}";
     }
 
     public static class ConsultationService

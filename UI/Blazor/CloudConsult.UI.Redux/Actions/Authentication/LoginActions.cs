@@ -33,4 +33,6 @@ namespace CloudConsult.UI.Redux.Actions.Authentication
             this.IdentityId = IdentityId;
         }
     }
+
+    public class LogoutAction { }
 }

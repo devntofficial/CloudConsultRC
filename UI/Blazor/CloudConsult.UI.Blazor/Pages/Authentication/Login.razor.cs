@@ -1,4 +1,5 @@
-﻿using CloudConsult.UI.Blazor.Shared;
+﻿using CloudConsult.UI.Blazor.Common;
+using CloudConsult.UI.Blazor.Shared;
 using CloudConsult.UI.Data.Authentication;
 using CloudConsult.UI.Data.Common;
 using CloudConsult.UI.Redux.Actions.Authentication;
@@ -24,7 +25,7 @@ namespace CloudConsult.UI.Blazor.Pages.Authentication
             Subscriber.SubscribeToAction<LoginUnverifiedAction>(this, action => OnLoginUnverified(action));
 
             var state = await ((AuthStateProvider)AuthStateProvider).GetAuthenticationStateAsync();
-            if(state.User.HasClaim(x => x.Type == ClaimTypes.Role))
+            if (state.User.HasClaim(x => x.Type == ClaimTypes.Role))
             {
                 var id = state.User.Claims.FirstOrDefault(x => x.Type == "Id").Value;
                 var role = state.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
@@ -44,7 +45,8 @@ namespace CloudConsult.UI.Blazor.Pages.Authentication
             SessionStorage.SetItemAsync("Role", action.Role);
             switch (action.Role)
             {
-                default: Notifier.Add("Not Allowed", Severity.Error);
+                default:
+                    Notifier.Add("Not Allowed", Severity.Error);
                     return;
                 case "Administrator":
                 case "Doctor":
@@ -52,7 +54,7 @@ namespace CloudConsult.UI.Blazor.Pages.Authentication
                     Navigation.NavigateTo($"/{action.Role.ToLower()}/{action.IdentityId}/dashboard");
                     return;
             }
-            
+
         }
 
         protected void TogglePasswordVisibility()

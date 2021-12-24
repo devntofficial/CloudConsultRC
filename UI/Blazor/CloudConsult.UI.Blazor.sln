@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.UI.Redux", "Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.UI.Services", "CloudConsult.UI.Services\CloudConsult.UI.Services.csproj", "{8FBCDEE9-0551-4072-B6C5-526D48D5B129}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudConsult.UI.Interfaces", "CloudConsult.UI.Interfaces\CloudConsult.UI.Interfaces.csproj", "{103FA199-47D7-4987-9295-6E321C9F561D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudConsult.UI.Interfaces", "CloudConsult.UI.Interfaces\CloudConsult.UI.Interfaces.csproj", "{103FA199-47D7-4987-9295-6E321C9F561D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,7 +4,8 @@ using CloudConsult.UI.Data.Common;
 using CloudConsult.UI.Interfaces.Doctor;
 using CloudConsult.UI.Interfaces.Identity;
 using CloudConsult.UI.Redux.States.Authentication;
-using CloudConsult.UI.Services;
+using CloudConsult.UI.Services.Doctor;
+using CloudConsult.UI.Services.Identity;
 using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
@@ -18,6 +19,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IKycService, KycService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddAuthorizationCore();
@@ -42,7 +44,7 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
 builder.Services.AddScoped<ContextMenuService>();
 
-builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(LoginState).Assembly));
+builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(LoginState).Assembly).UseReduxDevTools());
 
 var app = builder.Build();
 

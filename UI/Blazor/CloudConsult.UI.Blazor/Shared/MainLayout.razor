@@ -81,9 +81,8 @@
         new BreadcrumbItem("Dashboard", href: "#"),
     };
 
-    private async Task Logout()
+    private void Logout()
     {
-        await localStorage.RemoveItemAsync("AccessToken");
         ((AuthStateProvider)authStateProvider).NotifyUserLogout();
         client.DefaultRequestHeaders.Authorization = null;
         navigationManager.NavigateTo("/");
