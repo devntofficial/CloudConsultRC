@@ -1,4 +1,5 @@
-﻿using CloudConsult.UI.Redux.Actions.Doctor;
+﻿using CloudConsult.UI.Blazor.Common;
+using CloudConsult.UI.Redux.Actions.Doctor;
 using CloudConsult.UI.Redux.States.Doctor;
 using Microsoft.AspNetCore.Components;
 

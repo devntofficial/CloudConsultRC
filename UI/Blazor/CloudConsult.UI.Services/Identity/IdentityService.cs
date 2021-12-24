@@ -5,7 +5,7 @@ using CloudConsult.UI.Services.Routes;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace CloudConsult.UI.Services
+namespace CloudConsult.UI.Services.Identity
 {
     public class IdentityService : IIdentityService
     {

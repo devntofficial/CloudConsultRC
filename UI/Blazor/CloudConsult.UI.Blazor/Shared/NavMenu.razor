@@ -3,19 +3,19 @@
 <MudNavMenu>
     <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Personal</b></MudText>
     <MudNavLink Href="/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
-    
+
     <AuthorizeView Roles="Doctor">
         <MudNavLink Href="/doctor/profile" Icon="@Icons.Material.Outlined.Person">Profile</MudNavLink>
-        <MudNavLink Href="/kyc" Icon="@Icons.Material.Outlined.DocumentScanner">KYC Documents</MudNavLink>
+        <MudNavLink Href="/doctor/kyc" Icon="@Icons.Material.Outlined.DocumentScanner">KYC Documents</MudNavLink>
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Consultation</b></MudText>
-            <MudNavLink Href="/availability-scheduler" Icon="@Icons.Material.Outlined.FreeCancellation">Available Timeslots</MudNavLink>
+        <MudNavLink Href="/availability-scheduler" Icon="@Icons.Material.Outlined.FreeCancellation">Available Timeslots</MudNavLink>
         <MudNavLink Href="/pending-consultation-requests" Icon="@Icons.Material.Outlined.PendingActions">Pending Requests</MudNavLink>
         <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Consultation History</MudNavLink>
-        
+
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Diagnosis</b></MudText>
         <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.HealthAndSafety">Upload Diagnosis Report</MudNavLink>
         <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Diagnosis Report History</MudNavLink>
-        
+
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Support</b></MudText>
         <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Raise Complaint</MudNavLink>
         <MudNavLink Href="/track-complaint-progress" Icon="@Icons.Material.Outlined.TrackChanges">Track Complaint Progress</MudNavLink>
@@ -23,14 +23,14 @@
 
     <AuthorizeView Roles="Member">
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Consultation</b></MudText>
-        
+
         <MudNavLink Href="/book-consultation" Icon="@Icons.Material.Outlined.FreeCancellation">Book Consultation</MudNavLink>
         <MudNavLink Href="/pending-consultation-requests" Icon="@Icons.Material.Outlined.PendingActions">Pending Requests</MudNavLink>
         <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Consultation History</MudNavLink>
         <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.HealthAndSafety">View Diagnosis Reports</MudNavLink>
-        
+
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Support</b></MudText>
-        
+
         <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Raise Complaint</MudNavLink>
         <MudNavLink Href="/track-complaint-progress" Icon="@Icons.Material.Outlined.TrackChanges">Track Complaint Progress</MudNavLink>
         <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Submit Feedback</MudNavLink>
@@ -47,11 +47,11 @@
         <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.FreeCancellation">Upload Doctor Availability</MudNavLink>
         <MudNavLink Href="/pending-consultation-requests" Icon="@Icons.Material.Outlined.PendingActions">Book Consultation</MudNavLink>
         <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Consultation History</MudNavLink>
-        
+
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Diagnosis</b></MudText>
         <MudNavLink Href="/available-timeslots" Icon="@Icons.Material.Outlined.HealthAndSafety">Upload Diagnosis Report</MudNavLink>
         <MudNavLink Href="/consultation-history" Icon="@Icons.Material.Outlined.History">Diagnosis Report History</MudNavLink>
-        
+
         <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Class="ml-4 my-3"><b>Support Requests</b></MudText>
         <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Active Complaints</MudNavLink>
         <MudNavLink Href="/raise-complaint" Icon="@Icons.Material.Outlined.Flag">Assigned To Me</MudNavLink>

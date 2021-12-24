@@ -50,6 +50,7 @@ namespace CloudConsult.UI.Data.Common
             _localStorage.ClearAsync();
             sessionStorage.ClearAsync();
             var authState = Task.FromResult(_anonymous);
+            _client.DefaultRequestHeaders.Authorization = null;
             NotifyAuthenticationStateChanged(authState);
         }
     }

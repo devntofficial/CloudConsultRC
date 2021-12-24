@@ -1,4 +1,5 @@
-﻿using CloudConsult.UI.Data.Doctor;
+﻿using CloudConsult.UI.Blazor.Common;
+using CloudConsult.UI.Data.Doctor;
 using CloudConsult.UI.Redux.Actions.Doctor;
 using CloudConsult.UI.Redux.States.Doctor;
 using MudBlazor;
@@ -7,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace CloudConsult.UI.Blazor.Pages.Doctor
 {
-    public class ProfileComponent : BaseComponent<ProfileState>
+    public class ProfileComponent : SessionComponent<ProfileState>
     {
         protected MudForm form;
         protected MudTextField<string> pwField1;

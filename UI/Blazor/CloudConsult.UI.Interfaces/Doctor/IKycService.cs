@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CloudConsult.UI.Data.Common;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace CloudConsult.UI.Interfaces.Doctor
 {
-    internal interface IKycService
+    public interface IKycService
     {
+        Task<ApiResponse> Upload(string profileId, List<IBrowserFile> kycDocuments);
     }
 }

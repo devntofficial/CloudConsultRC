@@ -69,7 +69,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/upload-kyc/{ProfileId}",
+      "UpstreamPathTemplate": "/api/upload-doctor-kyc-documents/{ProfileId}",
       "UpstreamHttpMethod": [ "Post", "Options" ]
     },
     {
