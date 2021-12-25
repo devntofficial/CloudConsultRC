@@ -10,30 +10,49 @@
                 <MudListItem Icon="@Icons.Material.Filled.CloudUpload">
                     <label for="kycFileInput">Upload KYC Document(s)</label>
                 </MudListItem>
-                <MudListItem Text="Download All Document(s)" Icon="@Icons.Material.Filled.FileDownload" />
-                <MudDivider/>
-                @if(State.Value.Processing)
+                <MudListItem OnClick="OnDownloadAllClick" Text="Download All Document(s)" Icon="@Icons.Material.Filled.FileDownload" />
+                <MudDivider />
+                @if (State.Value.Processing)
                 {
                     <MudText>Uploading....</MudText>
-                }
-                    
-                
+                }
+
+
+
             </MudList>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="8" md="9">
-        <MudSimpleTable Hover="true" Striped="true" Style="overflow-x: auto;">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>File Name</th>
-                    <th>File Size</th>
-                    <th>Uploaded On</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </MudSimpleTable>
+        <MudTable Items="@(State.Value.KycDocumentsMetadata ?? new())" Hover="true" Striped="true" Loading="@State.Value.Loading" LoadingProgressColor="Color.Primary">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">KYC Documents</MudText>
+                <MudSpacer />
+                <MudTextField T="string" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh><strong>#</strong></MudTh>
+                <MudTh><strong>File Name</strong></MudTh>
+                <MudTh><strong>File Size</strong></MudTh>
+                <MudTh><strong>Uploaded On</strong></MudTh>
+                <MudTh><strong>Actions</strong></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="#">@(State.Value.KycDocumentsMetadata.IndexOf(context) + 1)</MudTd>
+                <MudTd DataLabel="File Name">@context.FileName</MudTd>
+                <MudTd DataLabel="File Size">@context.FileSize</MudTd>
+                <MudTd DataLabel="Upload On">
+                    @TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(context.UploadTimestamp, DateTimeKind.Utc),
+                    TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).ToString("dddd, dd MMMM yyyy hh:mm tt")
+                </MudTd>
+                <MudTd DataLabel="Actions">
+                    <MudTooltip Text="Download" Color="Color.Primary">
+                        <MudIconButton Icon="@Icons.Material.Filled.CloudDownload" Color="Color.Primary" OnClick="(args) => OnDownloadFileClick(context.FileName)"/>
+                    </MudTooltip>
+                    <MudTooltip Text="Delete" Color="Color.Error">
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"/>
+                    </MudTooltip>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
     </MudItem>
 </MudGrid>

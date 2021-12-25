@@ -7,6 +7,7 @@ using Fluxor;
 using Fluxor.Blazor.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace CloudConsult.UI.Blazor.Common
@@ -21,6 +22,7 @@ namespace CloudConsult.UI.Blazor.Common
         [Inject] protected ILocalStorageService LocalStorage { get; set; }
         [Inject] protected ISessionStorageService SessionStorage { get; set; }
         [Inject] protected AuthenticationStateProvider AuthStateProvider { get; set; }
+        [Inject] protected IJSRuntime JavaScript { get; set; }
         protected string IdentityId { get; set; }
         protected string ProfileId { get; set; }
         protected string Role { get; set; }

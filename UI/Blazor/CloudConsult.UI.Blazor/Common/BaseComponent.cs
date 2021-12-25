@@ -7,6 +7,7 @@ using Fluxor;
 using Fluxor.Blazor.Web.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace CloudConsult.UI.Blazor.Common
@@ -20,6 +21,7 @@ namespace CloudConsult.UI.Blazor.Common
         [Inject] protected NavigationManager Navigation { get; set; }
         [Inject] protected ILocalStorageService LocalStorage { get; set; }
         [Inject] protected ISessionStorageService SessionStorage { get; set; }
+        [Inject] protected IJSRuntime JavaScript { get; set; }
         [Inject] protected AuthenticationStateProvider AuthStateProvider { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -28,11 +30,12 @@ namespace CloudConsult.UI.Blazor.Common
             await base.OnInitializedAsync();
         }
 
-        
-
         private void OnGatewayError(GatewayErrorAction action)
         {
-            action.Errors.ForEach(message => Notifier.Add(message, Severity.Error));
+            if (action.Errors is not null)
+                action.Errors.ForEach(message => Notifier.Add(message, Severity.Error));
+            else
+                Notifier.Add("No response received from server", Severity.Error);
         }
 
         protected override void Dispose(bool disposing)

@@ -1,4 +1,4 @@
-﻿namespace CloudConsult.UI.Blazor.Models.Consultation
+﻿namespace CloudConsult.UI.Data.Consultation
 {
     public class Availability
     {
