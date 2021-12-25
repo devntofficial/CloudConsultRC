@@ -1,6 +1,6 @@
-﻿namespace CloudConsult.Doctor.Domain.Responses
+﻿namespace CloudConsult.UI.Data.Doctor
 {
-    public class KycDocumentResponse
+    public class KycDocumentResponseData
     {
         public string FileType { get; set; } = string.Empty;
         public string FileName { get; set; } = string.Empty;

@@ -24,15 +24,19 @@ public class KycController : JsonController<KycController>
         return JsonResponse(response);
     }
 
-    [HttpGet(Routes.Kyc.Download)]
+    [HttpGet(Routes.Kyc.DownloadAll)]
     [Authorize(Roles = "Doctor,Administrator", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public async Task<IActionResult> Download([FromRoute] DownloadKycDocuments query, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> DownloadAll([FromRoute] DownloadAllKycDocuments query, CancellationToken cancellationToken = default)
     {
         var response = await Mediator.Send(query, cancellationToken);
-        if (response.IsSuccess)
-        {
-            return File(response.Payload.ArchiveData, response.Payload.FileType, response.Payload.ArchiveName);
-        }
+        return JsonResponse(response);
+    }
+
+    [HttpGet(Routes.Kyc.DownloadOne)]
+    [Authorize(Roles = "Doctor,Administrator", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> DownloadOne([FromRoute] DownloadOneKycDocument query, CancellationToken cancellationToken = default)
+    {
+        var response = await Mediator.Send(query, cancellationToken);
         return JsonResponse(response);
     }
 
@@ -53,6 +57,14 @@ public class KycController : JsonController<KycController>
         command.ProfileId = ProfileId;
         command.RejectionIdentityId = Request.HttpContext.User.Identities.First().Claims.FirstOrDefault(x => x.Type == "Id").Value;
         var response = await Mediator.Send(command, cancellationToken);
+        return JsonResponse(response);
+    }
+
+    [HttpGet(Routes.Kyc.GetMetadata)]
+    public async Task<IActionResult> GetMetadata([FromRoute] string ProfileId, CancellationToken cancellationToken = default)
+    {
+        var query = new GetKycMetadata { ProfileId = ProfileId };
+        var response = await Mediator.Send(query, cancellationToken);
         return JsonResponse(response);
     }
 }

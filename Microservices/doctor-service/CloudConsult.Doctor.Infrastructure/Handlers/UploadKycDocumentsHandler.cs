@@ -10,10 +10,10 @@ namespace CloudConsult.Doctor.Infrastructure.Handlers;
 public class UploadKycDocumentsHandler : ICommandHandler<UploadKycDocuments>
 {
     private readonly IApiResponseBuilder builder;
-    private readonly IHostingEnvironment env;
+    private readonly IHostEnvironment env;
     private readonly IValidator<UploadKycDocuments> validator;
 
-    public UploadKycDocumentsHandler(IApiResponseBuilder builder, IHostingEnvironment env, IValidator<UploadKycDocuments> validator)
+    public UploadKycDocumentsHandler(IApiResponseBuilder builder, IHostEnvironment env, IValidator<UploadKycDocuments> validator)
     {
         this.builder = builder;
         this.env = env;

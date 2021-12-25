@@ -1,4 +1,5 @@
 ﻿using CloudConsult.UI.Data.Common;
+using CloudConsult.UI.Data.Doctor;
 using CloudConsult.UI.Interfaces.Doctor;
 using CloudConsult.UI.Services.Routes;
 using Microsoft.AspNetCore.Components.Forms;
@@ -20,6 +21,26 @@ namespace CloudConsult.UI.Services.Doctor
             {
                 PropertyNameCaseInsensitive = true
             };
+        }
+
+        public async Task<ApiResponse<KycDocumentResponseData>> DownloadAll(string profileId, CancellationToken cancellationToken = default)
+        {
+            var url = GatewayRoutes.DoctorService.KycDownloadAll.Replace("{ProfileId}", profileId);
+            var response = await client.GetAsync(url , cancellationToken);
+            return await response.Content.ReadFromJsonAsync<ApiResponse<KycDocumentResponseData>>(options, cancellationToken);
+        }
+
+        public async Task<ApiResponse<KycDocumentResponseData>> DownloadOne(string profileId, string fileName, CancellationToken cancellationToken = default)
+        {
+            var url = GatewayRoutes.DoctorService.KycDownloadOne.Replace("{ProfileId}", profileId).Replace("{FileName}", fileName);
+            var response = await client.GetAsync(url, cancellationToken);
+            return await response.Content.ReadFromJsonAsync<ApiResponse<KycDocumentResponseData>>(options, cancellationToken);
+        }
+
+        public async Task<ApiResponse<KycMetadataResponseData>> GetMetadata(string profileId, CancellationToken cancellationToken = default)
+        {
+            var response = await client.GetAsync(GatewayRoutes.DoctorService.GetKycMetadata.Replace("{ProfileId}", profileId), cancellationToken);
+            return await response.Content.ReadFromJsonAsync<ApiResponse<KycMetadataResponseData>>(options, cancellationToken);
         }
 
         public async Task<ApiResponse> Upload(string profileId, List<IBrowserFile> kycDocuments)

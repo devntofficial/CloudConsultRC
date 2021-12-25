@@ -9,21 +9,21 @@ using System.IO.Compression;
 
 namespace CloudConsult.Doctor.Infrastructure.Processors;
 
-public class DownloadKycDocumentsProcessor : IQueryProcessor<DownloadKycDocuments, KycDocumentResponse>
+public class DownloadAllKycDocumentsProcessor : IQueryProcessor<DownloadAllKyc, KycDocumentResponse>
 {
     private readonly IApiResponseBuilder<KycDocumentResponse> builder;
-    private readonly IHostingEnvironment env;
-    private readonly IValidator<DownloadKycDocuments> validator;
+    private readonly IHostEnvironment env;
+    private readonly IValidator<DownloadAllKyc> validator;
 
-    public DownloadKycDocumentsProcessor(IApiResponseBuilder<KycDocumentResponse> builder, IHostingEnvironment env,
-        IValidator<DownloadKycDocuments> validator)
+    public DownloadAllKycDocumentsProcessor(IApiResponseBuilder<KycDocumentResponse> builder, IHostEnvironment env,
+        IValidator<DownloadAllKyc> validator)
     {
         this.builder = builder;
         this.env = env;
         this.validator = validator;
     }
 
-    public async Task<IApiResponse<KycDocumentResponse>> Handle(DownloadKycDocuments request, CancellationToken cancellationToken)
+    public async Task<IApiResponse<KycDocumentResponse>> Handle(DownloadAllKyc request, CancellationToken cancellationToken)
     {
         var validation = await validator.ValidateAsync(request, cancellationToken);
         if (validation.Errors.Any())
@@ -49,28 +49,30 @@ public class DownloadKycDocumentsProcessor : IQueryProcessor<DownloadKycDocument
         var zipName = $"kyc-documents-{DateTime.Now.ToString("yyyyMMddHHmmss")}.zip";
         var kycDocuments = Directory.GetFiles(kycDocumentPath).ToList();
 
-        using var memoryStream = new MemoryStream();
-        using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+        using (var memoryStream = new MemoryStream())
         {
-            kycDocuments.ForEach(kycDocument =>
+            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
             {
-                var file = archive.CreateEntry(kycDocument);
-                using var streamWriter = new StreamWriter(file.Open());
-                streamWriter.Write(File.ReadAllText(kycDocument));
-            });
+                kycDocuments.ForEach(kycDocument =>
+                {
+                    var file = archive.CreateEntry(kycDocument);
+                    using var streamWriter = new StreamWriter(file.Open());
+                    streamWriter.Write(File.ReadAllText(kycDocument));
+                });
+
+                var response = new KycDocumentResponse
+                {
+                    FileType = "application/zip",
+                    FileName = zipName,
+                    FileData = memoryStream.ToArray()
+                };
+
+                return builder.CreateSuccessResponse(response, x =>
+                {
+                    x.WithSuccessCode(StatusCodes.Status200OK);
+                    x.WithMessages("Kyc documents were downloaded successfully");
+                });
+            }
         }
-
-        var response = new KycDocumentResponse
-        {
-            FileType = "application/zip",
-            ArchiveName = zipName,
-            ArchiveData = memoryStream.ToArray()
-        };
-
-        return builder.CreateSuccessResponse(response, x =>
-        {
-            x.WithSuccessCode(StatusCodes.Status200OK);
-            x.WithMessages("Kyc documents were downloaded successfully");
-        });
     }
 }

@@ -5,12 +5,12 @@ using FluentValidation;
 
 namespace CloudConsult.Doctor.Domain.Queries;
 
-public class DownloadKycDocuments : IQuery<KycDocumentResponse>
+public class DownloadAllKycDocuments : IQuery<KycDocumentResponse>
 {
     public string ProfileId { get; set; }
 }
 
-public class DownloadKycDocumentsValidator : ApiValidator<DownloadKycDocuments>
+public class DownloadKycDocumentsValidator : ApiValidator<DownloadAllKycDocuments>
 {
     public DownloadKycDocumentsValidator()
     {

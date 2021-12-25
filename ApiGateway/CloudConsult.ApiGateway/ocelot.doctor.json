@@ -81,7 +81,19 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/download-kyc/{ProfileId}",
+      "UpstreamPathTemplate": "/api/download-all-kyc-documents/{ProfileId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/download/{FileName}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/download-one-kyc-document/{ProfileId}/{FileName}",
       "UpstreamHttpMethod": [ "Get", "Options" ]
     },
     {
@@ -107,6 +119,18 @@
       ],
       "UpstreamPathTemplate": "/api/reject-kyc/{ProfileId}",
       "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctors/{ProfileId}/kyc/metadata",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "cloudconsult.doctor.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-doctor-kyc-metadata/{ProfileId}",
+      "UpstreamHttpMethod": [ "Get", "Options" ]
     }
   ]
 }

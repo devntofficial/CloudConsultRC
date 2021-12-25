@@ -11,6 +11,7 @@ namespace CloudConsult.Doctor.Api.Extensions
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IKycService, KycService>();
+            services.AddScoped<IFileService, FileService>();
         }
     }
 }
