@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace CloudConsult.Doctor.Infrastructure.Processors
 {
-    public class DownloadOneKycDocumentProcessor : IQueryProcessor<DownloadOneKyc, KycDocumentResponse>
+    public class DownloadOneKycProcessor : IQueryProcessor<DownloadOneKyc, KycDocumentResponse>
     {
         private readonly IApiResponseBuilder<KycDocumentResponse> builder;
         private readonly IHostEnvironment env;
 
-        public DownloadOneKycDocumentProcessor(IApiResponseBuilder<KycDocumentResponse> builder, IHostEnvironment env)
+        public DownloadOneKycProcessor(IApiResponseBuilder<KycDocumentResponse> builder, IHostEnvironment env)
         {
             this.builder = builder;
             this.env = env;

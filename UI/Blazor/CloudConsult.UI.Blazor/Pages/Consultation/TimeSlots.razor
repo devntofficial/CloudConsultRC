@@ -1,0 +1,17 @@
+﻿@page "/availability-scheduler"
+@inherits TimeSlotsComponent
+@using CloudConsult.UI.Data.Consultation;
+<style>
+    .rz-scheduler-nav-prev-next > .rz-button, .rz-state-active
+    {
+        background-color: #43a047ff !important;
+    }
+</style>
+
+<RadzenScheduler @ref="@scheduler" SlotRender="@OnSlotRender" style="height:720px" TItem="TimeSlot" Data="@timeSlots" StartProperty="TimeSlotStart" EndProperty="TimeSlotEnd"
+        TextProperty="DisplayText" SelectedIndex="2" LoadData="@OnLoadData"
+        SlotSelect="@OnSlotSelect" AppointmentSelect="@OnAppointmentSelect" AppointmentRender="@OnAppointmentRender">
+        <RadzenDayView />
+        <RadzenWeekView />
+        <RadzenMonthView />
+    </RadzenScheduler>

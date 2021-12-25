@@ -4,10 +4,11 @@ public static class Routes
 {
     private const string Root = "api/v{version:apiVersion}";
 
-    public static class Availability
+    public static class TimeSlot
     {
-        public const string Add = Root + "/availability";
-        public const string GetByDoctorId = Root + "/doctor/{DoctorId}/availability";
+        public const string Add = Root + "/timeslots";
+        public const string GetByDoctorId = Root + "/doctor/{DoctorId}/timeslots/all";
+        public const string GetByRange = Root + "/doctor/{ProfileId}/timeslots/range";
     }
 
     public static class Consultation

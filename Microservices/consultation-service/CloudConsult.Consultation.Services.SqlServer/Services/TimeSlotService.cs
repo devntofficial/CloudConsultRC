@@ -19,7 +19,7 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             this.db = db;
         }
 
-        public async Task AddDoctorAvailabilities(IEnumerable<DoctorTimeSlot> availabilities,
+        public async Task AddDoctorTimeSlots(IEnumerable<DoctorTimeSlot> availabilities,
             CancellationToken cancellationToken = default)
         {
             var listAvailabilities = availabilities.ToList();
@@ -42,11 +42,18 @@ namespace CloudConsult.Consultation.Services.SqlServer.Services
             await db.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<DoctorTimeSlot>> GetDoctorAvailability(string doctorId,
+        public async Task<IEnumerable<DoctorTimeSlot>> GetDoctorTimeSlots(string doctorId,
             CancellationToken cancellationToken = default)
         {
             return await db.DoctorTimeSlots
                 .Where(x => x.DoctorProfileId == doctorId)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<DoctorTimeSlot>> GetDoctorTimeSlotsRange(string doctorId, DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default)
+        {
+            return await db.DoctorTimeSlots
+                .Where(x => x.DoctorProfileId == doctorId && x.TimeSlotStart >= startDate && x.TimeSlotEnd <= endDate)
                 .ToListAsync(cancellationToken);
         }
     }

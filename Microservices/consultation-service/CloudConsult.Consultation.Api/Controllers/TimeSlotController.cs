@@ -9,16 +9,24 @@ namespace CloudConsult.Consultation.Api.Controllers;
 [ApiController]
 public class TimeSlotController : JsonController<TimeSlotController>
 {
-    [HttpPost(Routes.Availability.Add)]
+    [HttpPost(Routes.TimeSlot.Add)]
     public async Task<IActionResult> Add(AddTimeSlot command)
     {
         var response = await Mediator.Send(command);
         return JsonResponse(response);
     }
 
-    [HttpGet(Routes.Availability.GetByDoctorId)]
+    [HttpGet(Routes.TimeSlot.GetByDoctorId)]
     public async Task<IActionResult> GetByDoctorId([FromRoute] GetTimeSlotsByDoctorId query)
     {
+        var response = await Mediator.Send(query);
+        return JsonResponse(response);
+    }
+
+    [HttpPost(Routes.TimeSlot.GetByRange)]
+    public async Task<IActionResult> GetByRange([FromRoute] string ProfileId, [FromBody] GetTimeSlotsByRange query)
+    {
+        query.ProfileId = ProfileId;
         var response = await Mediator.Send(query);
         return JsonResponse(response);
     }
