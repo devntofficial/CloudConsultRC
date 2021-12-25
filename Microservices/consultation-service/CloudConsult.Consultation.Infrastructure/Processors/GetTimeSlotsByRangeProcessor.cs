@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace CloudConsult.Consultation.Infrastructure.Processors
 {
-    public class GetTimeSlotsByDoctorIdProcessor : IQueryProcessor<GetTimeSlotsByDoctorId, TimeSlotResponse>
+    public class GetTimeSlotsByRangeProcessor : IQueryProcessor<GetTimeSlotsByRange, TimeSlotRangeResponse>
     {
-        private readonly IApiResponseBuilder<TimeSlotResponse> builder;
+        private readonly IApiResponseBuilder<TimeSlotRangeResponse> builder;
         private readonly ITimeSlotService service;
         private readonly IMapper mapper;
 
-        public GetTimeSlotsByDoctorIdProcessor(IApiResponseBuilder<TimeSlotResponse> builder,
+        public GetTimeSlotsByRangeProcessor(IApiResponseBuilder<TimeSlotRangeResponse> builder,
             ITimeSlotService service, IMapper mapper)
         {
             this.builder = builder;
@@ -22,14 +22,13 @@ namespace CloudConsult.Consultation.Infrastructure.Processors
             this.mapper = mapper;
         }
 
-        public async Task<IApiResponse<TimeSlotResponse>> Handle(GetTimeSlotsByDoctorId request, CancellationToken cancellationToken)
+        public async Task<IApiResponse<TimeSlotRangeResponse>> Handle(GetTimeSlotsByRange request, CancellationToken cancellationToken)
         {
-            var output = await service.GetDoctorTimeSlots(request.DoctorId, cancellationToken);
-
+            var output = await service.GetDoctorTimeSlotsRange(request.ProfileId, request.StartDateTime, request.EndDateTime, cancellationToken);
+            var response = new TimeSlotRangeResponse { ProfileId = request.ProfileId, TimeSlots = new() };
             if (output.Any())
             {
-                var response = mapper.Map<TimeSlotResponse>(output);
-
+                response.TimeSlots = mapper.Map<List<TimeSlot>>(output);
                 return builder.CreateSuccessResponse(response, x =>
                 {
                     x.WithSuccessCode(StatusCodes.Status200OK);
@@ -37,7 +36,7 @@ namespace CloudConsult.Consultation.Infrastructure.Processors
                 });
             }
 
-            return builder.CreateErrorResponse(null, x =>
+            return builder.CreateErrorResponse(response, x =>
             {
                 x.WithErrorCode(StatusCodes.Status404NotFound);
                 x.WithErrors("No time slots found for given doctor id");

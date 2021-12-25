@@ -32,7 +32,7 @@ namespace CloudConsult.UI.Blazor.Common
             Subscriber.SubscribeToAction<LogoutAction>(this, action => OnLogout(action));
             Subscriber.SubscribeToAction<GatewayErrorAction>(this, action => OnGatewayError(action));
 
-            ProfileId = await LocalStorage.GetItemAsync<string>("IdentityId");
+            IdentityId = await LocalStorage.GetItemAsync<string>("IdentityId");
             ProfileId = await SessionStorage.GetItemAsync<string>("ProfileId");
             Role = await SessionStorage.GetItemAsync<string>("Role");
 

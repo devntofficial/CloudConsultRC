@@ -26,7 +26,7 @@ public class KycController : JsonController<KycController>
 
     [HttpGet(Routes.Kyc.DownloadAll)]
     [Authorize(Roles = "Doctor,Administrator", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public async Task<IActionResult> DownloadAll([FromRoute] DownloadAllKycDocuments query, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> DownloadAll([FromRoute] DownloadAllKyc query, CancellationToken cancellationToken = default)
     {
         var response = await Mediator.Send(query, cancellationToken);
         return JsonResponse(response);
@@ -34,7 +34,7 @@ public class KycController : JsonController<KycController>
 
     [HttpGet(Routes.Kyc.DownloadOne)]
     [Authorize(Roles = "Doctor,Administrator", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public async Task<IActionResult> DownloadOne([FromRoute] DownloadOneKycDocument query, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> DownloadOne([FromRoute] DownloadOneKyc query, CancellationToken cancellationToken = default)
     {
         var response = await Mediator.Send(query, cancellationToken);
         return JsonResponse(response);

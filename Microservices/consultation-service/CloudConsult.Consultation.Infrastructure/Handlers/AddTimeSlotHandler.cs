@@ -27,7 +27,7 @@ namespace CloudConsult.Consultation.Infrastructure.Handlers
         public async Task<IApiResponse<object>> Handle(AddTimeSlot request, CancellationToken cancellationToken)
         {
             var availabilities = _mapper.Map<List<DoctorTimeSlot>>(request);
-            await _availabilityService.AddDoctorAvailabilities(availabilities, cancellationToken);
+            await _availabilityService.AddDoctorTimeSlots(availabilities, cancellationToken);
 
             return _builder.CreateSuccessResponse(null, x =>
             {

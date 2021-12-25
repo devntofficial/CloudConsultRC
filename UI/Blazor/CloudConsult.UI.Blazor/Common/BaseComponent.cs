@@ -1,7 +1,5 @@
 ﻿using Blazored.LocalStorage;
 using Blazored.SessionStorage;
-using CloudConsult.UI.Data.Common;
-using CloudConsult.UI.Redux.Actions.Authentication;
 using CloudConsult.UI.Redux.Actions.Shared;
 using Fluxor;
 using Fluxor.Blazor.Web.Components;

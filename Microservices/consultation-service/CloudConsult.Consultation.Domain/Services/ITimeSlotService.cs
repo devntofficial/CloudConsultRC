@@ -1,10 +1,12 @@
 ﻿using CloudConsult.Consultation.Domain.Entities;
+using CloudConsult.Consultation.Domain.Responses;
 
 namespace CloudConsult.Consultation.Domain.Services;
 
 public interface ITimeSlotService
 {
-    Task AddDoctorAvailabilities(IEnumerable<DoctorTimeSlot> availabilities, CancellationToken cancellationToken = default);
+    Task AddDoctorTimeSlots(IEnumerable<DoctorTimeSlot> availabilities, CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<DoctorTimeSlot>> GetDoctorAvailability(string doctorId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<DoctorTimeSlot>> GetDoctorTimeSlots(string doctorId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<DoctorTimeSlot>> GetDoctorTimeSlotsRange(string doctorId, DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default);
 }

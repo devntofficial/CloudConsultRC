@@ -9,13 +9,13 @@ using System.IO.Compression;
 
 namespace CloudConsult.Doctor.Infrastructure.Processors;
 
-public class DownloadAllKycDocumentsProcessor : IQueryProcessor<DownloadAllKyc, KycDocumentResponse>
+public class DownloadAllKycProcessor : IQueryProcessor<DownloadAllKyc, KycDocumentResponse>
 {
     private readonly IApiResponseBuilder<KycDocumentResponse> builder;
     private readonly IHostEnvironment env;
     private readonly IValidator<DownloadAllKyc> validator;
 
-    public DownloadAllKycDocumentsProcessor(IApiResponseBuilder<KycDocumentResponse> builder, IHostEnvironment env,
+    public DownloadAllKycProcessor(IApiResponseBuilder<KycDocumentResponse> builder, IHostEnvironment env,
         IValidator<DownloadAllKyc> validator)
     {
         this.builder = builder;

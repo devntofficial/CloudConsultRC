@@ -95,6 +95,18 @@
       ],
       "UpstreamPathTemplate": "/api/get-doctor-availability/{DoctorId}",
       "UpstreamHttpMethod": [ "Get", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctor/{ProfileId}/timeslots/range",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/get-doctor-timeslots-range/{ProfileId}",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
     }
   ]
 }

@@ -6,18 +6,27 @@ using System.Globalization;
 
 namespace CloudConsult.Consultation.Infrastructure.Mappers
 {
-    public class AvailabilityMapper : Profile
+    public class TimeSlotsMapper : Profile
     {
-        public AvailabilityMapper()
+        public TimeSlotsMapper()
         {
             CreateMap<AddTimeSlot, List<DoctorTimeSlot>>().ConvertUsing(new AvailabilityMapConverter());
 
             CreateMap<IEnumerable<DoctorTimeSlot>, TimeSlotResponse>().ConvertUsing(new AvailabilityReverseMapConverter());
+
+            CreateMap<DoctorTimeSlot, TimeSlot>()
+                .ForMember(x => x.MemberName, y => y.MapFrom(z => z.Consultation == null ? null : z.Consultation.MemberName))
+                .ForMember(x => x.DisplayText, y => y.MapFrom(z => TimeSlotDisplayTextMapper(z)));
+        }
+
+        private string TimeSlotDisplayTextMapper(DoctorTimeSlot timeSlot)
+        {
+            return timeSlot.IsBooked ? $"({timeSlot.TimeSlotStart:hh:mm} - {timeSlot.TimeSlotEnd:hh:mm}) -> Booked with {timeSlot.Consultation.MemberName}" :
+                $"({timeSlot.TimeSlotStart:hh:mm} - {timeSlot.TimeSlotEnd:hh:mm}) -> Available";
         }
     }
 
-    public class
-        AvailabilityReverseMapConverter : ITypeConverter<IEnumerable<DoctorTimeSlot>, TimeSlotResponse>
+    public class AvailabilityReverseMapConverter : ITypeConverter<IEnumerable<DoctorTimeSlot>, TimeSlotResponse>
     {
         public TimeSlotResponse Convert(IEnumerable<DoctorTimeSlot> source,
             TimeSlotResponse destination,

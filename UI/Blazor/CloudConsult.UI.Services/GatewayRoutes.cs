@@ -27,5 +27,6 @@ public static class GatewayRoutes
     {
         public const string AddAvailableTimeslots = "/api/add-available-timeslots";
         public const string GetAvailableTimeslotById = "/api/get-available-timeslots/{ProfileId}";
+        public const string GetTimeSlotsRange = "/api/get-doctor-timeslots-range/{ProfileId}";
     }
 }

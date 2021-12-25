@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Member\" />
-    <Folder Include="Consultation\" />
     <Folder Include="Diagnosis\" />
   </ItemGroup>
 
