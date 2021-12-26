@@ -23,6 +23,7 @@ namespace CloudConsult.UI.Blazor.Common
         [Inject] protected ISessionStorageService SessionStorage { get; set; }
         [Inject] protected AuthenticationStateProvider AuthStateProvider { get; set; }
         [Inject] protected IJSRuntime JavaScript { get; set; }
+        [Inject] protected IDialogService DialogBox { get; set; }
         protected string IdentityId { get; set; }
         protected string ProfileId { get; set; }
         protected string Role { get; set; }
@@ -32,11 +33,11 @@ namespace CloudConsult.UI.Blazor.Common
             Subscriber.SubscribeToAction<LogoutAction>(this, action => OnLogout(action));
             Subscriber.SubscribeToAction<GatewayErrorAction>(this, action => OnGatewayError(action));
 
-            IdentityId = await LocalStorage.GetItemAsync<string>("IdentityId");
+            IdentityId = await SessionStorage.GetItemAsync<string>("IdentityId");
             ProfileId = await SessionStorage.GetItemAsync<string>("ProfileId");
             Role = await SessionStorage.GetItemAsync<string>("Role");
 
-            if (string.IsNullOrWhiteSpace(ProfileId) || string.IsNullOrWhiteSpace(Role))
+            if (string.IsNullOrWhiteSpace(IdentityId) || string.IsNullOrWhiteSpace(Role))
             {
                 //reset application
                 Dispatcher.Dispatch(new LogoutAction());

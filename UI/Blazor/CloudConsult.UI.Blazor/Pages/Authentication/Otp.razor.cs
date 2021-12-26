@@ -39,7 +39,6 @@ namespace CloudConsult.UI.Blazor.Pages.Authentication
         private void OnOtpVerificationSuccess(OtpVerificationSuccessAction action)
         {
             Notifier.Add("Your account was registered", Severity.Info);
-            Notifier.Add("Please login with your chosen password to proceed", Severity.Info);
             Navigation.NavigateTo("/");
         }
 

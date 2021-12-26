@@ -5,10 +5,12 @@ namespace CloudConsult.UI.Redux.Actions.Authentication
     public class LoginAction
     {
         public LoginData Data { get; }
+        public bool RememberUser { get; set; }
 
-        public LoginAction(LoginData Data)
+        public LoginAction(LoginData Data, bool RememberUser)
         {
             this.Data = Data;
+            this.RememberUser = RememberUser;
         }
     }
 

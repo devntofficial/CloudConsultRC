@@ -14,7 +14,7 @@ namespace CloudConsult.UI.Blazor.Themes
                 AppbarBackground = Colors.Green.Darken1,
                 DrawerBackground = "#FFF",
                 DrawerText = "rgba(0,0,0, 0.7)",
-                Success = "#06d79c"
+                Success = Colors.Green.Darken1
             };
 
             LayoutProperties = new LayoutProperties()
