@@ -24,6 +24,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "6008:80"
       - "6009:443"
@@ -37,6 +38,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "6004:80"
       - "6005:443"
@@ -50,6 +52,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "6002:80"
       - "6003:443"
@@ -63,6 +66,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "6006:80"
       - "6007:443"
@@ -76,6 +80,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "6010:80"
       - "6011:443"
@@ -88,6 +93,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "7000:80"
       - "7001:443"
@@ -105,6 +111,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "6012:80"
       - "6013:443"

@@ -16,13 +16,7 @@ namespace CloudConsult.Consultation.Infrastructure.Mappers
 
             CreateMap<DoctorTimeSlot, TimeSlot>()
                 .ForMember(x => x.MemberName, y => y.MapFrom(z => z.Consultation == null ? null : z.Consultation.MemberName))
-                .ForMember(x => x.DisplayText, y => y.MapFrom(z => TimeSlotDisplayTextMapper(z)));
-        }
-
-        private string TimeSlotDisplayTextMapper(DoctorTimeSlot timeSlot)
-        {
-            return timeSlot.IsBooked ? $"({timeSlot.TimeSlotStart:hh:mm} - {timeSlot.TimeSlotEnd:hh:mm}) -> Booked with {timeSlot.Consultation.MemberName}" :
-                $"({timeSlot.TimeSlotStart:hh:mm} - {timeSlot.TimeSlotEnd:hh:mm}) -> Available";
+                .ForMember(x => x.DisplayText, y => y.MapFrom(z => $"{z.TimeSlotStart:hh:mm tt} - {z.TimeSlotEnd:hh:mm tt}"));
         }
     }
 

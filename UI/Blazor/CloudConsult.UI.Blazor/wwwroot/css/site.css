@@ -62,3 +62,21 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.rz-scheduler-nav {
+    background-color: #ebf7ecff !important;
+}
+
+.rz-view-header {
+    background-color: #43a047ff !important;
+    color: white !important;
+}
+
+.rz-event-content{
+    line-height:11px !important;
+}
+
+.rz-scheduler-nav-prev-next > .rz-button, .rz-state-active {
+    background-color: #43a047ff !important;
+    border-color: #43a047ff !important;
+}

@@ -9,6 +9,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - TZ=Asia/Kolkata
     ports:
       - "81:80"
       - "443:443"

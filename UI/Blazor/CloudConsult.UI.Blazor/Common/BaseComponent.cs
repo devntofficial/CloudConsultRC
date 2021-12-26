@@ -21,6 +21,7 @@ namespace CloudConsult.UI.Blazor.Common
         [Inject] protected ISessionStorageService SessionStorage { get; set; }
         [Inject] protected IJSRuntime JavaScript { get; set; }
         [Inject] protected AuthenticationStateProvider AuthStateProvider { get; set; }
+        [Inject] protected IDialogService DialogBox { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

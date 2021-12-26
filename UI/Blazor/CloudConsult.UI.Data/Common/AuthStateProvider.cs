@@ -8,29 +8,31 @@ namespace CloudConsult.UI.Data.Common
 {
     public class AuthStateProvider : AuthenticationStateProvider
     {
-        private readonly HttpClient _client;
-        private readonly ILocalStorageService _localStorage;
+        private readonly HttpClient client;
+        private readonly ILocalStorageService localStorage;
         private readonly ISessionStorageService sessionStorage;
-        private readonly AuthenticationState _anonymous;
+        private readonly AuthenticationState anonymous;
 
         public AuthStateProvider(HttpClient client, ILocalStorageService localStorage, ISessionStorageService sessionStorage)
         {
-            _client = client;
-            _localStorage = localStorage;
+            this.client = client;
+            this.localStorage = localStorage;
             this.sessionStorage = sessionStorage;
-            _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await _localStorage.GetItemAsync<string>("AccessToken");
+            var token = await localStorage.GetItemAsync<string>("AccessToken");
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                return _anonymous;
+                token = await sessionStorage.GetItemAsync<string>("AccessToken");
+                if (string.IsNullOrWhiteSpace(token))
+                    return anonymous;
             }
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return new AuthenticationState(
                    new ClaimsPrincipal(
                    new ClaimsIdentity(JwtParser.ParseClaimsFromToken(token), "jwtAuthType")));
@@ -47,10 +49,10 @@ namespace CloudConsult.UI.Data.Common
 
         public void NotifyUserLogout()
         {
-            _localStorage.ClearAsync();
+            localStorage.ClearAsync();
             sessionStorage.ClearAsync();
-            var authState = Task.FromResult(_anonymous);
-            _client.DefaultRequestHeaders.Authorization = null;
+            var authState = Task.FromResult(anonymous);
+            client.DefaultRequestHeaders.Authorization = null;
             NotifyAuthenticationStateChanged(authState);
         }
     }

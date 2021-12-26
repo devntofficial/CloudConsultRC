@@ -1,17 +1,48 @@
 ﻿@page "/availability-scheduler"
 @inherits TimeSlotsComponent
+@using CloudConsult.UI.Blazor.Common
 @using CloudConsult.UI.Data.Consultation;
-<style>
-    .rz-scheduler-nav-prev-next > .rz-button, .rz-state-active
-    {
-        background-color: #43a047ff !important;
-    }
-</style>
 
-<RadzenScheduler @ref="@scheduler" SlotRender="@OnSlotRender" style="height:720px" TItem="TimeSlot" Data="@timeSlots" StartProperty="TimeSlotStart" EndProperty="TimeSlotEnd"
-        TextProperty="DisplayText" SelectedIndex="2" LoadData="@OnLoadData"
-        SlotSelect="@OnSlotSelect" AppointmentSelect="@OnAppointmentSelect" AppointmentRender="@OnAppointmentRender">
-        <RadzenDayView />
-        <RadzenWeekView />
-        <RadzenMonthView />
-    </RadzenScheduler>
+<MudGrid Justify="Justify.FlexStart">
+    <MudItem xs="12" sm="12" md="2">
+
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12">
+                <MudCard>
+                    <MudCardContent>
+                        <MudText>Add Time Slot</MudText>
+                        <MudDatePicker Date="@DateTime.Today" DateFormat="dd-MM-yyyy" />
+                        <MudTimePicker AmPm="true" Time="@DateTime.Now.RoundUpToNearest(30).TimeOfDay" />
+                        <MudTimePicker AmPm="true" Time="@DateTime.Now.RoundUpToNearest(30).AddMinutes(30).TimeOfDay" />
+                    </MudCardContent>
+                    <MudCardActions Class="pb-4 pl-4">
+                        <MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="ml-auto">Add</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12">
+                <MudCard>
+                    <MudCardContent>
+                        <MudText>Legends</MudText>
+                        <MudList Dense="true" DisableGutters="true">
+                            <MudListItem><MudIcon Icon="@Icons.Filled.Circle" Color="Color.Default" /> Expired</MudListItem>
+                            <MudListItem><MudIcon Icon="@Icons.Filled.Circle" Color="Color.Primary" /> Available</MudListItem>
+                            <MudListItem><MudIcon Icon="@Icons.Filled.Circle" Color="Color.Info" /> Booked</MudListItem>
+                            <MudListItem><MudIcon Icon="@Icons.Filled.Circle" Color="Color.Error" /> Ongoing</MudListItem>
+                        </MudList>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="10">
+        <RadzenScheduler @ref="@scheduler" SlotRender="@OnSlotRender" Style="height:720px" TItem="TimeSlot" Data="@timeSlots" StartProperty="TimeSlotStart"
+                         EndProperty="TimeSlotEnd" TextProperty="DisplayText" SelectedIndex="2" LoadData="@OnLoadData"
+                         SlotSelect="@OnSlotSelect" AppointmentSelect="@OnAppointmentSelect" AppointmentRender="@OnAppointmentRender">
+            <RadzenDayView />
+            <RadzenWeekView />
+            <RadzenMonthView />
+        </RadzenScheduler>
+
+    </MudItem>
+</MudGrid>

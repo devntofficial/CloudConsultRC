@@ -15,7 +15,7 @@
               OnAdornmentClick="TogglePasswordVisibility" />
 
 <div Class="d-flex justify-space-between align-center">
-    <MudCheckBox T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
+    <MudCheckBox @bind-Checked="rememberUser" T="bool" Label="Remember me?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
     <MudLink Href="/forgot-password">Forgot password?</MudLink>
 </div>
 

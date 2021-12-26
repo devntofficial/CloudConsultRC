@@ -2,7 +2,6 @@
 using CloudConsult.UI.Data.Consultation;
 using CloudConsult.UI.Redux.Actions.Consultation;
 using CloudConsult.UI.Redux.States.Consultation;
-using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
 
@@ -12,8 +11,6 @@ namespace CloudConsult.UI.Blazor.Pages.Consultation
     {
         protected RadzenScheduler<TimeSlot> scheduler;
         protected List<TimeSlot> timeSlots = new();
-
-        [Inject] public DialogService DialogService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,13 +33,13 @@ namespace CloudConsult.UI.Blazor.Pages.Consultation
             // Highlight today in month view
             if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
             {
-                args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+                args.Attributes["style"] = "background:#ebf7ec";
             }
 
             // Highlight working hours (9-18)
             if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
             {
-                args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+                args.Attributes["style"] = "background:#ebf7ec";
             }
         }
 
@@ -67,19 +64,18 @@ namespace CloudConsult.UI.Blazor.Pages.Consultation
             await scheduler.Reload();
         }
 
-        protected async void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<TimeSlot> args)
+        protected void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<TimeSlot> args)
         {
             // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
-            //if (args.Data.IsBooked)
-            //{
-            //    args.Data.DisplayText = $"({args.Data.TimeSlotStart:hh:mm} - {args.Data.TimeSlotEnd:hh:mm}) -> Booked with {args.Data.MemberName}";
-            //}
-            //else
-            //{
-            //    args.Data.DisplayText = $"({args.Data.TimeSlotStart:hh:mm} - {args.Data.TimeSlotEnd:hh:mm}) -> Available";
-            //}
-            //await scheduler.Reload();
+            if (args.Data.IsBooked)
+            {
+                args.Attributes["style"] = "background:#43a047";
+            }
+            else
+            {
+                args.Attributes["style"] = "background:#43a047";
+            }
         }
     }
 }
