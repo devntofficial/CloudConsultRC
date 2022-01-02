@@ -9,7 +9,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/create-member",
+      "UpstreamPathTemplate": "/api/create-member-profile",
       "UpstreamHttpMethod": [ "Post", "Options" ]
     },
     {
@@ -21,7 +21,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/update-member/{ProfileId}",
+      "UpstreamPathTemplate": "/api/update-member-profile/{ProfileId}",
       "UpstreamHttpMethod": [ "Put", "Options" ]
     },
     {
@@ -33,7 +33,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/get-member/{ProfileId}",
+      "UpstreamPathTemplate": "/api/get-member-profile/{ProfileId}",
       "UpstreamHttpMethod": [ "Get", "Options" ]
     },
     {
@@ -45,7 +45,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/api/get-member-by-identity/{IdentityId}",
+      "UpstreamPathTemplate": "/api/get-member-profile-by-identity/{IdentityId}",
       "UpstreamHttpMethod": [ "Get", "Options" ]
     }
   ]

@@ -31,10 +31,10 @@ namespace CloudConsult.UI.Redux.Actions.Doctor
 
     public class GetProfileSuccessAction
     {
-        public ProfileData Data { get; set; }
+        public ProfileResponseData Data { get; set; }
         public string ProfileId { get; }
 
-        public GetProfileSuccessAction(string ProfileId, ProfileData Data)
+        public GetProfileSuccessAction(string ProfileId, ProfileResponseData Data)
         {
             this.Data = Data;
             this.ProfileId = ProfileId;

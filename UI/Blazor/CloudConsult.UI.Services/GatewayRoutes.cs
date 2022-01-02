@@ -23,8 +23,17 @@ public static class GatewayRoutes
         public const string KycDownloadOne = "/api/download-one-kyc-document/{ProfileId}/{FileName}";
     }
 
+    public static class MemberService
+    {
+        public const string CreateProfile = "/api/create-member-profile";
+        public const string GetProfileById = "/api/get-member-profile/{ProfileId}";
+        public const string GetProfileByIdentityId = "/api/get-member-profile-by-identity/{IdentityId}";
+        public const string UpdateProfile = "/api/update-member-profile/{ProfileId}";
+    }
+
     public static class ConsultationService
     {
+        public const string AddTimeSlot = "/api/add-doctor-timeslot/{ProfileId}";
         public const string AddAvailableTimeslots = "/api/add-available-timeslots";
         public const string GetAvailableTimeslotById = "/api/get-available-timeslots/{ProfileId}";
         public const string GetTimeSlotsRange = "/api/get-doctor-timeslots-range/{ProfileId}";

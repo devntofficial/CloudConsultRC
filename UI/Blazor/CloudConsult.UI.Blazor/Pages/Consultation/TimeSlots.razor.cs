@@ -9,23 +9,32 @@ namespace CloudConsult.UI.Blazor.Pages.Consultation
 {
     public class TimeSlotsComponent : SessionComponent<TimeSlotState>
     {
-        protected RadzenScheduler<TimeSlot> scheduler;
-        protected List<TimeSlot> timeSlots = new();
+        protected RadzenScheduler<TimeSlotResponseData> scheduler;
+        protected DateTime? datePicker = DateTime.Now;
+        protected TimeSpan? startTimePicker = DateTime.Now.RoundUp(TimeSpan.FromHours(1)).TimeOfDay;
+        protected TimeSpan? endTimePicker = DateTime.Now.RoundUp(TimeSpan.FromHours(1)).AddHours(1).TimeOfDay;
 
         protected override async Task OnInitializedAsync()
         {
-            Subscriber.SubscribeToAction<GetTimeSlotsSuccessAction>(this, action => OnGetTimeSlotsSuccess(action));
             await base.OnInitializedAsync();
+            Subscriber.SubscribeToAction<AddTimeSlotSuccessAction>(this, action => OnAddTimeSlotSuccess(action));
         }
 
-        private void OnGetTimeSlotsSuccess(GetTimeSlotsSuccessAction action)
+        private void OnAddTimeSlotSuccess(AddTimeSlotSuccessAction action)
         {
-            timeSlots = action.TimeSlots;
+            scheduler.Reload();
         }
 
         protected async Task OnLoadData(SchedulerLoadDataEventArgs args)
         {
             Dispatcher.Dispatch(new GetTimeSlotsAction(await SessionStorage.GetItemAsync<string>("ProfileId"), args.Start, args.End));
+        }
+
+        protected void OnAddTimeSlotClick()
+        {
+            var timeSlotStart = datePicker.Value.Date + startTimePicker.Value;
+            var timeSlotEnd = datePicker.Value.Date + endTimePicker.Value;
+            Dispatcher.Dispatch(new AddTimeSlotAction(ProfileId, timeSlotStart, timeSlotEnd));
         }
 
         protected void OnSlotRender(SchedulerSlotRenderEventArgs args)
@@ -58,17 +67,20 @@ namespace CloudConsult.UI.Blazor.Pages.Consultation
             await scheduler.Reload();
         }
 
-        protected async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<TimeSlot> args)
+        protected async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<TimeSlotResponseData> args)
         {
             //await DialogService.OpenAsync<EditAppointmentPage>("Edit Appointment", new Dictionary<string, object> { { "Appointment", args.Data } });
             await scheduler.Reload();
         }
 
-        protected void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<TimeSlot> args)
+        protected void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<TimeSlotResponseData> args)
         {
             // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
-
-            if (args.Data.IsBooked)
+            if(args.Data.TimeSlotEnd < DateTime.Now)
+            {
+                args.Attributes["style"] = "background:#00000089;color:white;";
+            }
+            else if (args.Data.IsBooked)
             {
                 args.Attributes["style"] = "background:#43a047";
             }

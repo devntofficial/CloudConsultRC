@@ -21,6 +21,18 @@ namespace CloudConsult.UI.Services.Consultation
             };
         }
 
+        public async Task<ApiResponse<TimeSlotResponseData>> AddTimeSlot(string profileId, DateTime timeSlotStart, DateTime timeSlotEnd, CancellationToken cancellationToken = default)
+        {
+            var url = GatewayRoutes.ConsultationService.AddTimeSlot.Replace("{ProfileId}", profileId);
+            var data = new
+            {
+                TimeSlotStart = timeSlotStart,
+                TimeSlotEnd = timeSlotEnd
+            };
+            var response = await client.PostAsJsonAsync(url, data, cancellationToken);
+            return await response.Content.ReadFromJsonAsync<ApiResponse<TimeSlotResponseData>>(options, cancellationToken);
+        }
+
         public async Task<ApiResponse<TimeSlotRangeResponseData>> GetTimeSlots(string profileId, DateTime startDateTime, DateTime endDateTime, CancellationToken cancellationToken = default)
         {
             var url = GatewayRoutes.ConsultationService.GetTimeSlotsRange.Replace("{ProfileId}", profileId);
