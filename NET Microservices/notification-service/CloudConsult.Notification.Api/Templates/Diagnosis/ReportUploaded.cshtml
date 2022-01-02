@@ -1,0 +1,40 @@
+﻿@model dynamic
+@{ Layout = "_Layout"; }
+
+<p>
+    Hi @Model?.MemberName,
+</p>
+<p>
+    A diagnosis report request was uploaded by @Model?.DoctorName for your recent consultation (@Model?.ConsultationId)<br /><br />
+    @Model?.Title<br />
+    @Model?.Description<br /><br />
+
+    Prescriptions:<br />
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Medicine Name</th>
+                <th>Type</th>
+                <th>Dosage</th>
+                <th>Duration</th>
+                <th>Frequency</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medicine in Model?.MedicinePrescriptions)
+            {
+                <tr>
+                    <td>@Model?.MedicinePrescriptions.IndexOf(medicine)</td>
+                    <td>@medicine.Name</td>
+                    <td>@medicine.Type</td>
+                    <td>@medicine.Dosage</td>
+                    <td>@medicine.Duration</td>
+                    <td>@medicine.Frequency</td>
+                    <td>@medicine.Remarks</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</p>

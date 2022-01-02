@@ -11,7 +11,7 @@ The project aims at implementing microservices using the following concepts/libr
 5.	Synchronous/Asynchronous Communication (Http REST/Apache Kafka) :green_circle:
 6.	Memory Cache :green_circle: / Redis Cache :red_circle:
 7.	Containerization & Container Orchestration (Docker/Docker Compose/Kubernetes) :green_circle:
-8.	Command Query Responsibility Segregator (using Mediator pattern) :green_circle:
+8.	Command Query Responsibility Seggregator (using Mediator pattern) :green_circle:
 9.	Circuit Breaker (Polly) :green_circle:
 10.	Jwt Authentication :green_circle:
 11. .NET 5/6 Web API :green_circle:
@@ -21,6 +21,8 @@ The project aims at implementing microservices using the following concepts/libr
 15. Entity Framework Core :green_circle:
 16. xUnit, SpecFlow and Moq :red_circle:
 17. BenchmarkDotNet :red_circle:
+18. Blazor :green_circle:
+19. .NET MAUI for Andrioid/iOS/Windows app :red_circle:
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:

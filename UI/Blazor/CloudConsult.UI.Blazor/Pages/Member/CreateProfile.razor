@@ -1,0 +1,26 @@
+﻿@page "/member/{IdentityId}/profile/create"
+@layout LoginLayout
+@inherits CreateProfileComponent
+
+<MudText Typo="Typo.h4" GutterBottom="true">
+    Tell us more about yourself
+</MudText>
+<MudSelect T="string" @bind-Value="data.Gender" Variant="Variant.Outlined" Label="Gender" Strict="true">
+    <MudSelectItem Value="@("Female")">Female</MudSelectItem>
+    <MudSelectItem Value="@("Male")">Male</MudSelectItem>
+</MudSelect>
+<MudDatePicker Variant="Variant.Outlined" @bind-Date="dateOfBirthPicker" Label="Date Of Birth" DisableToolbar="true" DateFormat="dd-MM-yyyy"/>
+<MudTextField @bind-Value="data.MobileNo" Immediate=true MaxLength="10" InputMode="InputMode.numeric" Label="Mobile No" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="(IN)" />
+<MudTextField @bind-Value="data.Address" Label="Full Address" Variant="Variant.Outlined" />
+<br />
+<MudButton OnClick="CreateProfileClick" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(State.Value.Processing)" Size="Size.Large" FullWidth="true">
+    @if (State.Value.Processing)
+    {
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+        <MudText Class="ms-2">Saving profile...</MudText>
+    }
+    else
+    {
+        <MudText>Save Profile</MudText>
+    }
+</MudButton>
