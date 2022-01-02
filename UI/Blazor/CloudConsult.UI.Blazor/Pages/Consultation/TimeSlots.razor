@@ -11,12 +11,22 @@
                 <MudCard>
                     <MudCardContent>
                         <MudText>Add Time Slot</MudText>
-                        <MudDatePicker Date="@DateTime.Today" DateFormat="dd-MM-yyyy" />
-                        <MudTimePicker AmPm="true" Time="@DateTime.Now.RoundUpToNearest(30).TimeOfDay" />
-                        <MudTimePicker AmPm="true" Time="@DateTime.Now.RoundUpToNearest(30).AddMinutes(30).TimeOfDay" />
+                        <MudDatePicker DisableToolbar="true" MinDate="DateTime.Today" @bind-Date="@datePicker" DateFormat="dd-MM-yyyy" />
+                        <MudTimePicker DisableToolbar="true" AmPm="true" @bind-Time="@startTimePicker" />
+                        <MudTimePicker DisableToolbar="true" AmPm="true" @bind-Time="@endTimePicker" />
                     </MudCardContent>
                     <MudCardActions Class="pb-4 pl-4">
-                        <MudButton Size="Size.Small" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="ml-auto">Add</MudButton>
+                        <MudButton Disabled="@State.Value.Processing" Size="Size.Small" StartIcon="@Icons.Filled.Add" OnClick="OnAddTimeSlotClick" Variant="Variant.Filled" Class="ml-auto" Color="Color.Primary" FullWidth="true">
+                            @if (State.Value.Processing)
+                            {
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Adding</MudText>
+                            }
+                            else
+                            {
+                                <MudText>Add</MudText>
+                            }
+                        </MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -36,7 +46,7 @@
         </MudGrid>
     </MudItem>
     <MudItem xs="12" sm="12" md="10">
-        <RadzenScheduler @ref="@scheduler" SlotRender="@OnSlotRender" Style="height:720px" TItem="TimeSlot" Data="@timeSlots" StartProperty="TimeSlotStart"
+        <RadzenScheduler @ref="@scheduler" SlotRender="@OnSlotRender" Style="height:720px" TItem="TimeSlotResponseData" Data="@State.Value.TimeSlots" StartProperty="TimeSlotStart"
                          EndProperty="TimeSlotEnd" TextProperty="DisplayText" SelectedIndex="2" LoadData="@OnLoadData"
                          SlotSelect="@OnSlotSelect" AppointmentSelect="@OnAppointmentSelect" AppointmentRender="@OnAppointmentRender">
             <RadzenDayView />

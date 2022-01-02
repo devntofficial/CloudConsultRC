@@ -107,6 +107,18 @@
       ],
       "UpstreamPathTemplate": "/api/get-doctor-timeslots-range/{ProfileId}",
       "UpstreamHttpMethod": [ "Post", "Options" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/doctor/{ProfileId}/timeslot",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "cloudconsult.consultation.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/add-doctor-timeslot/{ProfileId}",
+      "UpstreamHttpMethod": [ "Post", "Options" ]
     }
   ]
 }

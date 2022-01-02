@@ -80,3 +80,7 @@ a, .btn-link {
     background-color: #43a047ff !important;
     border-color: #43a047ff !important;
 }
+
+a.mud-nav-link:hover {
+    color: #43a047ff !important;
+}

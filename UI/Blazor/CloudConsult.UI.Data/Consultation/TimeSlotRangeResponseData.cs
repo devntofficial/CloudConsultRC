@@ -3,10 +3,10 @@
     public class TimeSlotRangeResponseData
     {
         public string ProfileId { get; set; }
-        public List<TimeSlot> TimeSlots { get; set; }
+        public List<TimeSlotResponseData> TimeSlots { get; set; }
     }
 
-    public class TimeSlot
+    public class TimeSlotResponseData
     {
         public string Id { get; set; }
         public DateTime TimeSlotStart { get; set; }

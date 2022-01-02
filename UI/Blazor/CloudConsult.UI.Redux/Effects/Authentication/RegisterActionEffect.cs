@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using CloudConsult.UI.Data.Common;
 using CloudConsult.UI.Interfaces.Identity;
 using CloudConsult.UI.Redux.Actions.Authentication;
@@ -13,14 +14,16 @@ namespace CloudConsult.UI.Redux.Effects.Authentication
     {
         private readonly IIdentityService identityService;
         private readonly ILocalStorageService localStorage;
+        private readonly ISessionStorageService sessionStorage;
         private readonly HttpClient client;
         private readonly AuthenticationStateProvider authStateProvider;
 
-        public RegisterActionEffect(IIdentityService identityService, ILocalStorageService localStorage,
+        public RegisterActionEffect(IIdentityService identityService, ILocalStorageService localStorage, ISessionStorageService sessionStorage,
             HttpClient client, AuthenticationStateProvider authStateProvider)
         {
             this.identityService = identityService;
             this.localStorage = localStorage;
+            this.sessionStorage = sessionStorage;
             this.client = client;
             this.authStateProvider = authStateProvider;
         }
@@ -40,8 +43,8 @@ namespace CloudConsult.UI.Redux.Effects.Authentication
             }
 
             var token = response.Payload.AccessToken;
-            await localStorage.SetItemAsync("AccessToken", token);
-            await localStorage.SetItemAsync("IdentityId", response.Payload.Id);
+            await sessionStorage.SetItemAsync("AccessToken", token);
+            await sessionStorage.SetItemAsync("IdentityId", response.Payload.Id);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             ((AuthStateProvider)authStateProvider).NotifyUserLogin(token);
             dispatcher.Dispatch(new RegisterSuccessAction(response.Payload.Id, action.Data));
