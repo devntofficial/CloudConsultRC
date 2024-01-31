@@ -1,0 +1,91 @@
+version: '3.8'
+networks:
+  devnetwork:
+    external: true
+volumes:
+  sql_server_volume:
+    driver: local
+  mongodb_server_volume:
+    driver: local
+  mongodb_server_config_volume:
+    driver: local
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+  kafka_ui_data:
+    driver: local
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: Microsoft-Sql-Server-2019
+    restart: unless-stopped
+    networks:
+      - devnetwork
+    ports:
+      - 1433:1433
+    volumes:
+      - sql_server_volume:/var/lib/mssqlql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Itachi@123
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.7
+    container_name: Zookeeper
+    restart: unless-stopped
+    networks:
+      - devnetwork
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: Kafka-UI
+    networks:
+      - devnetwork
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
+    volumes:
+      - "kafka_ui_data:/kafka-ui"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafkaserver:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+  kafkaserver:
+    image: docker.io/bitnami/kafka:3
+    container_name: Apache-Kafka
+    restart: unless-stopped
+    networks:
+      - devnetwork
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafkaserver:9092,PLAINTEXT_HOST://localhost:29092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+  mongodb-server:
+    image: mongo:latest
+    container_name: MongoDb-Server
+    restart: unless-stopped
+    networks:
+      - devnetwork
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Itachi@123
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_server_volume:/data/db
+      - mongodb_server_config_volume:/data/configdb

@@ -1,0 +1,22 @@
+version: '3.8'
+networks:
+  devnetwork:
+    external: true
+volumes:
+  portainer_server_volume:
+    driver: local
+  portainer-socket-volume:
+    driver: local
+services:
+  portainer-server:
+    image: portainer/portainer-ce:latest
+    container_name: Portainer-Server
+    restart: always
+    networks:
+      - devnetwork
+    volumes:
+      - portainer_server_volume:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8000:8000
+      - 9443:9443

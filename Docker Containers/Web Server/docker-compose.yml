@@ -1,0 +1,45 @@
+version: '3.8'
+networks:
+  devnetwork:
+    external: true
+volumes:
+  filegator_repo_volume:
+    driver: local
+services:
+  filegator:
+    container_name: Filegator
+    image: filegator/filegator
+    restart: always
+    ports:
+      - "8084:8080"
+    volumes:
+      # mount local folder as a repository
+      - filegator_repo_volume:/var/www/filegator/repository
+
+      # locally stored users.json file
+      # - ./users.json:/var/www/filegator/private/users.json
+
+      # load your own custom configuration file
+      # - ./configuration.php:/var/www/filegator/configuration.php
+  drawio:
+    container_name: Draw-IO
+    ports:
+      - 8083:8080
+    image: jgraph/drawio
+    restart: unless-stopped
+  my-cv:
+    image: 'mycvimage'
+    networks:
+      - devnetwork
+    ports:
+      - 8082:80
+    container_name: My-CV
+    restart: unless-stopped
+  it-tools:
+    image: 'corentinth/it-tools:latest'
+    networks:
+      - devnetwork
+    ports:
+      - '8080:80'
+    restart: unless-stopped
+    container_name: IT-Tools
