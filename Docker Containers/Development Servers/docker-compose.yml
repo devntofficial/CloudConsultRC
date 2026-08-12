@@ -56,7 +56,7 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafkaserver:9092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
   kafkaserver:
-    image: docker.io/bitnami/kafka:3
+    image: docker.io/soldevelo/kafka:3.9
     container_name: Apache-Kafka
     restart: unless-stopped
     networks:
